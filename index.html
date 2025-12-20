@@ -4,156 +4,428 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ClearlinePDX | Professional Cleaning Services in Portland</title>
-  <meta name="description" content="ClearlinePDX provides professional residential and commercial cleaning services in Portland, Oregon." />
+  <meta name="description" content="ClearlinePDX provides professional residential and commercial cleaning services in Portland, Oregon. Transparent pricing. Free estimates." />
 
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-      line-height: 1.6;
+    :root{
+      --bg:#0f172a;
+      --panel:#020617;
+      --panel2:#0b1220;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --accent:#22c55e;
+      --accentText:#052e16;
+      --border:#334155;
+      --shadow: 0 10px 30px rgba(0,0,0,0.45);
+      --radius:16px;
     }
 
-    header {
-      background: linear-gradient(rgba(2,6,23,0.85), rgba(2,6,23,0.85)),
-        url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80');
-      background-size: cover;
-      background-position: center;
-      padding: 72px 20px 56px;
-      text-align: center;
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
     }
 
-    header h1 {
-      font-size: 42px;
-      margin-bottom: 10px;
+    a{ color:var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    header{
+      background:
+        linear-gradient(rgba(2,6,23,0.88), rgba(2,6,23,0.88)),
+        url("https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80");
+      background-size:cover;
+      background-position:center;
+      padding:72px 20px 56px;
+      text-align:center;
     }
 
-    header p {
-      font-size: 18px;
-      color: #cbd5f5;
+    header h1{
+      margin:0 0 10px;
+      font-size:44px;
+      letter-spacing:0.5px;
     }
 
-    section {
-      padding: 28px 20px;
-      max-width: 1100px;
-      margin: 0 auto;
+    header p{
+      margin:0 0 18px;
+      font-size:18px;
+      color:#cbd5f5;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+      padding:0 20px;
     }
 
-    .card {
-      background: #020617;
-      padding: 22px;
-      border-radius: 14px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-      text-align: center;
+    /* tighter spacing */
+    section{
+      padding:16px 0;
     }
 
-    .calculator {
-      background: #020617;
-      padding: 26px;
-      border-radius: 16px;
-      max-width: 520px;
-      margin: -40px auto 0;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    h2{
+      margin:0 0 10px;
+      font-size:26px;
+      color:#f8fafc;
     }
 
-    select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      margin-bottom: 12px;
-      background: #0b1220;
-      color: #e5e7eb;
-      border: 1px solid #334155;
-      border-radius: 6px;
+    .subtext{
+      margin:0 0 12px;
+      color:var(--muted);
+      font-size:14px;
     }
 
-    .price {
-      text-align: center;
-      font-size: 26px;
-      color: #22c55e;
-      margin-top: 14px;
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:14px;
     }
 
-    .btn {
-      display: inline-block;
-      margin-top: 16px;
-      padding: 12px 24px;
-      background: #22c55e;
-      color: #052e16;
-      font-weight: bold;
-      text-decoration: none;
-      border-radius: 8px;
+    .card{
+      background:var(--panel);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(51,65,85,0.25);
     }
 
-    footer {
-      text-align: center;
-      padding: 30px 20px;
-      color: #94a3b8;
-      font-size: 14px;
+    .card h3{
+      margin:0 0 6px;
+      font-size:16px;
+      color:#f8fafc;
+    }
+
+    .card p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .btn{
+      display:inline-block;
+      padding:12px 20px;
+      background:var(--accent);
+      color:var(--accentText);
+      font-weight:700;
+      border-radius:10px;
+      text-decoration:none;
+    }
+    .btn:hover{ filter:brightness(0.95); text-decoration:none; }
+
+    /* Calculator (top) */
+    .calculator-wrap{
+      margin-top:-34px;
+    }
+
+    .calculator{
+      background:var(--panel);
+      border-radius:18px;
+      box-shadow: 0 22px 50px rgba(0,0,0,0.55);
+      border:1px solid rgba(51,65,85,0.35);
+      padding:18px;
+      max-width:620px;
+      margin:0 auto;
+    }
+
+    .calc-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .calculator label{
+      display:block;
+      font-weight:700;
+      font-size:13px;
+      color:#e2e8f0;
+      margin:0 0 6px;
+    }
+
+    .calculator select{
+      width:100%;
+      padding:10px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:var(--panel2);
+      color:var(--text);
+      outline:none;
+    }
+
+    .price{
+      margin-top:12px;
+      text-align:center;
+      font-size:26px;
+      font-weight:800;
+      color:var(--accent);
+    }
+
+    .calc-note{
+      text-align:center;
+      margin:8px 0 0;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .calc-actions{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    .btn-outline{
+      display:inline-block;
+      padding:12px 20px;
+      border-radius:10px;
+      border:1px solid rgba(148,163,184,0.35);
+      color:#e2e8f0;
+      text-decoration:none;
+      background:transparent;
+      font-weight:700;
+    }
+    .btn-outline:hover{ text-decoration:none; border-color:rgba(148,163,184,0.55); }
+
+    /* alternating section panels */
+    .panel{
+      background:rgba(2,6,23,0.55);
+      border-top:1px solid rgba(51,65,85,0.25);
+      border-bottom:1px solid rgba(51,65,85,0.25);
+    }
+
+    footer{
+      padding:22px 0 28px;
+      color:var(--muted);
+      text-align:center;
+      font-size:14px;
+    }
+
+    .contact{
+      display:grid;
+      grid-template-columns:1.2fr 0.8fr;
+      gap:14px;
+      align-items:start;
+    }
+
+    .contact p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    @media (max-width: 720px){
+      header h1{ font-size:34px; }
+      .calc-grid{ grid-template-columns:1fr; }
+      .contact{ grid-template-columns:1fr; }
+      .calculator{ max-width:100%; }
     }
   </style>
 </head>
+
 <body>
 
-<header>
-  <h1>ClearlinePDX</h1>
-  <p>Professional Cleaning Services in Portland, Oregon</p>
-</header>
+  <!-- HERO -->
+  <header>
+    <div class="container">
+      <h1>ClearlinePDX</h1>
+      <p>Professional Cleaning Services in Portland, Oregon</p>
+      <div class="calc-actions" style="margin-top:10px;">
+        <a class="btn" href="#contact">Get a Free Estimate</a>
+        <a class="btn-outline" href="tel:+15035555555">Call Now</a>
+      </div>
+    </div>
+  </header>
 
-<div class="calculator">
-  <label>Bedrooms</label>
-  <select id="beds">
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4+</option>
-  </select>
+  <!-- CALCULATOR (MOVED UP) -->
+  <section class="calculator-wrap">
+    <div class="container">
+      <div class="calculator">
+        <h2 style="text-align:center; margin-bottom:8px;">Instant Price Estimate</h2>
+        <p class="subtext" style="text-align:center;">Fast ballpark pricing in seconds.</p>
 
-  <label>Bathrooms</label>
-  <select id="baths">
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3+</option>
-  </select>
+        <div class="calc-grid">
+          <div>
+            <label for="beds">Bedrooms</label>
+            <select id="beds">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3" selected>3</option>
+              <option value="4">4</option>
+              <option value="5">5+</option>
+            </select>
+          </div>
 
-  <div class="price" id="price">$120</div>
+          <div>
+            <label for="baths">Bathrooms</label>
+            <select id="baths">
+              <option value="1">1</option>
+              <option value="2" selected>2</option>
+              <option value="3">3+</option>
+            </select>
+          </div>
 
-  <div style="text-align:center">
-    <a class="btn" href="tel:+15035555555">Call Now</a>
-  </div>
-</div>
+          <div style="grid-column:1/-1;">
+            <label for="type">Cleaning Type</label>
+            <select id="type">
+              <option value="1">Regular</option>
+              <option value="1.5">Deep Cleaning</option>
+              <option value="1.7">Move-In / Move-Out</option>
+            </select>
+          </div>
+        </div>
 
-<section>
-  <div class="grid">
-    <div class="card">Licensed & Insured</div>
-    <div class="card">Transparent Pricing</div>
-    <div class="card">Eco-Friendly Products</div>
-    <div class="card">Local Portland Team</div>
-  </div>
-</section>
+        <div class="price" id="price">Estimated Price: $120</div>
+        <p class="calc-note">Final price may vary after on-site evaluation.</p>
 
-<footer>
-  © 2025 ClearlinePDX · clearlinepdx.com
-</footer>
+        <div class="calc-actions">
+          <a class="btn" href="#contact">Book Cleaning</a>
+          <a class="btn-outline" href="mailto:info@clearlinepdx.com">Email Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<script>
-  const beds = document.getElementById('beds');
-  const baths = document.getElementById('baths');
-  const price = document.getElementById('price');
+  <!-- WHY -->
+  <section>
+    <div class="container">
+      <h2>Why ClearlinePDX</h2>
+      <p class="subtext">Reliable service, clear pricing, and a team that shows up.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Licensed & Insured</h3>
+          <p>Your home or business is protected.</p>
+        </div>
+        <div class="card">
+          <h3>Transparent Pricing</h3>
+          <p>No weird surprises on the invoice.</p>
+        </div>
+        <div class="card">
+          <h3>Eco-Friendly Options</h3>
+          <p>Safe for families, pets, and surfaces.</p>
+        </div>
+        <div class="card">
+          <h3>Local Portland Team</h3>
+          <p>Professional, punctual, respectful.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  function calc() {
-    price.textContent = '$' + (80 + beds.value * 30 + baths.value * 25);
-  }
+  <!-- SERVICES -->
+  <section class="panel">
+    <div class="container">
+      <h2>Our Services</h2>
+      <p class="subtext">Choose what you need. We’ll handle the mess.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Standard House Cleaning</h3>
+          <p>Weekly, bi-weekly, or monthly maintenance cleaning.</p>
+        </div>
+        <div class="card">
+          <h3>Deep Cleaning</h3>
+          <p>Detailed top-to-bottom cleaning for a fresh reset.</p>
+        </div>
+        <div class="card">
+          <h3>Move-In / Move-Out</h3>
+          <p>Perfect for renters, landlords, and real estate turnover.</p>
+        </div>
+        <div class="card">
+          <h3>Office & Commercial</h3>
+          <p>Small offices and professional spaces in Portland.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  beds.onchange = baths.onchange = calc;
-</script>
+  <!-- HOW IT WORKS -->
+  <section>
+    <div class="container">
+      <h2>How It Works</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>1) Quick Estimate</h3>
+          <p>Use the calculator or contact us for a custom quote.</p>
+        </div>
+        <div class="card">
+          <h3>2) Schedule</h3>
+          <p>Pick a time that works. We confirm details fast.</p>
+        </div>
+        <div class="card">
+          <h3>3) We Clean</h3>
+          <p>Professional results—so you can relax.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="panel">
+    <div class="container" style="text-align:center;">
+      <h2>Ready for a cleaner home?</h2>
+      <p class="subtext">Get a fast estimate or call today.</p>
+      <div class="calc-actions" style="margin-top:6px;">
+        <a class="btn" href="tel:+15035555555">Call Now</a>
+        <a class="btn-outline" href="#contact">Request a Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <h2>Contact</h2>
+      <div class="contact">
+        <div class="card">
+          <h3>Get a Free Estimate</h3>
+          <p>Tell us bedrooms/bathrooms, cleaning type, and preferred day/time. We’ll reply quickly.</p>
+          <div class="calc-actions" style="justify-content:flex-start; margin-top:12px;">
+            <a class="btn" href="mailto:info@clearlinepdx.com?subject=Estimate%20Request%20-%20ClearlinePDX">Email Us</a>
+            <a class="btn-outline" href="tel:+15035555555">Call (503) 555-5555</a>
+          </div>
+          <p class="subtext" style="margin-top:10px;">
+            Email: <a href="mailto:info@clearlinepdx.com">info@clearlinepdx.com</a><br>
+            Portland, OR · Mon–Sat 8:00 AM – 6:00 PM
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Service Area</h3>
+          <p>Portland and nearby neighborhoods. Ask if you’re outside the city—sometimes we can make it work.</p>
+          <p class="subtext" style="margin-top:10px;">Want faster booking? Call us.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 ClearlinePDX · clearlinepdx.com
+  </footer>
+
+  <script>
+    const beds = document.getElementById('beds');
+    const baths = document.getElementById('baths');
+    const type = document.getElementById('type');
+    const priceEl = document.getElementById('price');
+
+    function calculate() {
+      const base = 80;            // base visit
+      const bedPrice = Number(beds.value) * 30;
+      const bathPrice = Number(baths.value) * 25;
+      const multiplier = Number(type.value);
+
+      const total = Math.round((base + bedPrice + bathPrice) * multiplier);
+      priceEl.textContent = `Estimated Price: $${total}`;
+    }
+
+    beds.addEventListener('change', calculate);
+    baths.addEventListener('change', calculate);
+    type.addEventListener('change', calculate);
+    calculate();
+  </script>
 
 </body>
 </html>
+
