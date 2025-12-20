@@ -63,6 +63,7 @@
       letter-spacing: 0.2px;
     }
     .brand svg { width: 34px; height: 34px; }
+
     nav {
       display: flex;
       align-items: center;
@@ -81,6 +82,7 @@
       border-color: var(--border);
       background: rgba(255,255,255,0.6);
     }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -91,6 +93,7 @@
       border: 1px solid rgba(0,0,0,0.06);
       background: linear-gradient(135deg, rgba(79,166,160,0.95), rgba(79,166,160,0.78));
       color: #0b2a27;
+      cursor: pointer;
     }
     .btn-ghost {
       display: inline-flex;
@@ -102,6 +105,7 @@
       border: 1px solid var(--border);
       background: rgba(255,255,255,0.6);
       color: var(--text);
+      cursor: pointer;
     }
 
     /* HERO */
@@ -173,27 +177,11 @@
       margin-bottom: 10px;
     }
 
-    .name {
-      font-weight: 900;
-      letter-spacing: -0.2px;
-    }
-    .meta {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 4px;
-    }
-    .stars {
-      font-weight: 900;
-      color: var(--accent-dark);
-      white-space: nowrap;
-      font-size: 14px;
-    }
+    .name { font-weight: 900; letter-spacing: -0.2px; }
+    .meta { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .stars { font-weight: 900; color: var(--accent-dark); white-space: nowrap; font-size: 14px; }
 
-    .text {
-      color: var(--muted);
-      line-height: 1.7;
-      margin: 0;
-    }
+    .text { color: var(--muted); line-height: 1.7; margin: 0; }
 
     .pill {
       display:inline-flex;
@@ -222,6 +210,51 @@
       box-shadow: var(--shadow);
     }
 
+    /* Review form */
+    .formCard {
+      margin-top: 22px;
+      background: rgba(255,255,255,0.86);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .formGrid {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .rowFull { grid-column: 1 / -1; }
+
+    label {
+      display:block;
+      font-size:12px;
+      font-weight:800;
+      color: rgba(31,45,43,0.85);
+      margin-bottom: 6px;
+    }
+
+    input[type="text"], input[type="email"], select, textarea {
+      width:100%;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.85);
+      font-size:14px;
+      outline:none;
+      color: var(--text);
+    }
+    textarea { min-height: 110px; resize: vertical; }
+
+    .smallNote {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 10px;
+    }
+
     footer {
       text-align: center;
       padding: 42px 20px;
@@ -233,13 +266,23 @@
     }
     footer a { color: var(--accent-dark); font-weight: 700; }
 
-    @media (max-width: 680px) {
+    @media (max-width: 720px) {
       .hero h1 { font-size: 34px; }
+      .formGrid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 
 <body>
+  <script>
+    // Replace these:
+    const COMPANY_EMAIL = "info@clearlinepdx.com";
+    const PHONE_NUMBER = "+15035555555";
+    // IMPORTANT: Replace GOOGLE_REVIEW_URL with your real Google review link.
+    // You can get it from Google Business Profile -> "Ask for reviews" / "Get more reviews"
+    const GOOGLE_REVIEW_URL = "https://www.google.com/"; 
+  </script>
+
   <!-- NAV -->
   <div class="topbar">
     <div class="container">
@@ -258,7 +301,7 @@
           <a class="navlink" href="reviews.html">Reviews</a>
           <a class="navlink" href="index.html#services">Services</a>
           <a class="navlink" href="index.html#contact">Contact</a>
-          <a class="btn-ghost" href="tel:+15035555555">Call</a>
+          <a class="btn-ghost" id="navCall" href="#">Call</a>
         </nav>
       </div>
     </div>
@@ -269,21 +312,21 @@
     <div class="container">
       <h1>Reviews</h1>
       <p>
-        What customers like most: reliability, respectful crews, and consistent results.
-        Want the same? Book a clean in a couple clicks.
+        The best marketing is clean work + people talking about it.
+        If we cleaned for you — please leave a review.
       </p>
 
       <div class="hero-actions">
-        <a class="btn" href="index.html#estimate">Get an Estimate</a>
-        <a class="btn-ghost" href="index.html#contact">Contact</a>
+        <a class="btn" id="googleReviewBtn" href="#" target="_blank" rel="noopener">Leave a Google Review</a>
+        <a class="btn-ghost" href="#leave-review">Leave a Review Here</a>
       </div>
     </div>
   </header>
 
-  <!-- REVIEWS -->
+  <!-- REVIEWS LIST -->
   <section class="container">
     <h2>Customer Feedback</h2>
-    <p class="subtitle">These are sample placeholders — replace with real reviews once you have them (Google Business, Yelp, etc.).</p>
+    <p class="subtitle">Placeholders for now — replace with real reviews as you collect them.</p>
 
     <div class="grid">
       <div class="review">
@@ -321,42 +364,6 @@
         <p class="text">“Move-out clean helped us get the deposit back. They hit the oven, fridge, and bathrooms really well.”</p>
         <div class="pill">Move-out ready</div>
       </div>
-
-      <div class="review">
-        <div class="top">
-          <div>
-            <div class="name">Chris T.</div>
-            <div class="meta">NE Portland · Standard + add-ons</div>
-          </div>
-          <div class="stars">★★★★★</div>
-        </div>
-        <p class="text">“Transparent estimate, no weird last-minute charges. Add-ons were done exactly as requested.”</p>
-        <div class="pill">Transparent pricing</div>
-      </div>
-
-      <div class="review">
-        <div class="top">
-          <div>
-            <div class="name">Elena M.</div>
-            <div class="meta">Hillsboro · Deep Cleaning</div>
-          </div>
-          <div class="stars">★★★★★</div>
-        </div>
-        <p class="text">“I’m picky. They still impressed me. Bathrooms and floors were spotless, and the team was super professional.”</p>
-        <div class="pill">High standards</div>
-      </div>
-
-      <div class="review">
-        <div class="top">
-          <div>
-            <div class="name">Daniel P.</div>
-            <div class="meta">Downtown · Small office cleaning</div>
-          </div>
-          <div class="stars">★★★★★</div>
-        </div>
-        <p class="text">“We needed a discreet clean for a small office. Great result, no disruption, and scheduling was easy.”</p>
-        <div class="pill">Commercial</div>
-      </div>
     </div>
 
     <div class="ctaBox">
@@ -366,7 +373,61 @@
       </div>
       <div style="display:flex; gap:10px; flex-wrap:wrap;">
         <a class="btn" href="index.html#estimate">Get Estimate</a>
-        <a class="btn-ghost" href="mailto:info@clearlinepdx.com?subject=Cleaning%20Quote%20Request">Email</a>
+        <a class="btn-ghost" id="callBtn" href="#">Call</a>
+      </div>
+    </div>
+
+    <!-- LEAVE REVIEW -->
+    <div class="formCard" id="leave-review">
+      <h2 style="margin:0; text-align:left;">Leave a Review</h2>
+      <p class="subtitle" style="text-align:left; margin:8px 0 0;">
+        This will open your email with the review text pre-filled. (No backend required.)
+      </p>
+
+      <div class="formGrid">
+        <div>
+          <label for="rName">Your Name</label>
+          <input id="rName" type="text" placeholder="John D." />
+        </div>
+        <div>
+          <label for="rEmail">Your Email (optional)</label>
+          <input id="rEmail" type="email" placeholder="you@email.com" />
+        </div>
+
+        <div>
+          <label for="rService">Service Type</label>
+          <select id="rService">
+            <option>Standard Cleaning</option>
+            <option>Deep Cleaning</option>
+            <option>Move-In / Move-Out</option>
+            <option>Office / Commercial</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="rStars">Rating</label>
+          <select id="rStars">
+            <option value="5">★★★★★ (5)</option>
+            <option value="4">★★★★☆ (4)</option>
+            <option value="3">★★★☆☆ (3)</option>
+            <option value="2">★★☆☆☆ (2)</option>
+            <option value="1">★☆☆☆☆ (1)</option>
+          </select>
+        </div>
+
+        <div class="rowFull">
+          <label for="rText">Your Review</label>
+          <textarea id="rText" placeholder="Tell us what you liked (punctuality, quality, communication, etc.)"></textarea>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+        <a class="btn" id="submitReviewEmail" href="#">Submit via Email</a>
+        <a class="btn-ghost" id="googleReviewBtn2" href="#" target="_blank" rel="noopener">Submit on Google</a>
+      </div>
+
+      <div class="smallNote">
+        Best option for you: please leave it on Google so others can find us. The email option is a backup.
       </div>
     </div>
   </section>
@@ -374,5 +435,44 @@
   <footer>
     © 2025 ClearlinePDX · Portland, OR · <a href="index.html#contact">Contact</a>
   </footer>
+
+  <script>
+    const phoneHref = `tel:${PHONE_NUMBER}`;
+    document.getElementById("navCall").href = phoneHref;
+    document.getElementById("callBtn").href = phoneHref;
+
+    document.getElementById("googleReviewBtn").href = GOOGLE_REVIEW_URL;
+    document.getElementById("googleReviewBtn2").href = GOOGLE_REVIEW_URL;
+
+    const submit = document.getElementById("submitReviewEmail");
+    submit.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("rName").value.trim() || "(not provided)";
+      const email = document.getElementById("rEmail").value.trim() || "(not provided)";
+      const service = document.getElementById("rService").value;
+      const stars = document.getElementById("rStars").value;
+      const text = document.getElementById("rText").value.trim() || "(no text provided)";
+
+      const subject = `New review submission (${stars}/5) – ${service}`;
+      const body =
+`Hi ClearlinePDX,
+
+A customer submitted a review for the website:
+
+Name: ${name}
+Email: ${email}
+Service: ${service}
+Rating: ${stars}/5
+
+Review:
+${text}
+
+Thank you!`;
+
+      window.location.href =
+        `mailto:${encodeURIComponent(COMPANY_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  </script>
 </body>
 </html>
