@@ -2,335 +2,362 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>ClearlinePDX – Professional Cleaning in Portland</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ClearlinePDX | Professional Cleaning Services in Portland</title>
-  <meta name="description" content="ClearlinePDX provides professional residential and commercial cleaning services in Portland, Oregon. Transparent pricing. Free estimates." />
+  <meta name="description" content="ClearlinePDX provides reliable residential and small commercial cleaning services in Portland, Oregon. Transparent pricing. Quick estimates." />
 
   <style>
-    :root{
-      /* New palette (clean aqua + soft slate) */
-      --bg:#0f172a;
-      --bg2:#0b1220;
-      --text:#e8edf7;
-      --muted:#b2bdd2;
-
-      --border: rgba(255,255,255,0.10);
-      --panel: rgba(255,255,255,0.04);
-
-      --accent:#22d3ee;   /* clean aqua */
-      --accent2:#a78bfa;  /* violet */
-      --btnText:#083344;
-
-      --radius:18px;
+    :root {
+      --bg-main: #f3f7f6;
+      --bg-grad1:#eef5f3;
+      --bg-grad2:#f9fbfa;
+      --panel: rgba(255,255,255,0.86);
+      --panel2: rgba(255,255,255,0.70);
+      --accent: #4fa6a0;
+      --accent-dark: #2f7f79;
+      --text: #1f2d2b;
+      --muted: #5f6f6c;
+      --border: rgba(0,0,0,0.07);
+      --shadow: 0 10px 30px rgba(14, 28, 26, 0.10);
+      --radius: 18px;
     }
 
-    *{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
-      color:var(--text);
-      line-height:1.6;
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, var(--bg-grad1) 0%, var(--bg-grad2) 100%);
+      color: var(--text);
+    }
 
-      /* Background image + dark overlay (readable) */
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.92; }
+
+    /* NAV */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(10px);
+      background: rgba(243, 247, 246, 0.75);
+      border-bottom: 1px solid var(--border);
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 0;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+    .brand svg { width: 34px; height: 34px; }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .navlink {
+      padding: 8px 10px;
+      border-radius: 12px;
+      color: var(--muted);
+      border: 1px solid transparent;
+    }
+    .navlink:hover {
+      color: var(--text);
+      border-color: var(--border);
+      background: rgba(255,255,255,0.6);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      border: 1px solid rgba(0,0,0,0.06);
+      background: linear-gradient(135deg, rgba(79,166,160,0.95), rgba(79,166,160,0.78));
+      color: #0b2a27;
+    }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.6);
+      color: var(--text);
+    }
+
+    /* HERO */
+    header.hero {
+      padding: 56px 0 26px;
+      text-align: center;
       background:
-        linear-gradient(rgba(15,23,42,0.92), rgba(15,23,42,0.92)),
-        url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80");
+        radial-gradient(1200px 500px at 50% 0%, rgba(79,166,160,0.14), rgba(79,166,160,0.00)),
+        linear-gradient(rgba(243,247,246,0.90), rgba(243,247,246,0.90)),
+        url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=80");
       background-size: cover;
       background-position: center;
-      background-attachment: fixed;
     }
 
-    a{ color:inherit; text-decoration:none; }
-    a:hover{ opacity:0.95; }
-
-    .container{
-      max-width:1100px;
-      margin:0 auto;
-      padding:0 18px;
+    .hero h1 {
+      font-size: 44px;
+      margin: 8px 0 10px;
+      letter-spacing: -0.6px;
+    }
+    .hero p.lead {
+      max-width: 720px;
+      margin: 0 auto 18px;
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.6;
     }
 
-    /* Top nav */
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:20;
-      backdrop-filter: blur(10px);
-      background: rgba(10,14,22,0.55);
-      border-bottom:1px solid var(--border);
-    }
-    .topbar-inner{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:12px 0;
-      gap:12px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:800;
-      letter-spacing:0.2px;
-    }
-    .logo{
-      width:34px;height:34px;border-radius:12px;
-      background: linear-gradient(135deg, rgba(34,211,238,0.95), rgba(167,139,250,0.95));
-    }
-    nav{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .navlink{
-      padding:8px 10px;
-      border-radius:12px;
-      color:var(--muted);
-      border:1px solid transparent;
-    }
-    .navlink:hover{
-      color:var(--text);
-      border-color:var(--border);
-      background: rgba(255,255,255,0.04);
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
     }
 
-    /* Buttons */
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:12px 16px;
-      border-radius:14px;
-      font-weight:800;
-      border:1px solid rgba(255,255,255,0.14);
-      background: linear-gradient(135deg, rgba(34,211,238,0.95), rgba(167,139,250,0.85));
-      color:var(--btnText);
-      transition: transform .15s ease, filter .15s ease;
+    .badges {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 18px;
     }
-    .btn:hover{ transform: translateY(-1px); }
-    .btn:active{ transform: translateY(0px); }
-
-    .btn-ghost{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:12px 16px;
-      border-radius:14px;
-      font-weight:800;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.03);
-      color:var(--text);
-      transition: background .15s ease;
-    }
-    .btn-ghost:hover{ background: rgba(255,255,255,0.06); }
-
-    /* Hero */
-    header.hero{
-      padding:44px 0 10px;
-    }
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap:16px;
-      align-items:stretch;
+    .badge {
+      background: rgba(255,255,255,0.70);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 13px;
     }
 
-    .hero-card{
-      border-radius: var(--radius);
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.04);
-      backdrop-filter: blur(10px);
-      padding:22px;
+    section {
+      margin: 46px auto;
+    }
+    section h2 {
+      text-align: center;
+      font-size: 32px;
+      margin: 0 0 10px;
+      letter-spacing: -0.3px;
+    }
+    section .subtitle {
+      text-align: center;
+      color: var(--muted);
+      margin: 0 auto 26px;
+      max-width: 720px;
+      line-height: 1.6;
     }
 
-    h1{
-      margin:0 0 10px;
-      font-size:44px;
-      line-height:1.1;
-      letter-spacing:-0.5px;
-    }
-    .lead{
-      margin:0 0 16px;
-      color:var(--muted);
-      font-size:16px;
-    }
-    .hero-badges{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:12px;
-    }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.03);
-      color:var(--muted);
-      font-size:13px;
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
     }
 
-    /* Sections */
-    section{
-      padding:18px 0; /* tighter spacing */
-    }
-
-    /* Centered headings + centered subtext */
-    section h2{
-      text-align:center;
-      margin:0 0 10px;
-      font-size:22px;
-      letter-spacing:-0.2px;
-    }
-    section .subtext{
-      text-align:center;
-      max-width:640px;
-      margin:0 auto 18px;
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap:12px;
-    }
-
-    /* Less "PowerPoint": softer, border-based, minimal shadow */
-    .card{
+    .card {
       background: var(--panel);
-      backdrop-filter: blur(6px);
       border-radius: var(--radius);
       padding: 22px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: none;
-      transition: transform .2s ease, background .2s ease;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
     }
-    .card:hover{
-      transform: translateY(-2px);
-      background: rgba(255,255,255,0.06);
-    }
-    .card h3{
-      margin:0 0 6px;
-      font-size:15px;
-      letter-spacing:-0.1px;
-    }
-    .card p{
-      margin:0;
-      color:var(--muted);
-      font-size:14px;
+    .card h3 { margin: 0 0 8px; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.6; }
+
+    /* CALCULATOR */
+    .calc-wrap {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 18px;
+      align-items: stretch;
     }
 
-    /* Calculator */
-    .calc{
+    .calc {
+      background: var(--panel);
       border-radius: var(--radius);
-      border:1px solid rgba(255,255,255,0.14);
-      background: rgba(10,14,22,0.55);
-      backdrop-filter: blur(12px);
-      padding:18px;
-      height:100%;
+      padding: 22px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
     }
-    .calc h2{
-      margin:0 0 6px;
-      font-size:18px;
-      letter-spacing:-0.2px;
-      text-align:center;
+
+    .calc h2 {
+      margin: 0 0 6px;
+      font-size: 26px;
+      text-align: left;
     }
-    .calc .subtext{
-      margin:0 auto 10px;
-      text-align:center;
+    .calc .subtitle {
+      text-align: left;
+      margin: 0 0 16px;
     }
-    .calc-grid{
-      display:grid;
+
+    .form-grid {
+      display: grid;
       grid-template-columns: 1fr 1fr;
-      gap:10px;
+      gap: 12px;
     }
-    label{
-      display:block;
-      font-weight:700;
-      font-size:12px;
-      color:#d8e1f4;
-      margin:0 0 6px;
-    }
-    select{
-      width:100%;
-      padding:10px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.05);
-      color:var(--text);
-      outline:none;
-    }
-    .price{
-      margin-top:12px;
-      text-align:center;
-      font-size:22px;
-      font-weight:900;
-      color: var(--accent);
-    }
-    .calc-note{
-      margin:8px 0 0;
-      text-align:center;
-      color:var(--muted);
-      font-size:13px;
-    }
-    .actions{
-      margin-top:12px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:center;
-    }
+    .row-full { grid-column: 1 / -1; }
 
-    /* CTA strip */
-    .cta{
-      border-radius: var(--radius);
-      border:1px solid var(--border);
-      background: linear-gradient(135deg, rgba(34,211,238,0.10), rgba(167,139,250,0.10));
-      padding:18px;
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(31,45,43,0.85);
+      margin-bottom: 6px;
+    }
+    select, input[type="number"], input[type="range"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.8);
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+    .range-line {
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
+      gap:10px;
+      margin-top:6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .addons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .check {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.75);
+      color: var(--muted);
+      font-size: 13px;
+      user-select:none;
+    }
+    .check input { width: 16px; height: 16px; }
+
+    .result {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(79,166,160,0.25);
+      background: rgba(79,166,160,0.10);
+    }
+    .price {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--accent-dark);
+      letter-spacing: -0.2px;
+    }
+    .hint {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .mini {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .mini h3 { margin:0 0 8px; }
+    .mini p { margin:0; color: var(--muted); line-height:1.6; }
+
+    .cta {
+      margin-top: 14px;
+      display:flex;
+      gap:10px;
       flex-wrap:wrap;
-      backdrop-filter: blur(8px);
     }
 
-    footer{
-      padding:26px 0 30px;
-      color:var(--muted);
-      text-align:center;
-      font-size:14px;
-      border-top:1px solid var(--border);
-      margin-top:8px;
-      background: rgba(10,14,22,0.35);
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+    .step {
+      background: rgba(255,255,255,0.80);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+    .step span {
+      display:inline-block;
+      font-weight: 800;
+      color: var(--accent-dark);
+      margin-bottom: 6px;
+    }
+    .step p { margin:0; color: var(--muted); line-height:1.6; }
+
+    footer {
+      text-align: center;
+      padding: 42px 20px;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+      background: rgba(255,255,255,0.55);
       backdrop-filter: blur(8px);
     }
+    footer a { color: var(--accent-dark); font-weight: 700; }
 
-    @media (max-width: 860px){
-      .hero-grid{ grid-template-columns:1fr; }
-      h1{ font-size:36px; }
-      .calc-grid{ grid-template-columns:1fr; }
-      nav{ gap:6px; }
-      .navlink{ padding:7px 9px; }
+    @media (max-width: 880px) {
+      .calc-wrap { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 36px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .addons { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 
 <body>
-
   <!-- NAV -->
   <div class="topbar">
     <div class="container">
       <div class="topbar-inner">
         <div class="brand">
-          <div class="logo" aria-hidden="true"></div>
+          <!-- Logo (Option 4 style: house + broom) -->
+          <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <path d="M10 28L32 10L54 28V52H38V38H26V52H10V28Z" stroke="#4fa6a0" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M44 24L54 44" stroke="#4fa6a0" stroke-width="3" stroke-linecap="round"/>
+            <path d="M50 44H60" stroke="#4fa6a0" stroke-width="3" stroke-linecap="round"/>
+          </svg>
           <div>ClearlinePDX</div>
         </div>
 
@@ -348,188 +375,238 @@
   <!-- HERO -->
   <header class="hero">
     <div class="container">
-      <div class="hero-grid">
-        <div class="hero-card">
-          <h1>Professional Cleaning in Portland, OR</h1>
-          <p class="lead">Clean pricing, consistent quality, and a team that actually shows up on time.</p>
+      <h1>Clean homes. Clear standards.</h1>
+      <p class="lead">
+        Professional residential & small commercial cleaning in Portland.
+        Transparent pricing, consistent quality, no nonsense.
+      </p>
 
-          <div class="actions" style="justify-content:flex-start;">
-            <a class="btn" href="#contact">Get a Free Estimate</a>
-            <a class="btn-ghost" href="reviews.html">See Reviews</a>
-          </div>
+      <div class="hero-actions">
+        <a class="btn" href="#estimate">Get an Estimate</a>
+        <a class="btn-ghost" href="reviews.html">See Reviews</a>
+      </div>
 
-          <div class="hero-badges">
-            <span class="badge">✓ Licensed & Insured</span>
-            <span class="badge">✓ Eco-friendly options</span>
-            <span class="badge">✓ Residential & Commercial</span>
-            <span class="badge">✓ Portland local</span>
-          </div>
-        </div>
-
-        <!-- CALCULATOR -->
-        <div class="calc" aria-label="Price Calculator">
-          <h2>Instant Price Estimate</h2>
-          <p class="subtext">Fast ballpark pricing in seconds.</p>
-
-          <div class="calc-grid">
-            <div>
-              <label for="beds">Bedrooms</label>
-              <select id="beds">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3" selected>3</option>
-                <option value="4">4</option>
-                <option value="5">5+</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="baths">Bathrooms</label>
-              <select id="baths">
-                <option value="1">1</option>
-                <option value="2" selected>2</option>
-                <option value="3">3+</option>
-              </select>
-            </div>
-
-            <div style="grid-column:1/-1;">
-              <label for="type">Cleaning Type</label>
-              <select id="type">
-                <option value="1">Regular</option>
-                <option value="1.5">Deep Cleaning</option>
-                <option value="1.7">Move-In / Move-Out</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="price" id="price">Estimated Price: $120</div>
-          <p class="calc-note">Final price may vary after on-site evaluation.</p>
-
-          <div class="actions">
-            <a class="btn" href="#contact">Book Cleaning</a>
-            <a class="btn-ghost" href="tel:+15035555555">Call Now</a>
-          </div>
-        </div>
+      <div class="badges">
+        <span class="badge">Licensed & insured (recommended)</span>
+        <span class="badge">Eco-friendly options</span>
+        <span class="badge">Reliable scheduling</span>
+        <span class="badge">Local Portland team</span>
       </div>
     </div>
   </header>
 
-  <!-- WHY -->
-  <section>
-    <div class="container">
-      <h2>Why ClearlinePDX</h2>
-      <p class="subtext">No fluff. Just clean homes and reliable service.</p>
+  <!-- ESTIMATE -->
+  <section id="estimate" class="container">
+    <div class="calc-wrap">
+      <div class="calc">
+        <h2>Smart Price Estimate</h2>
+        <p class="subtitle">Ballpark pricing based on Portland averages + your details.</p>
 
-      <div class="grid">
-        <div class="card">
-          <h3>Professional & Respectful</h3>
-          <p>We treat your home like it’s ours. Shoes off, careful around surfaces, no shortcuts.</p>
+        <div class="form-grid">
+          <div>
+            <label for="cleanType">Cleaning Type</label>
+            <select id="cleanType">
+              <option value="standard" selected>Standard Cleaning</option>
+              <option value="deep">Deep Cleaning</option>
+              <option value="move">Move-In / Move-Out</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="frequency">Frequency</label>
+            <select id="frequency">
+              <option value="onetime" selected>One-time</option>
+              <option value="monthly">Monthly</option>
+              <option value="biweekly">Bi-weekly</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="bedrooms">Bedrooms</label>
+            <select id="bedrooms">
+              <option value="studio">Studio</option>
+              <option value="1" selected>1 Bedroom</option>
+              <option value="2">2 Bedrooms</option>
+              <option value="3">3 Bedrooms</option>
+              <option value="4">4 Bedrooms</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="bathrooms">Bathrooms</label>
+            <select id="bathrooms">
+              <option value="1" selected>1 Bath</option>
+              <option value="2">2 Baths</option>
+              <option value="3">3 Baths</option>
+              <option value="4">4+ Baths</option>
+            </select>
+          </div>
+
+          <div class="row-full">
+            <label for="sqft">Approx. Square Footage</label>
+            <input id="sqft" type="range" min="400" max="3500" step="50" value="900" />
+            <div class="range-line">
+              <span id="sqftLabel">900 sq ft</span>
+              <span>Used to adjust time & effort</span>
+            </div>
+          </div>
+
+          <div>
+            <label for="condition">Home Condition</label>
+            <select id="condition">
+              <option value="light">Light (already pretty clean)</option>
+              <option value="normal" selected>Normal</option>
+              <option value="heavy">Heavy (buildup / lots of dust)</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="pets">Pets</label>
+            <select id="pets">
+              <option value="0" selected>No pets</option>
+              <option value="1">1 pet</option>
+              <option value="2">2 pets</option>
+              <option value="3">3+ pets</option>
+            </select>
+          </div>
+
+          <div class="row-full">
+            <label>Add-ons (optional)</label>
+            <div class="addons">
+              <label class="check"><input type="checkbox" id="addonFridge"> Inside fridge (+$25)</label>
+              <label class="check"><input type="checkbox" id="addonOven"> Inside oven (+$25)</label>
+              <label class="check"><input type="checkbox" id="addonCabinets"> Inside cabinets (+$35)</label>
+              <label class="check"><input type="checkbox" id="addonWindows"> Interior windows (+$40)</label>
+              <label class="check"><input type="checkbox" id="addonBlinds"> Blinds/detail dust (+$25)</label>
+              <label class="check"><input type="checkbox" id="addonLaundry"> Laundry/folding (+$15)</label>
+            </div>
+          </div>
         </div>
-        <div class="card">
-          <h3>Transparent Pricing</h3>
-          <p>You’ll know the ballpark price upfront. No surprise “extras” at checkout.</p>
+
+        <div class="result" aria-live="polite">
+          <div class="price" id="priceOut">$0 – $0</div>
+          <div class="hint" id="hintOut">
+            Estimate range includes typical variability. Final quote depends on access, condition, and special requests.
+          </div>
         </div>
-        <div class="card">
-          <h3>Eco-Friendly Options</h3>
-          <p>Upon request, we use products that are safe for families and pets.</p>
+
+        <div class="cta">
+          <a class="btn" href="#contact">Book / Get Quote</a>
+          <a class="btn-ghost" href="tel:+15035555555">Call Now</a>
         </div>
-        <div class="card">
-          <h3>Local Portland Team</h3>
-          <p>We’re not a random gig crew. Consistency and accountability matters.</p>
+      </div>
+
+      <div class="mini">
+        <h3>How this estimate works</h3>
+        <p>
+          We start from average Portland pricing and adjust for bathrooms, square footage, condition, pets, and add-ons.
+          For recurring customers, we apply a frequency discount because the home stays in maintenance mode.
+        </p>
+        <p style="margin-top:12px;">
+          Want the most accurate number? Send bedrooms/baths, approximate sq ft, and preferred day/time.
+        </p>
+        <div class="cta">
+          <a class="btn-ghost" href="reviews.html">Read Reviews</a>
+          <a class="btn" href="mailto:info@clearlinepdx.com?subject=Cleaning%20Quote%20Request">Email Quote</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="container">
+    <h2>Why ClearlinePDX</h2>
+    <p class="subtitle">No fluff. Just consistent, professional service.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Professional & Respectful</h3>
+        <p>Careful around surfaces. We treat your home like it’s ours.</p>
+      </div>
+      <div class="card">
+        <h3>Transparent Pricing</h3>
+        <p>Clear expectations upfront. No surprise add-ons after the job.</p>
+      </div>
+      <div class="card">
+        <h3>Eco-Friendly Options</h3>
+        <p>Safe products available for families, kids, and pets.</p>
+      </div>
+      <div class="card">
+        <h3>Local Portland Team</h3>
+        <p>Not a gig crew. Accountability and consistency matter.</p>
       </div>
     </div>
   </section>
 
   <!-- SERVICES -->
-  <section id="services">
-    <div class="container">
-      <h2>Our Services</h2>
-      <p class="subtext">Pick what you need. We handle the rest.</p>
+  <section id="services" class="container">
+    <h2>Our Services</h2>
+    <p class="subtitle">Pick what you need. We handle the rest.</p>
 
-      <div class="grid">
-        <div class="card">
-          <h3>Standard Cleaning</h3>
-          <p>Weekly / bi-weekly / monthly maintenance cleaning for homes and apartments.</p>
-        </div>
-        <div class="card">
-          <h3>Deep Cleaning</h3>
-          <p>Detailed reset: baseboards, buildup areas, and the spots most people skip.</p>
-        </div>
-        <div class="card">
-          <h3>Move-In / Move-Out</h3>
-          <p>Perfect for rentals, landlords, and real estate turnover — ready-to-show clean.</p>
-        </div>
-        <div class="card">
-          <h3>Office & Commercial</h3>
-          <p>Small offices and professional spaces in Portland — consistent and discreet.</p>
-        </div>
+    <div class="grid">
+      <div class="card">
+        <h3>Standard Cleaning</h3>
+        <p>Weekly / bi-weekly / monthly maintenance for homes and apartments.</p>
+      </div>
+      <div class="card">
+        <h3>Deep Cleaning</h3>
+        <p>Detailed reset: kitchens, bathrooms, buildup, and baseboards.</p>
+      </div>
+      <div class="card">
+        <h3>Move-In / Move-Out</h3>
+        <p>Perfect for rentals, landlords, and real estate turnover.</p>
+      </div>
+      <div class="card">
+        <h3>Office & Commercial</h3>
+        <p>Small offices and professional spaces — discreet and consistent.</p>
       </div>
     </div>
   </section>
 
   <!-- HOW IT WORKS -->
-  <section>
-    <div class="container">
-      <h2>How It Works</h2>
+  <section class="container">
+    <h2>How It Works</h2>
+    <p class="subtitle">Simple. Predictable. No headaches.</p>
 
-      <div class="grid">
-        <div class="card">
-          <h3>1) Estimate</h3>
-          <p>Use the calculator or message us for a custom quote.</p>
-        </div>
-        <div class="card">
-          <h3>2) Schedule</h3>
-          <p>Pick a time. We confirm details quickly.</p>
-        </div>
-        <div class="card">
-          <h3>3) Clean</h3>
-          <p>We show up and deliver professional results. You relax.</p>
-        </div>
+    <div class="steps">
+      <div class="step">
+        <span>1) Estimate</span>
+        <p>Use the calculator or message us for a quick quote.</p>
       </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section>
-    <div class="container">
-      <div class="cta">
-        <div>
-          <div style="font-weight:900; font-size:18px;">Want a cleaner home this week?</div>
-          <div class="subtext" style="margin:4px 0 0; text-align:left; max-width:none;">Call or request a quick estimate. We reply fast.</div>
-        </div>
-        <div class="actions" style="margin-top:0;">
-          <a class="btn" href="tel:+15035555555">Call Now</a>
-          <a class="btn-ghost" href="reviews.html">Read Reviews</a>
-        </div>
+      <div class="step">
+        <span>2) Schedule</span>
+        <p>Pick a time. We confirm details quickly and show up on time.</p>
+      </div>
+      <div class="step">
+        <span>3) Clean</span>
+        <p>We deliver professional results. You relax.</p>
       </div>
     </div>
   </section>
 
   <!-- CONTACT -->
-  <section id="contact">
-    <div class="container">
-      <h2>Contact</h2>
-      <p class="subtext">Send bedrooms/bathrooms, cleaning type, and preferred day/time.</p>
+  <section id="contact" class="container">
+    <h2>Contact</h2>
+    <p class="subtitle">Send bedrooms/baths, cleaning type, sq ft, and preferred day/time.</p>
 
-      <div class="grid">
-        <div class="card">
-          <h3>Email</h3>
-          <p><a href="mailto:info@clearlinepdx.com">info@clearlinepdx.com</a></p>
-          <p style="margin-top:8px; color:var(--muted); font-size:13px;">We typically respond the same day.</p>
-        </div>
+    <div class="grid">
+      <div class="card">
+        <h3>Email</h3>
+        <p><a href="mailto:info@clearlinepdx.com">info@clearlinepdx.com</a></p>
+        <p style="margin-top:10px; font-size:13px;">We typically respond the same day.</p>
+      </div>
 
-        <div class="card">
-          <h3>Phone</h3>
-          <p><a href="tel:+15035555555">(503) 555-5555</a></p>
-          <p style="margin-top:8px; color:var(--muted); font-size:13px;">Mon–Sat 8:00 AM – 6:00 PM</p>
-        </div>
+      <div class="card">
+        <h3>Phone</h3>
+        <p><a href="tel:+15035555555">(503) 555-5555</a></p>
+        <p style="margin-top:10px; font-size:13px;">Mon–Sat 8:00 AM – 6:00 PM</p>
+      </div>
 
-        <div class="card">
-          <h3>Service Area</h3>
-          <p>Portland and nearby neighborhoods.</p>
-          <p style="margin-top:8px; color:var(--muted); font-size:13px;">Ask if you’re outside the city.</p>
-        </div>
+      <div class="card">
+        <h3>Service Area</h3>
+        <p>Portland + nearby neighborhoods.</p>
+        <p style="margin-top:10px; font-size:13px;">Ask if you’re outside the city.</p>
       </div>
     </div>
   </section>
@@ -539,28 +616,182 @@
   </footer>
 
   <script>
-    const beds = document.getElementById('beds');
-    const baths = document.getElementById('baths');
-    const type = document.getElementById('type');
-    const priceEl = document.getElementById('price');
+    // ===== Base prices from your collected market averages (means) =====
+    // Standard means:
+    // Studio 103, 1/1 128, 2/1 160, 2/2 183, 3 (1–2 bath) 213, 4 (2+ bath) 290
+    // Deep means: 1:195, 2:240, 3:320, 4:420
+    // Move means: 1:240, 2:310, 3:400, 4:525
+    const base = {
+      standard: { studio: 103, "1": 128, "2": 160, "3": 213, "4": 290 },
+      deep:     { studio: 195, "1": 195, "2": 240, "3": 320, "4": 420 }, // studio approximated as 1 bed deep
+      move:     { studio: 240, "1": 240, "2": 310, "3": 400, "4": 525 }  // studio approximated as 1 bed move
+    };
 
-    function calculate() {
-      const base = 90;
-      const bedPrice = Number(beds.value) * 35;
-      const bathPrice = Number(baths.value) * 28;
-      const multiplier = Number(type.value);
+    // Included baths per typical packages
+    const includedBaths = {
+      studio: 1,
+      "1": 1,
+      "2": 1,  // 2-bed base assumes 1 bath; extra bath adds cost
+      "3": 2,  // 3-bed: 1–2 bath average
+      "4": 2   // 4-bed: 2+ bath baseline
+    };
 
-      const total = Math.round((base + bedPrice + bathPrice) * multiplier);
-      priceEl.textContent = `Estimated Price: $${total}`;
+    // Extra bath adders (per bath beyond included)
+    const extraBathAdd = {
+      standard: 25,
+      deep: 35,
+      move: 45
+    };
+
+    // Frequency discounts (recurring maintenance)
+    const freqMultiplier = {
+      onetime: 1.00,
+      monthly: 1.00,
+      biweekly: 0.92,
+      weekly: 0.88
+    };
+
+    // Condition multipliers
+    const conditionMultiplier = {
+      light: 0.92,
+      normal: 1.00,
+      heavy: 1.18
+    };
+
+    // Baseline sq ft by bedroom count for adjustments
+    const baselineSqft = {
+      studio: 500,
+      "1": 850,
+      "2": 1200,
+      "3": 1700,
+      "4": 2300
+    };
+
+    // Add $ per 250 sq ft above baseline (different by type)
+    const sqftStep = 250;
+    const sqftAddPerStep = {
+      standard: 10,
+      deep: 14,
+      move: 16
+    };
+
+    // Pets adders (hair/detail time)
+    const petAdd = {
+      standard: [0, 10, 18, 25], // index 0..3
+      deep:     [0, 12, 22, 30],
+      move:     [0, 12, 22, 30]
+    };
+
+    // Add-ons
+    const addOns = [
+      { id: "addonFridge",  price: 25 },
+      { id: "addonOven",    price: 25 },
+      { id: "addonCabinets",price: 35 },
+      { id: "addonWindows", price: 40 },
+      { id: "addonBlinds",  price: 25 },
+      { id: "addonLaundry", price: 15 }
+    ];
+
+    // Elements
+    const elType = document.getElementById("cleanType");
+    const elFreq = document.getElementById("frequency");
+    const elBeds = document.getElementById("bedrooms");
+    const elBath = document.getElementById("bathrooms");
+    const elSqft = document.getElementById("sqft");
+    const elSqftLabel = document.getElementById("sqftLabel");
+    const elCond = document.getElementById("condition");
+    const elPets = document.getElementById("pets");
+    const priceOut = document.getElementById("priceOut");
+    const hintOut = document.getElementById("hintOut");
+
+    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+    function calcAddOns() {
+      let sum = 0;
+      for (const a of addOns) {
+        const box = document.getElementById(a.id);
+        if (box && box.checked) sum += a.price;
+      }
+      return sum;
     }
 
-    beds.addEventListener('change', calculate);
-    baths.addEventListener('change', calculate);
-    type.addEventListener('change', calculate);
-    calculate();
-  </script>
+    function calcSqftAdj(type, beds, sqft) {
+      const baseSq = baselineSqft[beds] ?? 1000;
+      const diff = sqft - baseSq;
 
+      if (diff <= 0) return 0;
+
+      const steps = Math.ceil(diff / sqftStep);
+      return steps * (sqftAddPerStep[type] ?? 10);
+    }
+
+    function calcBathAdj(type, beds, baths) {
+      const included = includedBaths[beds] ?? 1;
+      const extra = Math.max(0, baths - included);
+      return extra * (extraBathAdd[type] ?? 25);
+    }
+
+    function estimate() {
+      const type = elType.value;
+      const freq = elFreq.value;
+      const beds = elBeds.value;
+      const baths = parseInt(elBath.value, 10);
+      const sqft = parseInt(elSqft.value, 10);
+      const cond = elCond.value;
+      const pets = parseInt(elPets.value, 10);
+
+      elSqftLabel.textContent = `${sqft} sq ft`;
+
+      // Base
+      let total = (base[type][beds] ?? 0);
+
+      // Bathrooms adjustment
+      total += calcBathAdj(type, beds, baths);
+
+      // Square footage adjustment
+      total += calcSqftAdj(type, beds, sqft);
+
+      // Pets adjustment (cap at 3+)
+      const petIndex = clamp(pets, 0, 3);
+      total += (petAdd[type] ? petAdd[type][petIndex] : 0);
+
+      // Add-ons
+      total += calcAddOns();
+
+      // Condition & frequency multipliers
+      total *= (conditionMultiplier[cond] ?? 1.0);
+      total *= (freqMultiplier[freq] ?? 1.0);
+
+      // Show a reasonable range (+/- 10%)
+      const min = Math.round(total * 0.90);
+      const max = Math.round(total * 1.10);
+
+      priceOut.textContent = `$${min} – $${max}`;
+
+      // Small explanation
+      const freqText = {
+        onetime: "one-time",
+        monthly: "monthly",
+        biweekly: "bi-weekly (discount applied)",
+        weekly: "weekly (discount applied)"
+      }[freq] || "one-time";
+
+      hintOut.textContent =
+        `Based on Portland averages for ${type} cleaning, adjusted for ${baths} bath(s), ${sqft} sq ft, ${cond} condition, and ${freqText}. ` +
+        `Final quote may change after a quick check-in (access, buildup, special requests).`;
+    }
+
+    // Bind events
+    const inputs = [elType, elFreq, elBeds, elBath, elSqft, elCond, elPets];
+    inputs.forEach(x => x.addEventListener("change", estimate));
+    elSqft.addEventListener("input", estimate);
+    addOns.forEach(a => {
+      const box = document.getElementById(a.id);
+      if (box) box.addEventListener("change", estimate);
+    });
+
+    estimate();
+  </script>
 </body>
 </html>
-
 
