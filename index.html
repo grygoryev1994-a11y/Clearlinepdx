@@ -8,23 +8,20 @@
 
   <style>
     :root{
-      /* New palette: soft dark slate (lighter than before), teal accent */
-      --bg: #121826;          /* lighter than #0f172a */
-      --bg2:#0f1522;
-      --panel: rgba(255,255,255,0.06);
-      --panelSolid: #141c2b;
+      /* New palette (clean aqua + soft slate) */
+      --bg:#0f172a;
+      --bg2:#0b1220;
       --text:#e8edf7;
       --muted:#b2bdd2;
+
       --border: rgba(255,255,255,0.10);
-      --shadow: 0 12px 30px rgba(0,0,0,0.25); /* softer, less PPT */
-      --radius: 18px;
+      --panel: rgba(255,255,255,0.04);
 
-      --accent:#22d3ee;       /* teal/cyan */
-      --accent2:#a78bfa;      /* violet */
-      --btnText:#07121a;
+      --accent:#22d3ee;   /* clean aqua */
+      --accent2:#a78bfa;  /* violet */
+      --btnText:#083344;
 
-      --good:#34d399;
-      --warn:#fbbf24;
+      --radius:18px;
     }
 
     *{ box-sizing:border-box; }
@@ -33,13 +30,16 @@
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(1200px 600px at 20% 10%, rgba(34,211,238,0.12), transparent 55%),
-        radial-gradient(900px 500px at 80% 10%, rgba(167,139,250,0.10), transparent 55%),
-        radial-gradient(900px 600px at 50% 90%, rgba(52,211,153,0.08), transparent 55%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
       color:var(--text);
       line-height:1.6;
+
+      /* Background image + dark overlay (readable) */
+      background:
+        linear-gradient(rgba(15,23,42,0.92), rgba(15,23,42,0.92)),
+        url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
     }
 
     a{ color:inherit; text-decoration:none; }
@@ -77,7 +77,6 @@
     .logo{
       width:34px;height:34px;border-radius:12px;
       background: linear-gradient(135deg, rgba(34,211,238,0.95), rgba(167,139,250,0.95));
-      box-shadow: 0 10px 25px rgba(0,0,0,0.20);
     }
     nav{
       display:flex;
@@ -110,7 +109,7 @@
       border:1px solid rgba(255,255,255,0.14);
       background: linear-gradient(135deg, rgba(34,211,238,0.95), rgba(167,139,250,0.85));
       color:var(--btnText);
-      box-shadow: var(--shadow);
+      transition: transform .15s ease, filter .15s ease;
     }
     .btn:hover{ transform: translateY(-1px); }
     .btn:active{ transform: translateY(0px); }
@@ -125,12 +124,13 @@
       border:1px solid var(--border);
       background: rgba(255,255,255,0.03);
       color:var(--text);
+      transition: background .15s ease;
     }
     .btn-ghost:hover{ background: rgba(255,255,255,0.06); }
 
     /* Hero */
     header.hero{
-      padding:48px 0 10px;
+      padding:44px 0 10px;
     }
     .hero-grid{
       display:grid;
@@ -176,32 +176,45 @@
       font-size:13px;
     }
 
-    /* Sections & cards (no PPT look) */
+    /* Sections */
     section{
-      padding:18px 0; /* tight spacing */
+      padding:18px 0; /* tighter spacing */
     }
-    .section-title{
+
+    /* Centered headings + centered subtext */
+    section h2{
+      text-align:center;
       margin:0 0 10px;
       font-size:22px;
       letter-spacing:-0.2px;
     }
-    .subtext{
-      margin:0 0 12px;
+    section .subtext{
+      text-align:center;
+      max-width:640px;
+      margin:0 auto 18px;
       color:var(--muted);
       font-size:14px;
     }
+
     .grid{
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap:12px; /* tighter than before */
+      gap:12px;
     }
 
+    /* Less "PowerPoint": softer, border-based, minimal shadow */
     .card{
+      background: var(--panel);
+      backdrop-filter: blur(6px);
       border-radius: var(--radius);
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.04);
-      backdrop-filter: blur(8px);
-      padding:16px;
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: none;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.06);
     }
     .card h3{
       margin:0 0 6px;
@@ -227,8 +240,12 @@
       margin:0 0 6px;
       font-size:18px;
       letter-spacing:-0.2px;
+      text-align:center;
     }
-    .calc .subtext{ margin-bottom:10px; }
+    .calc .subtext{
+      margin:0 auto 10px;
+      text-align:center;
+    }
     .calc-grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -282,9 +299,9 @@
       justify-content:space-between;
       gap:12px;
       flex-wrap:wrap;
+      backdrop-filter: blur(8px);
     }
 
-    /* Footer */
     footer{
       padding:26px 0 30px;
       color:var(--muted);
@@ -292,9 +309,10 @@
       font-size:14px;
       border-top:1px solid var(--border);
       margin-top:8px;
+      background: rgba(10,14,22,0.35);
+      backdrop-filter: blur(8px);
     }
 
-    /* responsive */
     @media (max-width: 860px){
       .hero-grid{ grid-template-columns:1fr; }
       h1{ font-size:36px; }
@@ -333,7 +351,7 @@
       <div class="hero-grid">
         <div class="hero-card">
           <h1>Professional Cleaning in Portland, OR</h1>
-          <p class="lead">Clear pricing, consistent quality, and a team that actually shows up on time.</p>
+          <p class="lead">Clean pricing, consistent quality, and a team that actually shows up on time.</p>
 
           <div class="actions" style="justify-content:flex-start;">
             <a class="btn" href="#contact">Get a Free Estimate</a>
@@ -399,7 +417,7 @@
   <!-- WHY -->
   <section>
     <div class="container">
-      <h2 class="section-title">Why ClearlinePDX</h2>
+      <h2>Why ClearlinePDX</h2>
       <p class="subtext">No fluff. Just clean homes and reliable service.</p>
 
       <div class="grid">
@@ -426,7 +444,7 @@
   <!-- SERVICES -->
   <section id="services">
     <div class="container">
-      <h2 class="section-title">Our Services</h2>
+      <h2>Our Services</h2>
       <p class="subtext">Pick what you need. We handle the rest.</p>
 
       <div class="grid">
@@ -453,7 +471,8 @@
   <!-- HOW IT WORKS -->
   <section>
     <div class="container">
-      <h2 class="section-title">How It Works</h2>
+      <h2>How It Works</h2>
+
       <div class="grid">
         <div class="card">
           <h3>1) Estimate</h3>
@@ -471,13 +490,13 @@
     </div>
   </section>
 
-  <!-- CTA STRIP -->
+  <!-- CTA -->
   <section>
     <div class="container">
       <div class="cta">
         <div>
           <div style="font-weight:900; font-size:18px;">Want a cleaner home this week?</div>
-          <div class="subtext" style="margin:4px 0 0;">Call or request a quick estimate. We reply fast.</div>
+          <div class="subtext" style="margin:4px 0 0; text-align:left; max-width:none;">Call or request a quick estimate. We reply fast.</div>
         </div>
         <div class="actions" style="margin-top:0;">
           <a class="btn" href="tel:+15035555555">Call Now</a>
@@ -490,24 +509,26 @@
   <!-- CONTACT -->
   <section id="contact">
     <div class="container">
-      <h2 class="section-title">Contact</h2>
+      <h2>Contact</h2>
       <p class="subtext">Send bedrooms/bathrooms, cleaning type, and preferred day/time.</p>
 
       <div class="grid">
         <div class="card">
           <h3>Email</h3>
           <p><a href="mailto:info@clearlinepdx.com">info@clearlinepdx.com</a></p>
-          <p style="margin-top:8px;" class="subtext">We typically respond the same day.</p>
+          <p style="margin-top:8px; color:var(--muted); font-size:13px;">We typically respond the same day.</p>
         </div>
+
         <div class="card">
           <h3>Phone</h3>
           <p><a href="tel:+15035555555">(503) 555-5555</a></p>
-          <p style="margin-top:8px;" class="subtext">Mon–Sat 8:00 AM – 6:00 PM</p>
+          <p style="margin-top:8px; color:var(--muted); font-size:13px;">Mon–Sat 8:00 AM – 6:00 PM</p>
         </div>
+
         <div class="card">
           <h3>Service Area</h3>
           <p>Portland and nearby neighborhoods.</p>
-          <p style="margin-top:8px;" class="subtext">Ask if you’re outside the city.</p>
+          <p style="margin-top:8px; color:var(--muted); font-size:13px;">Ask if you’re outside the city.</p>
         </div>
       </div>
     </div>
@@ -541,6 +562,5 @@
 
 </body>
 </html>
-
 
 
