@@ -8,7 +8,6 @@
 
   <style>
     :root {
-      --bg-main: #f3f7f6;
       --bg-grad1:#eef5f3;
       --bg-grad2:#f9fbfa;
       --panel: rgba(255,255,255,0.86);
@@ -35,6 +34,12 @@
     a { color: inherit; text-decoration: none; }
     a:hover { opacity: 0.92; }
 
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
     /* NAV */
     .topbar {
       position: sticky;
@@ -43,11 +48,6 @@
       backdrop-filter: blur(10px);
       background: rgba(243, 247, 246, 0.75);
       border-bottom: 1px solid var(--border);
-    }
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 20px;
     }
     .topbar-inner {
       display: flex;
@@ -64,6 +64,7 @@
       letter-spacing: 0.2px;
     }
     .brand svg { width: 34px; height: 34px; }
+
     nav {
       display: flex;
       align-items: center;
@@ -82,6 +83,7 @@
       border-color: var(--border);
       background: rgba(255,255,255,0.6);
     }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -92,6 +94,7 @@
       border: 1px solid rgba(0,0,0,0.06);
       background: linear-gradient(135deg, rgba(79,166,160,0.95), rgba(79,166,160,0.78));
       color: #0b2a27;
+      cursor: pointer;
     }
     .btn-ghost {
       display: inline-flex;
@@ -103,6 +106,7 @@
       border: 1px solid var(--border);
       background: rgba(255,255,255,0.6);
       color: var(--text);
+      cursor: pointer;
     }
 
     /* HERO */
@@ -154,9 +158,7 @@
       font-size: 13px;
     }
 
-    section {
-      margin: 46px auto;
-    }
+    section { margin: 46px auto; }
     section h2 {
       text-align: center;
       font-size: 32px;
@@ -204,15 +206,8 @@
       box-shadow: var(--shadow);
     }
 
-    .calc h2 {
-      margin: 0 0 6px;
-      font-size: 26px;
-      text-align: left;
-    }
-    .calc .subtitle {
-      text-align: left;
-      margin: 0 0 16px;
-    }
+    .calc h2 { margin: 0 0 6px; font-size: 26px; text-align: left; }
+    .calc .subtitle { text-align: left; margin: 0 0 16px; }
 
     .form-grid {
       display: grid;
@@ -228,7 +223,7 @@
       color: rgba(31,45,43,0.85);
       margin-bottom: 6px;
     }
-    select, input[type="number"], input[type="range"] {
+    select, input[type="number"], input[type="range"], input[type="text"], input[type="email"], textarea {
       width: 100%;
       padding: 10px 12px;
       border-radius: 14px;
@@ -238,6 +233,8 @@
       outline: none;
       font-size: 14px;
     }
+    textarea { min-height: 96px; resize: vertical; }
+
     .range-line {
       display:flex;
       align-items:center;
@@ -337,22 +334,97 @@
     }
     footer a { color: var(--accent-dark); font-weight: 700; }
 
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 24, 22, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 100;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      width: 100%;
+      max-width: 720px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+      padding: 18px;
+      backdrop-filter: blur(10px);
+    }
+    .modal-head {
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 8px 6px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-title {
+      font-weight: 900;
+      letter-spacing: -0.2px;
+      font-size: 18px;
+      margin: 0;
+    }
+    .modal-sub {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .close {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.75);
+      border-radius: 12px;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .modal-body { padding: 14px 6px 6px; }
+    .modal-actions {
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
     @media (max-width: 880px) {
       .calc-wrap { grid-template-columns: 1fr; }
       .hero h1 { font-size: 36px; }
       .form-grid { grid-template-columns: 1fr; }
       .addons { grid-template-columns: 1fr; }
+      .modal-actions { justify-content: stretch; }
+      .modal-actions .btn, .modal-actions .btn-ghost { width: 100%; }
     }
   </style>
 </head>
 
 <body>
+  <!-- CONFIG -->
+  <script>
+    // Replace these:
+    const COMPANY_EMAIL = "info@clearlinepdx.com";
+    const PHONE_NUMBER = "+15035555555"; // E.164 format for tel:
+  </script>
+
   <!-- NAV -->
   <div class="topbar">
     <div class="container">
       <div class="topbar-inner">
         <div class="brand">
-          <!-- Logo (Option 4 style: house + broom) -->
           <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
             <path d="M10 28L32 10L54 28V52H38V38H26V52H10V28Z" stroke="#4fa6a0" stroke-width="3" stroke-linejoin="round"/>
             <path d="M44 24L54 44" stroke="#4fa6a0" stroke-width="3" stroke-linecap="round"/>
@@ -366,7 +438,7 @@
           <a class="navlink" href="reviews.html">Reviews</a>
           <a class="navlink" href="#services">Services</a>
           <a class="navlink" href="#contact">Contact</a>
-          <a class="btn-ghost" href="tel:+15035555555">Call</a>
+          <a class="btn-ghost" id="navCall" href="#">Call</a>
         </nav>
       </div>
     </div>
@@ -382,12 +454,11 @@
       </p>
 
       <div class="hero-actions">
-        <a class="btn" href="#estimate">Get an Estimate</a>
-        <a class="btn-ghost" href="reviews.html">See Reviews</a>
+        <button class="btn" id="openQuoteTop">Book / Get Quote</button>
+        <a class="btn-ghost" id="callTop" href="#">Call</a>
       </div>
 
       <div class="badges">
-        <span class="badge">Licensed & insured (recommended)</span>
         <span class="badge">Eco-friendly options</span>
         <span class="badge">Reliable scheduling</span>
         <span class="badge">Local Portland team</span>
@@ -492,49 +563,23 @@
         </div>
 
         <div class="cta">
-          <a class="btn" href="#contact">Book / Get Quote</a>
-          <a class="btn-ghost" href="tel:+15035555555">Call Now</a>
+          <button class="btn" id="openQuoteFromCalc">Book / Get Quote</button>
+          <a class="btn-ghost" id="callFromCalc" href="#">Call</a>
         </div>
       </div>
 
       <div class="mini">
-        <h3>How this estimate works</h3>
+        <h3>Fast quotes, no games</h3>
         <p>
-          We start from average Portland pricing and adjust for bathrooms, square footage, condition, pets, and add-ons.
-          For recurring customers, we apply a frequency discount because the home stays in maintenance mode.
+          Use the estimate above, then send your details. We confirm quickly and give you a final quote.
         </p>
         <p style="margin-top:12px;">
-          Want the most accurate number? Send bedrooms/baths, approximate sq ft, and preferred day/time.
+          Tip: if you want the best price, choose bi-weekly or weekly maintenance.
         </p>
         <div class="cta">
           <a class="btn-ghost" href="reviews.html">Read Reviews</a>
-          <a class="btn" href="mailto:info@clearlinepdx.com?subject=Cleaning%20Quote%20Request">Email Quote</a>
+          <button class="btn" id="openQuoteSide">Request Quote</button>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WHY -->
-  <section class="container">
-    <h2>Why ClearlinePDX</h2>
-    <p class="subtitle">No fluff. Just consistent, professional service.</p>
-
-    <div class="grid">
-      <div class="card">
-        <h3>Professional & Respectful</h3>
-        <p>Careful around surfaces. We treat your home like it’s ours.</p>
-      </div>
-      <div class="card">
-        <h3>Transparent Pricing</h3>
-        <p>Clear expectations upfront. No surprise add-ons after the job.</p>
-      </div>
-      <div class="card">
-        <h3>Eco-Friendly Options</h3>
-        <p>Safe products available for families, kids, and pets.</p>
-      </div>
-      <div class="card">
-        <h3>Local Portland Team</h3>
-        <p>Not a gig crew. Accountability and consistency matter.</p>
       </div>
     </div>
   </section>
@@ -572,15 +617,15 @@
     <div class="steps">
       <div class="step">
         <span>1) Estimate</span>
-        <p>Use the calculator or message us for a quick quote.</p>
+        <p>Use the calculator to get a ballpark range.</p>
       </div>
       <div class="step">
-        <span>2) Schedule</span>
-        <p>Pick a time. We confirm details quickly and show up on time.</p>
+        <span>2) Request a Quote</span>
+        <p>Send details via the quote form (takes 30 seconds).</p>
       </div>
       <div class="step">
         <span>3) Clean</span>
-        <p>We deliver professional results. You relax.</p>
+        <p>We show up on time and deliver professional results.</p>
       </div>
     </div>
   </section>
@@ -593,20 +638,20 @@
     <div class="grid">
       <div class="card">
         <h3>Email</h3>
-        <p><a href="mailto:info@clearlinepdx.com">info@clearlinepdx.com</a></p>
-        <p style="margin-top:10px; font-size:13px;">We typically respond the same day.</p>
+        <p><a id="emailLink" href="#">info@clearlinepdx.com</a></p>
+        <p style="margin-top:10px; font-size:13px; color:var(--muted);">We typically respond the same day.</p>
       </div>
 
       <div class="card">
         <h3>Phone</h3>
-        <p><a href="tel:+15035555555">(503) 555-5555</a></p>
-        <p style="margin-top:10px; font-size:13px;">Mon–Sat 8:00 AM – 6:00 PM</p>
+        <p><a id="phoneLink" href="#">(503) 555-5555</a></p>
+        <p style="margin-top:10px; font-size:13px; color:var(--muted);">Mon–Sat 8:00 AM – 6:00 PM</p>
       </div>
 
       <div class="card">
         <h3>Service Area</h3>
         <p>Portland + nearby neighborhoods.</p>
-        <p style="margin-top:10px; font-size:13px;">Ask if you’re outside the city.</p>
+        <p style="margin-top:10px; font-size:13px; color:var(--muted);">Ask if you’re outside the city.</p>
       </div>
     </div>
   </section>
@@ -615,81 +660,76 @@
     © 2025 ClearlinePDX · Portland, OR · <a href="reviews.html">Reviews</a>
   </footer>
 
+  <!-- QUOTE MODAL -->
+  <div class="modal-backdrop" id="quoteModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="quoteTitle">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title" id="quoteTitle">Request a Quote</div>
+          <div class="modal-sub">Fill this out and your email will open with a pre-written message. Send it to us.</div>
+        </div>
+        <button class="close" id="closeModal" aria-label="Close">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-grid">
+          <div>
+            <label for="qName">Name</label>
+            <input id="qName" type="text" placeholder="Your name" />
+          </div>
+          <div>
+            <label for="qPhone">Phone</label>
+            <input id="qPhone" type="text" placeholder="(503) ..." />
+          </div>
+          <div class="row-full">
+            <label for="qEmail">Your Email (optional)</label>
+            <input id="qEmail" type="email" placeholder="you@email.com" />
+          </div>
+          <div class="row-full">
+            <label for="qMessage">Extra details (optional)</label>
+            <textarea id="qMessage" placeholder="Preferred day/time, parking/access notes, special requests..."></textarea>
+          </div>
+        </div>
+
+        <div class="small-note">
+          Tip: If you don’t have a mail app installed, use Gmail in a browser — it will still work.
+        </div>
+
+        <div class="modal-actions">
+          <a class="btn-ghost" id="modalCall" href="#">Call Instead</a>
+          <button class="btn" id="sendEmail">Open Email to Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // ===== Base prices from your collected market averages (means) =====
-    // Standard means:
-    // Studio 103, 1/1 128, 2/1 160, 2/2 183, 3 (1–2 bath) 213, 4 (2+ bath) 290
-    // Deep means: 1:195, 2:240, 3:320, 4:420
-    // Move means: 1:240, 2:310, 3:400, 4:525
+    // ===== Market averages base =====
     const base = {
       standard: { studio: 103, "1": 128, "2": 160, "3": 213, "4": 290 },
-      deep:     { studio: 195, "1": 195, "2": 240, "3": 320, "4": 420 }, // studio approximated as 1 bed deep
-      move:     { studio: 240, "1": 240, "2": 310, "3": 400, "4": 525 }  // studio approximated as 1 bed move
+      deep:     { studio: 195, "1": 195, "2": 240, "3": 320, "4": 420 },
+      move:     { studio: 240, "1": 240, "2": 310, "3": 400, "4": 525 }
     };
 
-    // Included baths per typical packages
-    const includedBaths = {
-      studio: 1,
-      "1": 1,
-      "2": 1,  // 2-bed base assumes 1 bath; extra bath adds cost
-      "3": 2,  // 3-bed: 1–2 bath average
-      "4": 2   // 4-bed: 2+ bath baseline
-    };
-
-    // Extra bath adders (per bath beyond included)
-    const extraBathAdd = {
-      standard: 25,
-      deep: 35,
-      move: 45
-    };
-
-    // Frequency discounts (recurring maintenance)
-    const freqMultiplier = {
-      onetime: 1.00,
-      monthly: 1.00,
-      biweekly: 0.92,
-      weekly: 0.88
-    };
-
-    // Condition multipliers
-    const conditionMultiplier = {
-      light: 0.92,
-      normal: 1.00,
-      heavy: 1.18
-    };
-
-    // Baseline sq ft by bedroom count for adjustments
-    const baselineSqft = {
-      studio: 500,
-      "1": 850,
-      "2": 1200,
-      "3": 1700,
-      "4": 2300
-    };
-
-    // Add $ per 250 sq ft above baseline (different by type)
+    const includedBaths = { studio: 1, "1": 1, "2": 1, "3": 2, "4": 2 };
+    const extraBathAdd = { standard: 25, deep: 35, move: 45 };
+    const freqMultiplier = { onetime: 1.00, monthly: 1.00, biweekly: 0.92, weekly: 0.88 };
+    const conditionMultiplier = { light: 0.92, normal: 1.00, heavy: 1.18 };
+    const baselineSqft = { studio: 500, "1": 850, "2": 1200, "3": 1700, "4": 2300 };
     const sqftStep = 250;
-    const sqftAddPerStep = {
-      standard: 10,
-      deep: 14,
-      move: 16
-    };
-
-    // Pets adders (hair/detail time)
+    const sqftAddPerStep = { standard: 10, deep: 14, move: 16 };
     const petAdd = {
-      standard: [0, 10, 18, 25], // index 0..3
+      standard: [0, 10, 18, 25],
       deep:     [0, 12, 22, 30],
       move:     [0, 12, 22, 30]
     };
-
-    // Add-ons
     const addOns = [
-      { id: "addonFridge",  price: 25 },
-      { id: "addonOven",    price: 25 },
-      { id: "addonCabinets",price: 35 },
-      { id: "addonWindows", price: 40 },
-      { id: "addonBlinds",  price: 25 },
-      { id: "addonLaundry", price: 15 }
+      { id: "addonFridge",  price: 25, label: "Inside fridge" },
+      { id: "addonOven",    price: 25, label: "Inside oven" },
+      { id: "addonCabinets",price: 35, label: "Inside cabinets" },
+      { id: "addonWindows", price: 40, label: "Interior windows" },
+      { id: "addonBlinds",  price: 25, label: "Blinds/detail dust" },
+      { id: "addonLaundry", price: 15, label: "Laundry/folding" }
     ];
 
     // Elements
@@ -715,12 +755,19 @@
       return sum;
     }
 
+    function listSelectedAddOns() {
+      const chosen = [];
+      for (const a of addOns) {
+        const box = document.getElementById(a.id);
+        if (box && box.checked) chosen.push(a.label);
+      }
+      return chosen;
+    }
+
     function calcSqftAdj(type, beds, sqft) {
       const baseSq = baselineSqft[beds] ?? 1000;
       const diff = sqft - baseSq;
-
       if (diff <= 0) return 0;
-
       const steps = Math.ceil(diff / sqftStep);
       return steps * (sqftAddPerStep[type] ?? 10);
     }
@@ -730,6 +777,9 @@
       const extra = Math.max(0, baths - included);
       return extra * (extraBathAdd[type] ?? 25);
     }
+
+    // Keeps last estimate for email message
+    let lastEstimate = { min: 0, max: 0 };
 
     function estimate() {
       const type = elType.value;
@@ -742,33 +792,21 @@
 
       elSqftLabel.textContent = `${sqft} sq ft`;
 
-      // Base
       let total = (base[type][beds] ?? 0);
-
-      // Bathrooms adjustment
       total += calcBathAdj(type, beds, baths);
-
-      // Square footage adjustment
       total += calcSqftAdj(type, beds, sqft);
-
-      // Pets adjustment (cap at 3+)
-      const petIndex = clamp(pets, 0, 3);
-      total += (petAdd[type] ? petAdd[type][petIndex] : 0);
-
-      // Add-ons
+      total += (petAdd[type] ? petAdd[type][clamp(pets,0,3)] : 0);
       total += calcAddOns();
-
-      // Condition & frequency multipliers
       total *= (conditionMultiplier[cond] ?? 1.0);
       total *= (freqMultiplier[freq] ?? 1.0);
 
-      // Show a reasonable range (+/- 10%)
       const min = Math.round(total * 0.90);
       const max = Math.round(total * 1.10);
 
+      lastEstimate = { min, max };
+
       priceOut.textContent = `$${min} – $${max}`;
 
-      // Small explanation
       const freqText = {
         onetime: "one-time",
         monthly: "monthly",
@@ -776,12 +814,17 @@
         weekly: "weekly (discount applied)"
       }[freq] || "one-time";
 
+      const typeText = {
+        standard: "Standard",
+        deep: "Deep",
+        move: "Move-In/Move-Out"
+      }[type] || "Standard";
+
       hintOut.textContent =
-        `Based on Portland averages for ${type} cleaning, adjusted for ${baths} bath(s), ${sqft} sq ft, ${cond} condition, and ${freqText}. ` +
-        `Final quote may change after a quick check-in (access, buildup, special requests).`;
+        `Based on Portland averages for ${typeText} cleaning, adjusted for ${baths} bath(s), ${sqft} sq ft, ${cond} condition, and ${freqText}.`;
     }
 
-    // Bind events
+    // Bind events for estimate
     const inputs = [elType, elFreq, elBeds, elBath, elSqft, elCond, elPets];
     inputs.forEach(x => x.addEventListener("change", estimate));
     elSqft.addEventListener("input", estimate);
@@ -789,9 +832,93 @@
       const box = document.getElementById(a.id);
       if (box) box.addEventListener("change", estimate);
     });
-
     estimate();
+
+    // ===== Contact links =====
+    const phoneHref = `tel:${PHONE_NUMBER}`;
+    document.getElementById("navCall").href = phoneHref;
+    document.getElementById("callTop").href = phoneHref;
+    document.getElementById("callFromCalc").href = phoneHref;
+    document.getElementById("phoneLink").href = phoneHref;
+    document.getElementById("phoneLink").textContent = PHONE_NUMBER.replace("+1", "(503) ") || PHONE_NUMBER;
+
+    document.getElementById("emailLink").href = `mailto:${COMPANY_EMAIL}`;
+    document.getElementById("emailLink").textContent = COMPANY_EMAIL;
+
+    // ===== Modal logic =====
+    const modal = document.getElementById("quoteModal");
+    const openers = ["openQuoteTop", "openQuoteFromCalc", "openQuoteSide"].map(id => document.getElementById(id));
+    const closer = document.getElementById("closeModal");
+    const modalCall = document.getElementById("modalCall");
+    modalCall.href = phoneHref;
+
+    function openModal(){
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden","false");
+      // prefill message placeholder with estimate
+      setTimeout(() => document.getElementById("qName").focus(), 0);
+    }
+    function closeModal(){
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden","true");
+    }
+    openers.forEach(btn => btn && btn.addEventListener("click", openModal));
+    closer.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+    // ===== Send Email (mailto) =====
+    document.getElementById("sendEmail").addEventListener("click", () => {
+      const name = document.getElementById("qName").value.trim();
+      const phone = document.getElementById("qPhone").value.trim();
+      const fromEmail = document.getElementById("qEmail").value.trim();
+      const extra = document.getElementById("qMessage").value.trim();
+
+      const type = elType.value;
+      const freq = elFreq.value;
+      const beds = elBeds.value;
+      const baths = elBath.value;
+      const sqft = elSqft.value;
+      const cond = elCond.value;
+      const pets = elPets.value;
+      const chosenAddOns = listSelectedAddOns();
+
+      const typeText = { standard:"Standard", deep:"Deep", move:"Move-In/Move-Out" }[type] || type;
+      const freqText = { onetime:"One-time", monthly:"Monthly", biweekly:"Bi-weekly", weekly:"Weekly" }[freq] || freq;
+      const bedsText = (beds === "studio") ? "Studio" : `${beds} Bedroom`;
+      const addOnText = chosenAddOns.length ? chosenAddOns.join(", ") : "None";
+
+      const subject = `Quote request – ${typeText} – ${bedsText} / ${baths} bath`;
+      const body =
+`Hi ClearlinePDX,
+
+I’d like a quote and scheduling options.
+
+Customer:
+- Name: ${name || "(not provided)"}
+- Phone: ${phone || "(not provided)"}
+- Email: ${fromEmail || "(not provided)"}
+
+Details:
+- Cleaning type: ${typeText}
+- Frequency: ${freqText}
+- Bedrooms: ${bedsText}
+- Bathrooms: ${baths}
+- Approx. sq ft: ${sqft}
+- Condition: ${cond}
+- Pets: ${pets}
+- Add-ons: ${addOnText}
+
+Estimated range shown on site: $${lastEstimate.min} – $${lastEstimate.max}
+
+Extra notes:
+${extra || "(none)"}
+
+Thank you!`;
+
+      const mailto = `mailto:${encodeURIComponent(COMPANY_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+    });
   </script>
 </body>
 </html>
-
