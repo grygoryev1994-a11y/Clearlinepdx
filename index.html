@@ -8,333 +8,443 @@
 
   <style>
     :root{
-      --bg:#0f172a;
-      --panel:#020617;
-      --panel2:#0b1220;
-      --text:#e5e7eb;
-      --muted:#94a3b8;
-      --accent:#22c55e;
-      --accentText:#052e16;
-      --border:#334155;
-      --shadow: 0 10px 30px rgba(0,0,0,0.45);
-      --radius:16px;
+      /* New palette: soft dark slate (lighter than before), teal accent */
+      --bg: #121826;          /* lighter than #0f172a */
+      --bg2:#0f1522;
+      --panel: rgba(255,255,255,0.06);
+      --panelSolid: #141c2b;
+      --text:#e8edf7;
+      --muted:#b2bdd2;
+      --border: rgba(255,255,255,0.10);
+      --shadow: 0 12px 30px rgba(0,0,0,0.25); /* softer, less PPT */
+      --radius: 18px;
+
+      --accent:#22d3ee;       /* teal/cyan */
+      --accent2:#a78bfa;      /* violet */
+      --btnText:#07121a;
+
+      --good:#34d399;
+      --warn:#fbbf24;
     }
 
     *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
 
     body{
       margin:0;
-      font-family: Arial, Helvetica, sans-serif;
-      background:var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(34,211,238,0.12), transparent 55%),
+        radial-gradient(900px 500px at 80% 10%, rgba(167,139,250,0.10), transparent 55%),
+        radial-gradient(900px 600px at 50% 90%, rgba(52,211,153,0.08), transparent 55%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
       color:var(--text);
       line-height:1.6;
     }
 
-    a{ color:var(--accent); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
-
-    header{
-      background:
-        linear-gradient(rgba(2,6,23,0.88), rgba(2,6,23,0.88)),
-        url("https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80");
-      background-size:cover;
-      background-position:center;
-      padding:72px 20px 56px;
-      text-align:center;
-    }
-
-    header h1{
-      margin:0 0 10px;
-      font-size:44px;
-      letter-spacing:0.5px;
-    }
-
-    header p{
-      margin:0 0 18px;
-      font-size:18px;
-      color:#cbd5f5;
-    }
+    a{ color:inherit; text-decoration:none; }
+    a:hover{ opacity:0.95; }
 
     .container{
       max-width:1100px;
       margin:0 auto;
-      padding:0 20px;
+      padding:0 18px;
     }
 
-    /* tighter spacing */
-    section{
-      padding:16px 0;
+    /* Top nav */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      backdrop-filter: blur(10px);
+      background: rgba(10,14,22,0.55);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 0;
+      gap:12px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      letter-spacing:0.2px;
+    }
+    .logo{
+      width:34px;height:34px;border-radius:12px;
+      background: linear-gradient(135deg, rgba(34,211,238,0.95), rgba(167,139,250,0.95));
+      box-shadow: 0 10px 25px rgba(0,0,0,0.20);
+    }
+    nav{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .navlink{
+      padding:8px 10px;
+      border-radius:12px;
+      color:var(--muted);
+      border:1px solid transparent;
+    }
+    .navlink:hover{
+      color:var(--text);
+      border-color:var(--border);
+      background: rgba(255,255,255,0.04);
     }
 
-    h2{
+    /* Buttons */
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:14px;
+      font-weight:800;
+      border:1px solid rgba(255,255,255,0.14);
+      background: linear-gradient(135deg, rgba(34,211,238,0.95), rgba(167,139,250,0.85));
+      color:var(--btnText);
+      box-shadow: var(--shadow);
+    }
+    .btn:hover{ transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0px); }
+
+    .btn-ghost{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 16px;
+      border-radius:14px;
+      font-weight:800;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color:var(--text);
+    }
+    .btn-ghost:hover{ background: rgba(255,255,255,0.06); }
+
+    /* Hero */
+    header.hero{
+      padding:48px 0 10px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap:16px;
+      align-items:stretch;
+    }
+
+    .hero-card{
+      border-radius: var(--radius);
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(10px);
+      padding:22px;
+    }
+
+    h1{
       margin:0 0 10px;
-      font-size:26px;
-      color:#f8fafc;
+      font-size:44px;
+      line-height:1.1;
+      letter-spacing:-0.5px;
+    }
+    .lead{
+      margin:0 0 16px;
+      color:var(--muted);
+      font-size:16px;
+    }
+    .hero-badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color:var(--muted);
+      font-size:13px;
     }
 
+    /* Sections & cards (no PPT look) */
+    section{
+      padding:18px 0; /* tight spacing */
+    }
+    .section-title{
+      margin:0 0 10px;
+      font-size:22px;
+      letter-spacing:-0.2px;
+    }
     .subtext{
       margin:0 0 12px;
       color:var(--muted);
       font-size:14px;
     }
-
     .grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-      gap:14px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap:12px; /* tighter than before */
     }
 
     .card{
-      background:var(--panel);
-      border-radius:var(--radius);
-      padding:18px;
-      box-shadow:var(--shadow);
-      border:1px solid rgba(51,65,85,0.25);
+      border-radius: var(--radius);
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px);
+      padding:16px;
     }
-
     .card h3{
       margin:0 0 6px;
-      font-size:16px;
-      color:#f8fafc;
+      font-size:15px;
+      letter-spacing:-0.1px;
     }
-
     .card p{
       margin:0;
       color:var(--muted);
       font-size:14px;
     }
 
-    .btn{
-      display:inline-block;
-      padding:12px 20px;
-      background:var(--accent);
-      color:var(--accentText);
-      font-weight:700;
-      border-radius:10px;
-      text-decoration:none;
-    }
-    .btn:hover{ filter:brightness(0.95); text-decoration:none; }
-
-    /* Calculator (top) */
-    .calculator-wrap{
-      margin-top:-34px;
-    }
-
-    .calculator{
-      background:var(--panel);
-      border-radius:18px;
-      box-shadow: 0 22px 50px rgba(0,0,0,0.55);
-      border:1px solid rgba(51,65,85,0.35);
+    /* Calculator */
+    .calc{
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(10,14,22,0.55);
+      backdrop-filter: blur(12px);
       padding:18px;
-      max-width:620px;
-      margin:0 auto;
+      height:100%;
     }
-
+    .calc h2{
+      margin:0 0 6px;
+      font-size:18px;
+      letter-spacing:-0.2px;
+    }
+    .calc .subtext{ margin-bottom:10px; }
     .calc-grid{
       display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
     }
-
-    .calculator label{
+    label{
       display:block;
       font-weight:700;
-      font-size:13px;
-      color:#e2e8f0;
+      font-size:12px;
+      color:#d8e1f4;
       margin:0 0 6px;
     }
-
-    .calculator select{
+    select{
       width:100%;
       padding:10px;
-      border-radius:10px;
-      border:1px solid var(--border);
-      background:var(--panel2);
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
       color:var(--text);
       outline:none;
     }
-
     .price{
       margin-top:12px;
       text-align:center;
-      font-size:26px;
-      font-weight:800;
-      color:var(--accent);
+      font-size:22px;
+      font-weight:900;
+      color: var(--accent);
     }
-
     .calc-note{
-      text-align:center;
       margin:8px 0 0;
-      font-size:13px;
+      text-align:center;
       color:var(--muted);
+      font-size:13px;
     }
-
-    .calc-actions{
-      margin-top:14px;
+    .actions{
+      margin-top:12px;
       display:flex;
       gap:10px;
+      flex-wrap:wrap;
       justify-content:center;
+    }
+
+    /* CTA strip */
+    .cta{
+      border-radius: var(--radius);
+      border:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(34,211,238,0.10), rgba(167,139,250,0.10));
+      padding:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
       flex-wrap:wrap;
     }
 
-    .btn-outline{
-      display:inline-block;
-      padding:12px 20px;
-      border-radius:10px;
-      border:1px solid rgba(148,163,184,0.35);
-      color:#e2e8f0;
-      text-decoration:none;
-      background:transparent;
-      font-weight:700;
-    }
-    .btn-outline:hover{ text-decoration:none; border-color:rgba(148,163,184,0.55); }
-
-    /* alternating section panels */
-    .panel{
-      background:rgba(2,6,23,0.55);
-      border-top:1px solid rgba(51,65,85,0.25);
-      border-bottom:1px solid rgba(51,65,85,0.25);
-    }
-
+    /* Footer */
     footer{
-      padding:22px 0 28px;
+      padding:26px 0 30px;
       color:var(--muted);
       text-align:center;
       font-size:14px;
+      border-top:1px solid var(--border);
+      margin-top:8px;
     }
 
-    .contact{
-      display:grid;
-      grid-template-columns:1.2fr 0.8fr;
-      gap:14px;
-      align-items:start;
-    }
-
-    .contact p{
-      margin:0;
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    @media (max-width: 720px){
-      header h1{ font-size:34px; }
+    /* responsive */
+    @media (max-width: 860px){
+      .hero-grid{ grid-template-columns:1fr; }
+      h1{ font-size:36px; }
       .calc-grid{ grid-template-columns:1fr; }
-      .contact{ grid-template-columns:1fr; }
-      .calculator{ max-width:100%; }
+      nav{ gap:6px; }
+      .navlink{ padding:7px 9px; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- HERO -->
-  <header>
+  <!-- NAV -->
+  <div class="topbar">
     <div class="container">
-      <h1>ClearlinePDX</h1>
-      <p>Professional Cleaning Services in Portland, Oregon</p>
-      <div class="calc-actions" style="margin-top:10px;">
-        <a class="btn" href="#contact">Get a Free Estimate</a>
-        <a class="btn-outline" href="tel:+15035555555">Call Now</a>
+      <div class="topbar-inner">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div>ClearlinePDX</div>
+        </div>
+
+        <nav>
+          <a class="navlink" href="index.html">Home</a>
+          <a class="navlink" href="reviews.html">Reviews</a>
+          <a class="navlink" href="#services">Services</a>
+          <a class="navlink" href="#contact">Contact</a>
+          <a class="btn-ghost" href="tel:+15035555555">Call</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-card">
+          <h1>Professional Cleaning in Portland, OR</h1>
+          <p class="lead">Clear pricing, consistent quality, and a team that actually shows up on time.</p>
+
+          <div class="actions" style="justify-content:flex-start;">
+            <a class="btn" href="#contact">Get a Free Estimate</a>
+            <a class="btn-ghost" href="reviews.html">See Reviews</a>
+          </div>
+
+          <div class="hero-badges">
+            <span class="badge">✓ Licensed & Insured</span>
+            <span class="badge">✓ Eco-friendly options</span>
+            <span class="badge">✓ Residential & Commercial</span>
+            <span class="badge">✓ Portland local</span>
+          </div>
+        </div>
+
+        <!-- CALCULATOR -->
+        <div class="calc" aria-label="Price Calculator">
+          <h2>Instant Price Estimate</h2>
+          <p class="subtext">Fast ballpark pricing in seconds.</p>
+
+          <div class="calc-grid">
+            <div>
+              <label for="beds">Bedrooms</label>
+              <select id="beds">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+                <option value="4">4</option>
+                <option value="5">5+</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="baths">Bathrooms</label>
+              <select id="baths">
+                <option value="1">1</option>
+                <option value="2" selected>2</option>
+                <option value="3">3+</option>
+              </select>
+            </div>
+
+            <div style="grid-column:1/-1;">
+              <label for="type">Cleaning Type</label>
+              <select id="type">
+                <option value="1">Regular</option>
+                <option value="1.5">Deep Cleaning</option>
+                <option value="1.7">Move-In / Move-Out</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="price" id="price">Estimated Price: $120</div>
+          <p class="calc-note">Final price may vary after on-site evaluation.</p>
+
+          <div class="actions">
+            <a class="btn" href="#contact">Book Cleaning</a>
+            <a class="btn-ghost" href="tel:+15035555555">Call Now</a>
+          </div>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- CALCULATOR (MOVED UP) -->
-  <section class="calculator-wrap">
-    <div class="container">
-      <div class="calculator">
-        <h2 style="text-align:center; margin-bottom:8px;">Instant Price Estimate</h2>
-        <p class="subtext" style="text-align:center;">Fast ballpark pricing in seconds.</p>
-
-        <div class="calc-grid">
-          <div>
-            <label for="beds">Bedrooms</label>
-            <select id="beds">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3" selected>3</option>
-              <option value="4">4</option>
-              <option value="5">5+</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="baths">Bathrooms</label>
-            <select id="baths">
-              <option value="1">1</option>
-              <option value="2" selected>2</option>
-              <option value="3">3+</option>
-            </select>
-          </div>
-
-          <div style="grid-column:1/-1;">
-            <label for="type">Cleaning Type</label>
-            <select id="type">
-              <option value="1">Regular</option>
-              <option value="1.5">Deep Cleaning</option>
-              <option value="1.7">Move-In / Move-Out</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="price" id="price">Estimated Price: $120</div>
-        <p class="calc-note">Final price may vary after on-site evaluation.</p>
-
-        <div class="calc-actions">
-          <a class="btn" href="#contact">Book Cleaning</a>
-          <a class="btn-outline" href="mailto:info@clearlinepdx.com">Email Us</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- WHY -->
   <section>
     <div class="container">
-      <h2>Why ClearlinePDX</h2>
-      <p class="subtext">Reliable service, clear pricing, and a team that shows up.</p>
+      <h2 class="section-title">Why ClearlinePDX</h2>
+      <p class="subtext">No fluff. Just clean homes and reliable service.</p>
+
       <div class="grid">
         <div class="card">
-          <h3>Licensed & Insured</h3>
-          <p>Your home or business is protected.</p>
+          <h3>Professional & Respectful</h3>
+          <p>We treat your home like it’s ours. Shoes off, careful around surfaces, no shortcuts.</p>
         </div>
         <div class="card">
           <h3>Transparent Pricing</h3>
-          <p>No weird surprises on the invoice.</p>
+          <p>You’ll know the ballpark price upfront. No surprise “extras” at checkout.</p>
         </div>
         <div class="card">
           <h3>Eco-Friendly Options</h3>
-          <p>Safe for families, pets, and surfaces.</p>
+          <p>Upon request, we use products that are safe for families and pets.</p>
         </div>
         <div class="card">
           <h3>Local Portland Team</h3>
-          <p>Professional, punctual, respectful.</p>
+          <p>We’re not a random gig crew. Consistency and accountability matters.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- SERVICES -->
-  <section class="panel">
+  <section id="services">
     <div class="container">
-      <h2>Our Services</h2>
-      <p class="subtext">Choose what you need. We’ll handle the mess.</p>
+      <h2 class="section-title">Our Services</h2>
+      <p class="subtext">Pick what you need. We handle the rest.</p>
+
       <div class="grid">
         <div class="card">
-          <h3>Standard House Cleaning</h3>
-          <p>Weekly, bi-weekly, or monthly maintenance cleaning.</p>
+          <h3>Standard Cleaning</h3>
+          <p>Weekly / bi-weekly / monthly maintenance cleaning for homes and apartments.</p>
         </div>
         <div class="card">
           <h3>Deep Cleaning</h3>
-          <p>Detailed top-to-bottom cleaning for a fresh reset.</p>
+          <p>Detailed reset: baseboards, buildup areas, and the spots most people skip.</p>
         </div>
         <div class="card">
           <h3>Move-In / Move-Out</h3>
-          <p>Perfect for renters, landlords, and real estate turnover.</p>
+          <p>Perfect for rentals, landlords, and real estate turnover — ready-to-show clean.</p>
         </div>
         <div class="card">
           <h3>Office & Commercial</h3>
-          <p>Small offices and professional spaces in Portland.</p>
+          <p>Small offices and professional spaces in Portland — consistent and discreet.</p>
         </div>
       </div>
     </div>
@@ -343,32 +453,36 @@
   <!-- HOW IT WORKS -->
   <section>
     <div class="container">
-      <h2>How It Works</h2>
+      <h2 class="section-title">How It Works</h2>
       <div class="grid">
         <div class="card">
-          <h3>1) Quick Estimate</h3>
-          <p>Use the calculator or contact us for a custom quote.</p>
+          <h3>1) Estimate</h3>
+          <p>Use the calculator or message us for a custom quote.</p>
         </div>
         <div class="card">
           <h3>2) Schedule</h3>
-          <p>Pick a time that works. We confirm details fast.</p>
+          <p>Pick a time. We confirm details quickly.</p>
         </div>
         <div class="card">
-          <h3>3) We Clean</h3>
-          <p>Professional results—so you can relax.</p>
+          <h3>3) Clean</h3>
+          <p>We show up and deliver professional results. You relax.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="panel">
-    <div class="container" style="text-align:center;">
-      <h2>Ready for a cleaner home?</h2>
-      <p class="subtext">Get a fast estimate or call today.</p>
-      <div class="calc-actions" style="margin-top:6px;">
-        <a class="btn" href="tel:+15035555555">Call Now</a>
-        <a class="btn-outline" href="#contact">Request a Quote</a>
+  <!-- CTA STRIP -->
+  <section>
+    <div class="container">
+      <div class="cta">
+        <div>
+          <div style="font-weight:900; font-size:18px;">Want a cleaner home this week?</div>
+          <div class="subtext" style="margin:4px 0 0;">Call or request a quick estimate. We reply fast.</div>
+        </div>
+        <div class="actions" style="margin-top:0;">
+          <a class="btn" href="tel:+15035555555">Call Now</a>
+          <a class="btn-ghost" href="reviews.html">Read Reviews</a>
+        </div>
       </div>
     </div>
   </section>
@@ -376,32 +490,31 @@
   <!-- CONTACT -->
   <section id="contact">
     <div class="container">
-      <h2>Contact</h2>
-      <div class="contact">
-        <div class="card">
-          <h3>Get a Free Estimate</h3>
-          <p>Tell us bedrooms/bathrooms, cleaning type, and preferred day/time. We’ll reply quickly.</p>
-          <div class="calc-actions" style="justify-content:flex-start; margin-top:12px;">
-            <a class="btn" href="mailto:info@clearlinepdx.com?subject=Estimate%20Request%20-%20ClearlinePDX">Email Us</a>
-            <a class="btn-outline" href="tel:+15035555555">Call (503) 555-5555</a>
-          </div>
-          <p class="subtext" style="margin-top:10px;">
-            Email: <a href="mailto:info@clearlinepdx.com">info@clearlinepdx.com</a><br>
-            Portland, OR · Mon–Sat 8:00 AM – 6:00 PM
-          </p>
-        </div>
+      <h2 class="section-title">Contact</h2>
+      <p class="subtext">Send bedrooms/bathrooms, cleaning type, and preferred day/time.</p>
 
+      <div class="grid">
+        <div class="card">
+          <h3>Email</h3>
+          <p><a href="mailto:info@clearlinepdx.com">info@clearlinepdx.com</a></p>
+          <p style="margin-top:8px;" class="subtext">We typically respond the same day.</p>
+        </div>
+        <div class="card">
+          <h3>Phone</h3>
+          <p><a href="tel:+15035555555">(503) 555-5555</a></p>
+          <p style="margin-top:8px;" class="subtext">Mon–Sat 8:00 AM – 6:00 PM</p>
+        </div>
         <div class="card">
           <h3>Service Area</h3>
-          <p>Portland and nearby neighborhoods. Ask if you’re outside the city—sometimes we can make it work.</p>
-          <p class="subtext" style="margin-top:10px;">Want faster booking? Call us.</p>
+          <p>Portland and nearby neighborhoods.</p>
+          <p style="margin-top:8px;" class="subtext">Ask if you’re outside the city.</p>
         </div>
       </div>
     </div>
   </section>
 
   <footer>
-    © 2025 ClearlinePDX · clearlinepdx.com
+    © 2025 ClearlinePDX · Portland, OR · <a href="reviews.html">Reviews</a>
   </footer>
 
   <script>
@@ -411,9 +524,9 @@
     const priceEl = document.getElementById('price');
 
     function calculate() {
-      const base = 80;            // base visit
-      const bedPrice = Number(beds.value) * 30;
-      const bathPrice = Number(baths.value) * 25;
+      const base = 90;
+      const bedPrice = Number(beds.value) * 35;
+      const bathPrice = Number(baths.value) * 28;
       const multiplier = Number(type.value);
 
       const total = Math.round((base + bedPrice + bathPrice) * multiplier);
@@ -428,4 +541,6 @@
 
 </body>
 </html>
+
+
 
