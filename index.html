@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClearlinePDX | Professional Cleaning Services in Portland</title>
+  <meta name="description" content="ClearlinePDX provides professional residential and commercial cleaning services in Portland, Oregon." />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(rgba(2,6,23,0.85), rgba(2,6,23,0.85)),
+        url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80');
+      background-size: cover;
+      background-position: center;
+      padding: 72px 20px 56px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 18px;
+      color: #cbd5f5;
+    }
+
+    section {
+      padding: 28px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #020617;
+      padding: 22px;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      text-align: center;
+    }
+
+    .calculator {
+      background: #020617;
+      padding: 26px;
+      border-radius: 16px;
+      max-width: 520px;
+      margin: -40px auto 0;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 12px;
+      background: #0b1220;
+      color: #e5e7eb;
+      border: 1px solid #334155;
+      border-radius: 6px;
+    }
+
+    .price {
+      text-align: center;
+      font-size: 26px;
+      color: #22c55e;
+      margin-top: 14px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 12px 24px;
+      background: #22c55e;
+      color: #052e16;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>ClearlinePDX</h1>
+  <p>Professional Cleaning Services in Portland, Oregon</p>
+</header>
+
+<div class="calculator">
+  <label>Bedrooms</label>
+  <select id="beds">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4+</option>
+  </select>
+
+  <label>Bathrooms</label>
+  <select id="baths">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3+</option>
+  </select>
+
+  <div class="price" id="price">$120</div>
+
+  <div style="text-align:center">
+    <a class="btn" href="tel:+15035555555">Call Now</a>
+  </div>
+</div>
+
+<section>
+  <div class="grid">
+    <div class="card">Licensed & Insured</div>
+    <div class="card">Transparent Pricing</div>
+    <div class="card">Eco-Friendly Products</div>
+    <div class="card">Local Portland Team</div>
+  </div>
+</section>
+
+<footer>
+  © 2025 ClearlinePDX · clearlinepdx.com
+</footer>
+
+<script>
+  const beds = document.getElementById('beds');
+  const baths = document.getElementById('baths');
+  const price = document.getElementById('price');
+
+  function calc() {
+    price.textContent = '$' + (80 + beds.value * 30 + baths.value * 25);
+  }
+
+  beds.onchange = baths.onchange = calc;
+</script>
+
+</body>
+</html>
