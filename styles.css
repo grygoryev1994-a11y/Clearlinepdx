@@ -31,7 +31,7 @@ body::before{
   inset:0;
   background:
     linear-gradient(180deg, rgba(238,243,241,.92) 0%, rgba(238,243,241,.80) 35%, rgba(238,243,241,.92) 100%),
-    url("assets/hero.jpg");
+    url("hero.jpg");
   background-size:cover;
   background-position:center;
   filter:blur(8px);
