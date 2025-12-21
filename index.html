@@ -1,87 +1,318 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ClearlinePDX — Clean homes. Clear standards.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
 <header class="navbar">
-  <div class="container nav-inner">
-    <div class="logo">ClearlinePDX</div>
-    <nav>
+  <div class="container navbar-inner">
+    <div class="brand">
+      <div class="brand-badge" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M3 10.5L12 3l9 7.5" stroke="rgba(15,42,42,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5.5 10.5V21h13V10.5" stroke="rgba(15,42,42,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span>ClearlinePDX</span>
+    </div>
+
+    <nav class="nav-links">
       <a href="index.html">Home</a>
       <a href="reviews.html">Reviews</a>
+      <a href="#services">Services</a>
       <a href="#contact">Contact</a>
     </nav>
-    <a class="btn" href="tel:+15035550123">Call</a>
+
+    <div class="nav-cta">
+      <a class="btn btn-ghost" data-call-btn href="tel:+15035550123">Call</a>
+    </div>
   </div>
 </header>
 
-<section class="hero">
-  <div class="hero-card">
-    <h1>Clean homes.<br>Clear standards.</h1>
-    <p>Professional residential & small commercial cleaning in Portland.</p>
-    <div class="hero-actions">
-      <button class="btn primary" id="openQuote">Book / Get Quote</button>
-      <a class="btn" href="tel:+15035550123">Call</a>
+<main class="container">
+  <section class="hero" id="top">
+    <div class="hero-card">
+      <h1>Clean homes. Clear standards.</h1>
+      <p>
+        Professional residential & small commercial cleaning in Portland.
+        Transparent pricing, consistent quality — no nonsense.
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn btn-primary" data-open-quote type="button">Book / Get Quote</button>
+        <a class="btn" data-call-btn href="tel:+15035550123">Call</a>
+      </div>
+
+      <div class="pills">
+        <div class="pill">Eco-friendly options</div>
+        <div class="pill">Reliable scheduling</div>
+        <div class="pill">Local Portland team</div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="container grid">
-  <div class="card">
-    <h2>Smart Price Estimate</h2>
+  <section class="main-grid" id="calculator">
+    <!-- LEFT: Calculator (как было) -->
+    <article class="panel">
+      <h2>Smart Price Estimate</h2>
+      <p class="sub">Ballpark pricing based on Portland averages + your details.</p>
 
-    <label>Bedrooms</label>
-    <select id="beds">
-      <option value="1">1 Bedroom</option>
-      <option value="2">2 Bedroom</option>
-      <option value="3">3 Bedroom</option>
-    </select>
+      <div class="form-grid">
+        <div class="field">
+          <label for="cleaningType">Cleaning Type</label>
+          <select id="cleaningType">
+            <option value="standard">Standard Cleaning</option>
+            <option value="deep">Deep Cleaning</option>
+            <option value="move">Move-In / Move-Out</option>
+            <option value="office">Office & Commercial</option>
+          </select>
+        </div>
 
-    <label>Bathrooms</label>
-    <select id="baths">
-      <option value="1">1 Bath</option>
-      <option value="2">2 Bath</option>
-    </select>
+        <div class="field">
+          <label for="frequency">Frequency</label>
+          <select id="frequency">
+            <option value="onetime">One-time</option>
+            <option value="monthly">Monthly</option>
+            <option value="biweekly">Bi-weekly</option>
+            <option value="weekly">Weekly</option>
+          </select>
+        </div>
 
-    <label>Square footage</label>
-    <input type="range" min="500" max="3000" value="1500" id="sqft">
+        <div class="field">
+          <label for="bedrooms">Bedrooms</label>
+          <select id="bedrooms">
+            <option value="studio">Studio</option>
+            <option value="1" selected>1 Bedroom</option>
+            <option value="2">2 Bedroom</option>
+            <option value="3">3 Bedroom</option>
+            <option value="4">4+ Bedroom</option>
+          </select>
+        </div>
 
-    <div class="result">
-      Estimated price: <strong id="price">$150</strong>
+        <div class="field">
+          <label for="bathrooms">Bathrooms</label>
+          <select id="bathrooms">
+            <option value="1" selected>1 Bath</option>
+            <option value="2">2 Bath</option>
+            <option value="3">3+ Bath</option>
+          </select>
+        </div>
+
+        <div class="field slider-row">
+          <label for="sqft">Approx. Square Footage</label>
+          <input class="range" id="sqft" type="range" min="400" max="3500" step="50" value="1800" />
+          <div class="mini">
+            <span id="sqftLabel">1800 sq ft</span>
+            <span>Used to adjust time & effort</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="condition">Home Condition</label>
+          <select id="condition">
+            <option value="normal" selected>Normal</option>
+            <option value="messy">Messy</option>
+            <option value="heavy">Heavy / Needs help</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="pets">Pets</label>
+          <select id="pets">
+            <option value="none" selected>No pets</option>
+            <option value="cat">Cat</option>
+            <option value="dog">Dog</option>
+            <option value="multiple">Multiple</option>
+          </select>
+        </div>
+
+        <div class="field slider-row">
+          <label>Add-ons (optional)</label>
+
+          <div class="addons">
+            <label class="check">
+              <input id="addonFridge" type="checkbox" />
+              <div>
+                <b>Inside fridge (+$25)</b>
+                <span>Wipe shelves + quick detail</span>
+              </div>
+            </label>
+
+            <label class="check">
+              <input id="addonOven" type="checkbox" />
+              <div>
+                <b>Inside oven (+$25)</b>
+                <span>Light degrease, no miracles</span>
+              </div>
+            </label>
+
+            <label class="check">
+              <input id="addonWindows" type="checkbox" />
+              <div>
+                <b>Interior windows (+$45)</b>
+                <span>Quick clarity boost</span>
+              </div>
+            </label>
+
+            <label class="check">
+              <input id="addonLaundry" type="checkbox" />
+              <div>
+                <b>Laundry room (+$20)</b>
+                <span>Wipe + floor reset</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="result" aria-live="polite">
+            <div>
+              <div class="meta">Estimated Price</div>
+              <div class="price" id="estPrice">$0</div>
+            </div>
+            <div>
+              <div class="meta">Estimated Time</div>
+              <div class="est-strong" id="estTime">—</div>
+              <div class="meta" id="estNotes">—</div>
+            </div>
+          </div>
+
+          <div class="right-actions" style="justify-content:flex-end;margin-top:12px;">
+            <button class="btn btn-primary" data-open-quote type="button">Request Quote</button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- RIGHT: content (как было) -->
+    <aside class="panel">
+      <h2>Fast quotes, no games</h2>
+      <p class="sub">
+        Use the estimate above, then send your details. We confirm quickly and give you a final quote.
+      </p>
+
+      <div class="tip">
+        Tip: if you want the best price, choose bi-weekly or weekly maintenance.
+      </div>
+
+      <div class="right-actions">
+        <a class="btn" href="reviews.html">Read Reviews</a>
+        <button class="btn btn-primary" data-open-quote type="button">Request Quote</button>
+      </div>
+
+      <hr class="hr" />
+
+      <div id="services">
+        <h2 style="margin-top:0;">Our Services</h2>
+        <p class="sub">Simple menu, clean execution.</p>
+
+        <div class="stack">
+          <div class="soft-item">
+            <b>Standard Cleaning</b>
+            <span>Kitchen, baths, floors, surfaces, reset & shine.</span>
+          </div>
+          <div class="soft-item">
+            <b>Deep Cleaning</b>
+            <span>Extra detail, baseboards, build-up areas, more time.</span>
+          </div>
+          <div class="soft-item">
+            <b>Move-In / Move-Out</b>
+            <span>Empty-home focus. Great for landlords & tenants.</span>
+          </div>
+          <div class="soft-item">
+            <b>Office & Commercial</b>
+            <span>Common areas, restrooms, breakrooms, tidy + consistent.</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="hr" />
+
+      <div id="contact">
+        <h2 style="margin-top:0;">Contact</h2>
+        <p class="sub">Call or request a quote. We’ll get you scheduled.</p>
+
+        <div class="right-actions">
+          <a class="btn btn-primary" data-call-btn href="tel:+15035550123">
+            Call <span data-phone>(503) 555-0123</span>
+          </a>
+          <button class="btn" data-open-quote type="button">Book / Get Quote</button>
+        </div>
+
+        <p class="small-note" style="margin-top:12px;">
+          Final price depends on condition, access, and scope. Estimate is a starting point.
+        </p>
+      </div>
+    </aside>
+  </section>
+
+  <footer class="footer">
+    © <span id="year"></span> ClearlinePDX • Portland, OR
+  </footer>
+</main>
+
+<!-- Quote Modal -->
+<div class="modal-backdrop" id="quoteBackdrop" aria-hidden="true">
+  <div class="modal" id="quoteModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Request a Quote</div>
+      <button class="icon-btn" type="button" data-close-modal aria-label="Close">✕</button>
     </div>
-  </div>
 
-  <div class="card">
-    <h2>Fast quotes, no games</h2>
-    <p>Use the estimate and send your details.</p>
-    <button class="btn primary" id="openQuote2">Request Quote</button>
-  </div>
-</section>
+    <div class="modal-body">
+      <form id="quoteForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="q_name">Name</label>
+            <input class="input" id="q_name" placeholder="Your name" required />
+          </div>
+          <div class="field">
+            <label for="q_phone">Phone</label>
+            <input class="input" id="q_phone" placeholder="(503) 123-4567" />
+          </div>
+          <div class="field">
+            <label for="q_email">Email</label>
+            <input class="input" id="q_email" type="email" placeholder="you@email.com" />
+          </div>
+          <div class="field">
+            <label for="q_address">Address / Area</label>
+            <input class="input" id="q_address" placeholder="Portland, OR (neighborhood is fine)" />
+          </div>
 
-<footer class="footer" id="contact">
-  © ClearlinePDX · Portland, OR
-</footer>
+          <div class="field slider-row">
+            <label for="q_notes">Notes (pets, gate code, priorities)</label>
+            <textarea id="q_notes" placeholder="What should we know?"></textarea>
+          </div>
 
-<!-- MODAL -->
-<div class="modal-bg" id="modalBg">
-  <div class="modal">
-    <h3>Request a Quote</h3>
-    <form id="quoteForm">
-      <input placeholder="Name" required>
-      <input placeholder="Phone">
-      <textarea placeholder="Details"></textarea>
-      <button class="btn primary" type="submit">Send</button>
-      <button type="button" class="btn" id="closeModal">Cancel</button>
-    </form>
+          <div class="field">
+            <label for="q_estimate">Estimate shown</label>
+            <input class="input" id="q_estimate" readonly />
+          </div>
+
+          <div class="field">
+            <label for="q_details">Estimate details</label>
+            <textarea id="q_details" readonly></textarea>
+          </div>
+        </div>
+
+        <div class="right-actions" style="justify-content:flex-end;margin-top:12px;">
+          <button class="btn btn-ghost" type="button" data-close-modal>Cancel</button>
+          <button class="btn btn-primary" type="submit">Send to Email</button>
+        </div>
+
+        <p class="small-note" style="margin-top:10px;">
+          This opens your email client with a prefilled message (mailto).
+        </p>
+      </form>
+    </div>
   </div>
 </div>
 
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
 <script src="app.js"></script>
 </body>
 </html>
-
