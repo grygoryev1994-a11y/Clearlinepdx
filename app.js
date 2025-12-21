@@ -1,8 +1,8 @@
 /* ClearlinePDX — app.js
    - Calculator logic + time estimate
-   - Add-ons: no "windows" or "laundry room" text
+   - Add-ons list trimmed per request
    - Quote modal uses mailto
-   - Reviews stored in localStorage (demo)
+   - Reviews use localStorage (demo)
 */
 
 const CONFIG = {
@@ -29,6 +29,12 @@ function initIndex(){
   const calc = $("#calculator");
   if(!calc) return;
 
+  // Required elements (if missing -> do nothing)
+  const requiredIds = ["estPrice","estTime","estNotes","sqft","sqftLabel","cleaningType","frequency","bedrooms","bathrooms","condition","pets"];
+  for(const id of requiredIds){
+    if(!document.getElementById(id)) return;
+  }
+
   const el = {
     cleaningType: $("#cleaningType"),
     frequency: $("#frequency"),
@@ -39,17 +45,13 @@ function initIndex(){
     condition: $("#condition"),
     pets: $("#pets"),
 
-    // Add-ons (IDs must match HTML)
+    // Add-ons currently present in HTML
     addonFridge: $("#addonFridge"),
     addonOven: $("#addonOven"),
     addonMicrowave: $("#addonMicrowave"),
     addonCabinets: $("#addonCabinets"),
-    addonLaundry: $("#addonLaundry"), // we repurposed this as "Blinds / window tracks"
-    addonBedSheets: $("#addonBedSheets"),
+    addonLaundry: $("#addonLaundry"), // repurposed label: blinds/tracks
     addonDish: $("#addonDish"),
-    addonBaseboards: $("#addonBaseboards"),
-    addonWalls: $("#addonWalls"),
-    addonPetHair: $("#addonPetHair"),
     addonExtraDirty: $("#addonExtraDirty"),
     addonPostConstruction: $("#addonPostConstruction"),
 
@@ -59,7 +61,7 @@ function initIndex(){
     openQuote: $all('[data-open-quote]')
   };
 
-  // Base pricing anchors (Portland-ish ballpark)
+  // Base pricing anchors (ballpark)
   const baseByBeds = { studio: 105, 1: 130, 2: 160, 3: 215, 4: 270 };
   const bathAdj = { 1: 0, 2: 18, 3: 35 };
   const typeAdj = { standard: 0, deep: 40, move: 55, office: 65 };
@@ -67,27 +69,24 @@ function initIndex(){
   const petsAdj = { none: 0, cat: 10, dog: 18, multiple: 28 };
   const frequencyMult = { onetime: 1.0, monthly: 0.93, biweekly: 0.88, weekly: 0.82 };
 
-  // Add-on pricing + time (hours)
+  // Trimmed add-ons (per your request)
   const ADDONS = [
-    { id:"addonFridge",          price:25, time:0.30, label:"Inside fridge" },
-    { id:"addonOven",            price:30, time:0.35, label:"Inside oven" },
-    { id:"addonMicrowave",       price:10, time:0.12, label:"Inside microwave" },
-    { id:"addonCabinets",        price:35, time:0.45, label:"Inside cabinets" },
-    // repurposed
-    { id:"addonLaundry",         price:25, time:0.30, label:"Blinds / window tracks" },
-    { id:"addonBedSheets",       price:15, time:0.20, label:"Change bed sheets" },
-    { id:"addonDish",            price:25, time:0.35, label:"Dishes" },
-    { id:"addonBaseboards",      price:20, time:0.25, label:"Baseboards detail" },
-    { id:"addonWalls",           price:35, time:0.45, label:"Spot clean walls" },
-    { id:"addonPetHair",         price:25, time:0.30, label:"Pet hair boost" },
-    { id:"addonExtraDirty",      price:60, time:0.80, label:"Extra dirty / heavy buildup" },
-    { id:"addonPostConstruction",price:80, time:1.10, label:"Post-construction" }
+    { id:"addonFridge",           price:25, time:0.30, label:"Inside fridge" },
+    { id:"addonOven",             price:30, time:0.35, label:"Inside oven" },
+    { id:"addonMicrowave",        price:10, time:0.12, label:"Inside microwave" },
+    { id:"addonCabinets",         price:35, time:0.45, label:"Inside cabinets" },
+    { id:"addonLaundry",          price:25, time:0.30, label:"Blinds / window tracks" },
+    { id:"addonDish",             price:25, time:0.35, label:"Dishes" },
+    { id:"addonExtraDirty",       price:60, time:0.80, label:"Extra dirty / heavy buildup" },
+    { id:"addonPostConstruction", price:80, time:1.10, label:"Post-construction" }
   ];
 
   function estimateBaseHours(type, beds, baths, sqft, condition){
     let h = 2.0;
+
     const b = beds === "studio" ? 0 : parseInt(beds, 10);
     h += b * 0.9;
+
     h += (parseInt(baths,10) - 1) * 0.6;
     h += Math.max(0, (sqft - 900)) / 900 * 0.8;
 
@@ -119,7 +118,6 @@ function initIndex(){
     const cAdj = conditionAdj[condition] ?? 0;
     const pAdj = petsAdj[pets] ?? 0;
 
-    // addons sum
     let addonsPrice = 0;
     let addonsTime = 0;
     const picked = [];
@@ -133,12 +131,10 @@ function initIndex(){
       }
     }
 
-    // subtotal
     let subtotal = base + bAdj + sAdj + tAdj + cAdj + pAdj + addonsPrice;
     subtotal *= (frequencyMult[freq] ?? 1);
     subtotal = Math.round(subtotal / 5) * 5;
 
-    // hours
     const baseHours = estimateBaseHours(type, beds, baths, sqft, condition);
     const hours = clamp(baseHours + addonsTime, 2.0, 12.5);
 
@@ -155,11 +151,11 @@ function initIndex(){
     return { type, freq, beds, baths, sqft, condition, pets, subtotal, hours, addonsNote };
   }
 
-  // Bind inputs
+  // Bind events
   $all("select, input", calc).forEach(x => x.addEventListener("change", compute));
   el.sqft.addEventListener("input", compute);
 
-  // Modal
+  // Modal (quote)
   const backdrop = $("#quoteBackdrop");
   const modal = $("#quoteModal");
   const closeBtns = $all("[data-close-modal]");
@@ -229,11 +225,12 @@ ${notes}
     closeModal();
   });
 
+  // Initial paint
   compute();
 }
 
 /* ==============================
-   REVIEWS: localStorage demo
+   REVIEWS (unchanged demo)
 ================================ */
 const REV_KEY = "clearline_reviews_v1";
 
@@ -264,7 +261,8 @@ function renderReviews(){
 
   const list = loadReviews().sort((a,b)=>new Date(b.date)-new Date(a.date));
   const avg = list.reduce((s,r)=>s+r.rating,0) / (list.length || 1);
-  $("#reviewSummary").textContent = `${avg.toFixed(1)} / 5 (${list.length})`;
+  const summary = $("#reviewSummary");
+  if(summary) summary.textContent = `${avg.toFixed(1)} / 5 (${list.length})`;
 
   wrap.innerHTML = `
     <div class="review-grid">
@@ -295,7 +293,10 @@ function initReviews(){
   seedReviews();
   renderReviews();
 
-  $("#newReviewForm").addEventListener("submit",(e)=>{
+  const form = $("#newReviewForm");
+  if(!form) return;
+
+  form.addEventListener("submit",(e)=>{
     e.preventDefault();
     const name = $("#r_name").value.trim() || "Anonymous";
     const rating = clamp(parseInt($("#r_rating").value,10),1,5);
