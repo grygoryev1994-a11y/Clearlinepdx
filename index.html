@@ -13,8 +13,8 @@
     <div class="brand">
       <div class="brand-badge" aria-hidden="true">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M3 10.5L12 3l9 7.5" stroke="rgba(15,42,42,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M5.5 10.5V21h13V10.5" stroke="rgba(15,42,42,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 10.5L12 3l9 7.5" stroke="rgba(15,42,42,.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5.5 10.5V21h13V10.5" stroke="rgba(15,42,42,.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
       <span>ClearlinePDX</span>
@@ -38,8 +38,7 @@
     <div class="hero-card">
       <h1>Clean homes. Clear standards.</h1>
       <p>
-        Professional residential & small commercial cleaning in Portland.
-        Transparent pricing, consistent quality — no nonsense.
+        Portland cleaning service. Clear pricing, consistent quality, zero drama.
       </p>
 
       <div class="hero-actions">
@@ -48,18 +47,21 @@
       </div>
 
       <div class="pills">
-        <div class="pill">Eco-friendly options</div>
-        <div class="pill">Reliable scheduling</div>
-        <div class="pill">Local Portland team</div>
+        <div class="pill">Whole-home cleaning</div>
+        <div class="pill">Interior windows included</div>
+        <div class="pill">Fast quotes</div>
       </div>
     </div>
   </section>
 
   <section class="main-grid" id="calculator">
-    <!-- LEFT: Calculator (как было) -->
+    <!-- LEFT -->
     <article class="panel">
       <h2>Smart Price Estimate</h2>
-      <p class="sub">Ballpark pricing based on Portland averages + your details.</p>
+      <p class="sub">
+        Estimate includes whole-home cleaning + <b>interior windows</b>.
+        Add extras only if you need them.
+      </p>
 
       <div class="form-grid">
         <div class="field">
@@ -138,31 +140,96 @@
               <input id="addonFridge" type="checkbox" />
               <div>
                 <b>Inside fridge (+$25)</b>
-                <span>Wipe shelves + quick detail</span>
+                <span>Shelves & drawers wipe-down</span>
               </div>
             </label>
 
             <label class="check">
               <input id="addonOven" type="checkbox" />
               <div>
-                <b>Inside oven (+$25)</b>
-                <span>Light degrease, no miracles</span>
+                <b>Inside oven (+$30)</b>
+                <span>Degrease + detail</span>
               </div>
             </label>
 
             <label class="check">
-              <input id="addonWindows" type="checkbox" />
+              <input id="addonMicrowave" type="checkbox" />
               <div>
-                <b>Interior windows (+$45)</b>
-                <span>Quick clarity boost</span>
+                <b>Inside microwave (+$10)</b>
+                <span>Quick reset</span>
               </div>
             </label>
 
+            <label class="check">
+              <input id="addonCabinets" type="checkbox" />
+              <div>
+                <b>Inside cabinets (+$35)</b>
+                <span>Empty shelf wipe-down</span>
+              </div>
+            </label>
+
+            <!-- NOTE: ID kept as addonLaundry for compatibility with JS -->
             <label class="check">
               <input id="addonLaundry" type="checkbox" />
               <div>
-                <b>Laundry room (+$20)</b>
-                <span>Wipe + floor reset</span>
+                <b>Blinds / window tracks (+$25)</b>
+                <span>Light dust + wipe where reachable</span>
+              </div>
+            </label>
+
+            <label class="check">
+              <input id="addonBedSheets" type="checkbox" />
+              <div>
+                <b>Change bed sheets (+$15)</b>
+                <span>Up to 2 beds</span>
+              </div>
+            </label>
+
+            <label class="check">
+              <input id="addonDish" type="checkbox" />
+              <div>
+                <b>Dishes (+$25)</b>
+                <span>Sink + counter items</span>
+              </div>
+            </label>
+
+            <label class="check">
+              <input id="addonBaseboards" type="checkbox" />
+              <div>
+                <b>Baseboards detail (+$20)</b>
+                <span>Hand-wipe edges & corners</span>
+              </div>
+            </label>
+
+            <label class="check">
+              <input id="addonWalls" type="checkbox" />
+              <div>
+                <b>Spot clean walls (+$35)</b>
+                <span>Scuffs & fingerprints</span>
+              </div>
+            </label>
+
+            <label class="check">
+              <input id="addonPetHair" type="checkbox" />
+              <div>
+                <b>Pet hair boost (+$25)</b>
+                <span>Extra vacuum + rollers</span>
+              </div>
+            </label>
+
+            <label class="check">
+              <input id="addonExtraDirty" type="checkbox" />
+              <div>
+                <b>Extra dirty / heavy buildup (+$60)</b>
+                <span>For “we need help” homes</span>
+              </div>
+            </label>
+
+            <label class="check">
+              <input id="addonPostConstruction" type="checkbox" />
+              <div>
+                <b>Post-construction (+$80)</b>
+                <span>Dust + debris + extra time</span>
               </div>
             </label>
           </div>
@@ -186,15 +253,24 @@
       </div>
     </article>
 
-    <!-- RIGHT: content (как было) -->
+    <!-- RIGHT -->
     <aside class="panel">
-      <h2>Fast quotes, no games</h2>
-      <p class="sub">
-        Use the estimate above, then send your details. We confirm quickly and give you a final quote.
-      </p>
+      <h2>How it works</h2>
+      <p class="sub">Simple process. Clean results.</p>
 
-      <div class="tip">
-        Tip: if you want the best price, choose bi-weekly or weekly maintenance.
+      <div class="stack">
+        <div class="soft-item">
+          <b>1) Get an estimate</b>
+          <span>Use the calculator — it’s close enough to plan.</span>
+        </div>
+        <div class="soft-item">
+          <b>2) Request a quote</b>
+          <span>Send your details. We confirm the scope fast.</span>
+        </div>
+        <div class="soft-item">
+          <b>3) We clean</b>
+          <span>On time. Consistent. No corners cut.</span>
+        </div>
       </div>
 
       <div class="right-actions">
@@ -205,25 +281,25 @@
       <hr class="hr" />
 
       <div id="services">
-        <h2 style="margin-top:0;">Our Services</h2>
-        <p class="sub">Simple menu, clean execution.</p>
+        <h2 style="margin-top:0;">Services</h2>
+        <p class="sub">What we actually do (not fluff).</p>
 
         <div class="stack">
           <div class="soft-item">
             <b>Standard Cleaning</b>
-            <span>Kitchen, baths, floors, surfaces, reset & shine.</span>
+            <span>All rooms: surfaces, floors, kitchen, bathrooms, + interior windows.</span>
           </div>
           <div class="soft-item">
             <b>Deep Cleaning</b>
-            <span>Extra detail, baseboards, build-up areas, more time.</span>
+            <span>Extra detail, buildup areas, baseboards as needed.</span>
           </div>
           <div class="soft-item">
             <b>Move-In / Move-Out</b>
-            <span>Empty-home focus. Great for landlords & tenants.</span>
+            <span>Empty-home focus for tenants/landlords.</span>
           </div>
           <div class="soft-item">
             <b>Office & Commercial</b>
-            <span>Common areas, restrooms, breakrooms, tidy + consistent.</span>
+            <span>Common areas, restrooms, breakroom reset.</span>
           </div>
         </div>
       </div>
@@ -232,7 +308,7 @@
 
       <div id="contact">
         <h2 style="margin-top:0;">Contact</h2>
-        <p class="sub">Call or request a quote. We’ll get you scheduled.</p>
+        <p class="sub">Call or request a quote.</p>
 
         <div class="right-actions">
           <a class="btn btn-primary" data-call-btn href="tel:+15035550123">
@@ -316,3 +392,5 @@
 <script src="app.js"></script>
 </body>
 </html>
+
+
