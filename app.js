@@ -1,67 +1,54 @@
-/* ClearlinePDX — app.js
-   - Calculator logic + time estimate
-   - Add-ons list trimmed per request
-   - Quote modal uses mailto
-   - Reviews use localStorage (demo)
+/* ClearlinePDX — app.js (hardened)
+   - If anything breaks, error shows inside estNotes (no silent failures)
+   - Add-ons trimmed per request
 */
 
 const CONFIG = {
   businessName: "ClearlinePDX",
-  quoteEmail: "santa.on@gmail.com", // change if needed
+  quoteEmail: "santa.on@gmail.com",
   phoneTel: "+15035550123",
   phonePretty: "(503) 555-0123"
 };
 
-function $(sel, root=document){ return root.querySelector(sel); }
+function $(id){ return document.getElementById(id); }
 function $all(sel, root=document){ return [...root.querySelectorAll(sel)]; }
 function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
 function money(n){ return `$${Math.round(n).toLocaleString("en-US")}`; }
+
+function setSafeText(id, txt){
+  const el = $(id);
+  if(el) el.textContent = txt;
+}
 
 function wireCallButtons(){
   $all("[data-call-btn]").forEach(a => a.href = `tel:${CONFIG.phoneTel}`);
   $all("[data-phone]").forEach(s => s.textContent = CONFIG.phonePretty);
 }
 
-/* ==============================
-   INDEX: Calculator + Quote Modal
-================================ */
-function initIndex(){
-  const calc = $("#calculator");
-  if(!calc) return;
+function initCalculator(){
+  // If calculator section isn't present, exit quietly
+  const calcRoot = $("calculator");
+  if(!calcRoot) return;
 
-  // Required elements (if missing -> do nothing)
-  const requiredIds = ["estPrice","estTime","estNotes","sqft","sqftLabel","cleaningType","frequency","bedrooms","bathrooms","condition","pets"];
-  for(const id of requiredIds){
-    if(!document.getElementById(id)) return;
+  // Grab required UI nodes
+  const ids = [
+    "cleaningType","frequency","bedrooms","bathrooms","sqft","sqftLabel",
+    "condition","pets","estPrice","estTime","estNotes"
+  ];
+
+  const missing = ids.filter(id => !$(id));
+  if(missing.length){
+    setSafeText("estNotes", `UI missing: ${missing.join(", ")} (check IDs in index.html)`);
+    return;
   }
 
-  const el = {
-    cleaningType: $("#cleaningType"),
-    frequency: $("#frequency"),
-    bedrooms: $("#bedrooms"),
-    bathrooms: $("#bathrooms"),
-    sqft: $("#sqft"),
-    sqftLabel: $("#sqftLabel"),
-    condition: $("#condition"),
-    pets: $("#pets"),
+  // Add-ons (must match HTML)
+  const addonIds = [
+    "addonFridge","addonOven","addonMicrowave","addonCabinets",
+    "addonLaundry","addonDish","addonExtraDirty","addonPostConstruction"
+  ];
 
-    // Add-ons currently present in HTML
-    addonFridge: $("#addonFridge"),
-    addonOven: $("#addonOven"),
-    addonMicrowave: $("#addonMicrowave"),
-    addonCabinets: $("#addonCabinets"),
-    addonLaundry: $("#addonLaundry"), // repurposed label: blinds/tracks
-    addonDish: $("#addonDish"),
-    addonExtraDirty: $("#addonExtraDirty"),
-    addonPostConstruction: $("#addonPostConstruction"),
-
-    estPrice: $("#estPrice"),
-    estTime: $("#estTime"),
-    estNotes: $("#estNotes"),
-    openQuote: $all('[data-open-quote]')
-  };
-
-  // Base pricing anchors (ballpark)
+  // Pricing anchors (ballpark)
   const baseByBeds = { studio: 105, 1: 130, 2: 160, 3: 215, 4: 270 };
   const bathAdj = { 1: 0, 2: 18, 3: 35 };
   const typeAdj = { standard: 0, deep: 40, move: 55, office: 65 };
@@ -69,7 +56,7 @@ function initIndex(){
   const petsAdj = { none: 0, cat: 10, dog: 18, multiple: 28 };
   const frequencyMult = { onetime: 1.0, monthly: 0.93, biweekly: 0.88, weekly: 0.82 };
 
-  // Trimmed add-ons (per your request)
+  // Trimmed add-ons
   const ADDONS = [
     { id:"addonFridge",           price:25, time:0.30, label:"Inside fridge" },
     { id:"addonOven",             price:30, time:0.35, label:"Inside oven" },
@@ -101,69 +88,82 @@ function initIndex(){
   }
 
   function compute(){
-    const type = el.cleaningType.value;
-    const freq = el.frequency.value;
-    const beds = el.bedrooms.value;
-    const baths = el.bathrooms.value;
-    const sqft = parseInt(el.sqft.value, 10);
-    const condition = el.condition.value;
-    const pets = el.pets.value;
+    try{
+      const type = $("cleaningType").value;
+      const freq = $("frequency").value;
+      const beds = $("bedrooms").value;
+      const baths = $("bathrooms").value;
+      const sqft = parseInt($("sqft").value, 10);
+      const condition = $("condition").value;
+      const pets = $("pets").value;
 
-    el.sqftLabel.textContent = `${sqft} sq ft`;
+      $("sqftLabel").textContent = `${sqft} sq ft`;
 
-    const base = baseByBeds[beds] ?? 140;
-    const bAdj = bathAdj[baths] ?? 0;
-    const sAdj = Math.max(0, sqft - 1200) / 600 * 18;
-    const tAdj = typeAdj[type] ?? 0;
-    const cAdj = conditionAdj[condition] ?? 0;
-    const pAdj = petsAdj[pets] ?? 0;
+      const base = baseByBeds[beds] ?? 140;
+      const bAdj = bathAdj[baths] ?? 0;
+      const sAdj = Math.max(0, sqft - 1200) / 600 * 18;
+      const tAdj = typeAdj[type] ?? 0;
+      const cAdj = conditionAdj[condition] ?? 0;
+      const pAdj = petsAdj[pets] ?? 0;
 
-    let addonsPrice = 0;
-    let addonsTime = 0;
-    const picked = [];
+      let addonsPrice = 0;
+      let addonsTime = 0;
+      const picked = [];
 
-    for(const a of ADDONS){
-      const node = el[a.id];
-      if(node && node.checked){
-        addonsPrice += a.price;
-        addonsTime += a.time;
-        picked.push(`${a.label} (+$${a.price})`);
+      for(const a of ADDONS){
+        const node = $(a.id);
+        if(node && node.checked){
+          addonsPrice += a.price;
+          addonsTime += a.time;
+          picked.push(`${a.label} (+$${a.price})`);
+        }
       }
+
+      let subtotal = base + bAdj + sAdj + tAdj + cAdj + pAdj + addonsPrice;
+      subtotal *= (frequencyMult[freq] ?? 1);
+      subtotal = Math.round(subtotal / 5) * 5;
+
+      const baseHours = estimateBaseHours(type, beds, baths, sqft, condition);
+      const hours = clamp(baseHours + addonsTime, 2.0, 12.5);
+
+      $("estPrice").textContent = money(subtotal);
+      $("estTime").textContent = `${hours.toFixed(1)}–${(hours+0.7).toFixed(1)} hours`;
+
+      const freqNote = (freq === "onetime")
+        ? "One-time estimate. Final quote after details."
+        : "Maintenance estimate. Final quote after details.";
+
+      const addonsNote = picked.length ? `Add-ons: ${picked.join(", ")}` : "No add-ons selected.";
+      $("estNotes").textContent = `${freqNote} ${addonsNote}`;
+
+      return { type, freq, beds, baths, sqft, condition, pets, subtotal, hours, addonsNote };
+    }catch(err){
+      // Show the error on the page so we don’t guess in the dark
+      setSafeText("estPrice", "$—");
+      setSafeText("estTime", "—");
+      setSafeText("estNotes", `Calculator error: ${err?.message || err}`);
+      throw err;
     }
-
-    let subtotal = base + bAdj + sAdj + tAdj + cAdj + pAdj + addonsPrice;
-    subtotal *= (frequencyMult[freq] ?? 1);
-    subtotal = Math.round(subtotal / 5) * 5;
-
-    const baseHours = estimateBaseHours(type, beds, baths, sqft, condition);
-    const hours = clamp(baseHours + addonsTime, 2.0, 12.5);
-
-    el.estPrice.textContent = money(subtotal);
-    el.estTime.textContent = `${hours.toFixed(1)}–${(hours+0.7).toFixed(1)} hours`;
-
-    const freqNote = (freq === "onetime")
-      ? "One-time estimate. Final quote after details."
-      : "Maintenance estimate. Final quote after details.";
-
-    const addonsNote = picked.length ? `Add-ons: ${picked.join(", ")}` : "No add-ons selected.";
-    el.estNotes.textContent = `${freqNote} ${addonsNote}`;
-
-    return { type, freq, beds, baths, sqft, condition, pets, subtotal, hours, addonsNote };
   }
 
-  // Bind events
-  $all("select, input", calc).forEach(x => x.addEventListener("change", compute));
-  el.sqft.addEventListener("input", compute);
+  // Bind all inputs (including add-ons)
+  $all("select, input", calcRoot).forEach(el => {
+    el.addEventListener("change", compute);
+  });
+  $("sqft").addEventListener("input", compute);
 
-  // Modal (quote)
-  const backdrop = $("#quoteBackdrop");
-  const modal = $("#quoteModal");
+  // Quote modal wiring
+  const backdrop = $("quoteBackdrop");
+  const modal = $("quoteModal");
+  const openBtns = $all("[data-open-quote]");
   const closeBtns = $all("[data-close-modal]");
 
   function openModal(){
     const data = compute();
-    $("#q_estimate").value = money(data.subtotal);
-    $("#q_details").value =
+    const qEst = $("q_estimate");
+    const qDet = $("q_details");
+    if(qEst) qEst.value = money(data.subtotal);
+    if(qDet) qDet.value =
 `Type: ${data.type}
 Frequency: ${data.freq}
 Beds: ${data.beds}
@@ -174,36 +174,39 @@ Pets: ${data.pets}
 Estimated time: ${data.hours.toFixed(1)}–${(data.hours+0.7).toFixed(1)} hours
 ${data.addonsNote}`;
 
-    backdrop.style.display = "flex";
-    modal.setAttribute("aria-hidden", "false");
+    if(backdrop){ backdrop.style.display = "flex"; }
+    if(modal){ modal.setAttribute("aria-hidden","false"); }
   }
 
   function closeModal(){
-    backdrop.style.display = "none";
-    modal.setAttribute("aria-hidden", "true");
+    if(backdrop){ backdrop.style.display = "none"; }
+    if(modal){ modal.setAttribute("aria-hidden","true"); }
   }
 
-  el.openQuote.forEach(btn => btn.addEventListener("click", openModal));
-  closeBtns.forEach(btn => btn.addEventListener("click", closeModal));
-  backdrop.addEventListener("click", (e) => { if(e.target === backdrop) closeModal(); });
-  document.addEventListener("keydown", (e) => {
-    if(e.key === "Escape" && backdrop.style.display === "flex") closeModal();
+  openBtns.forEach(b => b.addEventListener("click", openModal));
+  closeBtns.forEach(b => b.addEventListener("click", closeModal));
+  if(backdrop){
+    backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
+  }
+  document.addEventListener("keydown",(e)=>{
+    if(e.key === "Escape" && backdrop && backdrop.style.display === "flex") closeModal();
   });
 
-  // mailto submit
-  $("#quoteForm").addEventListener("submit", (e) => {
-    e.preventDefault();
+  const quoteForm = $("quoteForm");
+  if(quoteForm){
+    quoteForm.addEventListener("submit",(e)=>{
+      e.preventDefault();
 
-    const name = $("#q_name").value.trim();
-    const phone = $("#q_phone").value.trim();
-    const email = $("#q_email").value.trim();
-    const address = $("#q_address").value.trim();
-    const notes = $("#q_notes").value.trim();
-    const estimate = $("#q_estimate").value.trim();
-    const details = $("#q_details").value.trim();
+      const name = ($("q_name")?.value || "").trim();
+      const phone = ($("q_phone")?.value || "").trim();
+      const email = ($("q_email")?.value || "").trim();
+      const address = ($("q_address")?.value || "").trim();
+      const notes = ($("q_notes")?.value || "").trim();
+      const estimate = ($("q_estimate")?.value || "").trim();
+      const details = ($("q_details")?.value || "").trim();
 
-    const subject = encodeURIComponent(`[${CONFIG.businessName}] Quote Request — ${name || "New lead"}`);
-    const body = encodeURIComponent(
+      const subject = encodeURIComponent(`[${CONFIG.businessName}] Quote Request — ${name || "New lead"}`);
+      const body = encodeURIComponent(
 `New quote request
 
 Name: ${name}
@@ -219,105 +222,18 @@ ${details}
 Customer notes:
 ${notes}
 `
-    );
+      );
 
-    window.location.href = `mailto:${CONFIG.quoteEmail}?subject=${subject}&body=${body}`;
-    closeModal();
-  });
+      window.location.href = `mailto:${CONFIG.quoteEmail}?subject=${subject}&body=${body}`;
+      closeModal();
+    });
+  }
 
-  // Initial paint
+  // First render
   compute();
 }
 
-/* ==============================
-   REVIEWS (unchanged demo)
-================================ */
-const REV_KEY = "clearline_reviews_v1";
-
-function loadReviews(){
-  try{ return JSON.parse(localStorage.getItem(REV_KEY) || "[]"); }
-  catch{ return []; }
-}
-function saveReviews(list){
-  localStorage.setItem(REV_KEY, JSON.stringify(list));
-}
-function seedReviews(){
-  const list = loadReviews();
-  if(list.length) return;
-  saveReviews([
-    { name:"Jordan M.", rating:5, text:"Fast, on time, and detailed. Bathrooms looked brand new.", date:new Date().toISOString() },
-    { name:"Emily R.", rating:5, text:"Deep clean before guests — spotless kitchen and floors.", date:new Date(Date.now()-86400000*8).toISOString() },
-    { name:"Chris T.", rating:4, text:"Clear pricing and easy scheduling. Solid work.", date:new Date(Date.now()-86400000*20).toISOString() }
-  ]);
-}
-function renderStars(n){
-  const full = "★".repeat(n);
-  const empty = "☆".repeat(5-n);
-  return `<span class="stars" aria-label="${n} out of 5">${full}${empty}</span>`;
-}
-function renderReviews(){
-  const wrap = $("#reviewsList");
-  if(!wrap) return;
-
-  const list = loadReviews().sort((a,b)=>new Date(b.date)-new Date(a.date));
-  const avg = list.reduce((s,r)=>s+r.rating,0) / (list.length || 1);
-  const summary = $("#reviewSummary");
-  if(summary) summary.textContent = `${avg.toFixed(1)} / 5 (${list.length})`;
-
-  wrap.innerHTML = `
-    <div class="review-grid">
-      ${list.map(r=>{
-        const dt = new Date(r.date);
-        const dateStr = dt.toLocaleDateString(undefined,{year:"numeric",month:"short",day:"2-digit"});
-        const safeName = (r.name||"Anonymous").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-        const safeText = (r.text||"").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-        return `
-          <div class="review-card">
-            <div class="review-head">
-              <div>
-                <div class="review-name">${safeName}</div>
-                ${renderStars(r.rating)}
-              </div>
-              <div class="review-date">${dateStr}</div>
-            </div>
-            <div class="review-text">${safeText}</div>
-          </div>
-        `;
-      }).join("")}
-    </div>
-  `;
-}
-function initReviews(){
-  if(!$("#reviewsPage")) return;
-
-  seedReviews();
-  renderReviews();
-
-  const form = $("#newReviewForm");
-  if(!form) return;
-
-  form.addEventListener("submit",(e)=>{
-    e.preventDefault();
-    const name = $("#r_name").value.trim() || "Anonymous";
-    const rating = clamp(parseInt($("#r_rating").value,10),1,5);
-    const text = $("#r_text").value.trim();
-
-    if(text.length < 10){
-      alert("Write a bit more (min 10 characters).");
-      return;
-    }
-    const list = loadReviews();
-    list.push({ name, rating, text, date:new Date().toISOString() });
-    saveReviews(list);
-    e.target.reset();
-    renderReviews();
-    window.scrollTo({top:0, behavior:"smooth"});
-  });
-}
-
-/* Boot */
 document.addEventListener("DOMContentLoaded", ()=>{
   wireCallButtons();
-  initIndex();
-  initReviews();
+  initCalculator();
 });
