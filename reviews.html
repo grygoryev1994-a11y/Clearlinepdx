@@ -1,42 +1,109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ClearlinePDX — Reviews</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
 <header class="navbar">
-  <div class="container nav-inner">
-    <div class="logo">ClearlinePDX</div>
-    <nav>
+  <div class="container navbar-inner">
+    <div class="brand">
+      <div class="brand-badge" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M3 10.5L12 3l9 7.5" stroke="rgba(15,42,42,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5.5 10.5V21h13V10.5" stroke="rgba(15,42,42,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span>ClearlinePDX</span>
+    </div>
+
+    <nav class="nav-links">
       <a href="index.html">Home</a>
       <a href="reviews.html">Reviews</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#contact">Contact</a>
     </nav>
-    <a class="btn" href="tel:+15035550123">Call</a>
+
+    <div class="nav-cta">
+      <a class="btn btn-ghost" data-call-btn href="tel:+15035550123">Call</a>
+    </div>
   </div>
 </header>
 
-<section class="container">
-  <h1>Customer Reviews</h1>
+<main class="container" id="reviewsPage">
+  <section class="hero" style="padding-bottom:18px;">
+    <div class="hero-card">
+      <h1>Reviews</h1>
+      <p>Client feedback. (Demo stores reviews in this browser.)</p>
 
-  <div id="reviews"></div>
+      <div class="pills">
+        <div class="pill">Average: <b id="reviewSummary">—</b></div>
+        <a class="pill" href="index.html">Back to Home</a>
+      </div>
+    </div>
+  </section>
 
-  <h2>Leave a review</h2>
-  <form id="reviewForm">
-    <input placeholder="Name">
-    <select id="rating">
-      <option value="5">★★★★★</option>
-      <option value="4">★★★★☆</option>
-      <option value="3">★★★☆☆</option>
-    </select>
-    <textarea placeholder="Your review"></textarea>
-    <button class="btn primary">Post review</button>
-  </form>
-</section>
+  <section class="main-grid reviews-grid">
+    <article class="panel">
+      <h2>What clients say</h2>
+      <p class="sub">Short, honest, useful.</p>
 
+      <div id="reviewsList"></div>
+
+      <hr class="hr" />
+      <p class="small-note">
+        If you go live: you need moderation/anti-spam. Otherwise bots will ruin it.
+      </p>
+    </article>
+
+    <aside class="panel">
+      <h2>Leave a review</h2>
+      <p class="sub">Help other people decide. Be fair. Be specific.</p>
+
+      <form id="newReviewForm">
+        <div class="field">
+          <label for="r_name">Name</label>
+          <input class="input" id="r_name" placeholder="Your name (or leave blank)" />
+        </div>
+
+        <div class="field" style="margin-top:12px;">
+          <label for="r_rating">Rating</label>
+          <select id="r_rating">
+            <option value="5" selected>★★★★★ (5)</option>
+            <option value="4">★★★★☆ (4)</option>
+            <option value="3">★★★☆☆ (3)</option>
+            <option value="2">★★☆☆☆ (2)</option>
+            <option value="1">★☆☆☆☆ (1)</option>
+          </select>
+        </div>
+
+        <div class="field" style="margin-top:12px;">
+          <label for="r_text">Review</label>
+          <textarea id="r_text" placeholder="What did you like? What could be better? (min 10 chars)"></textarea>
+        </div>
+
+        <div class="right-actions" style="justify-content:flex-end;margin-top:12px;">
+          <button class="btn btn-primary" type="submit">Post Review</button>
+        </div>
+
+        <p class="small-note" style="margin-top:10px;">
+          Stored in <b>localStorage</b> on this device only.
+        </p>
+      </form>
+    </aside>
+  </section>
+
+  <footer class="footer">
+    © <span id="year"></span> ClearlinePDX • Portland, OR
+  </footer>
+</main>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
 <script src="app.js"></script>
 </body>
 </html>
