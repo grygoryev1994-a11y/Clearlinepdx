@@ -35,37 +35,126 @@
 
 <main class="container" id="reviewsPage">
 
-  <!-- HERO -->
   <section class="hero">
     <div class="hero-card">
       <h1>Reviews</h1>
-      <p>Real feedback from real clients.</p>
+      <p>Real feedback from real clients in Portland.</p>
 
       <div class="pills">
-        <div class="pill">Local Portland clients</div>
-        <div class="pill">Honest feedback</div>
-        <div class="pill">No fake reviews</div>
+        <div class="pill">On-time arrivals</div>
+        <div class="pill">Consistent quality</div>
+        <div class="pill">Clear pricing</div>
       </div>
     </div>
   </section>
 
-  <!-- CONTENT -->
   <section class="main-grid reviews-grid">
 
-    <!-- LEFT: REVIEWS -->
+    <!-- LEFT -->
     <article class="panel">
       <h2>What clients say</h2>
       <p class="sub">Short. Honest. Useful.</p>
 
-      <div id="reviewsList">
-        <!-- Reviews injected by JS -->
+      <!-- IMPORTANT: pre-filled reviews (so it never looks empty) -->
+      <div id="reviewsList" class="review-grid">
+        <div class="review-card">
+          <div class="review-head">
+            <div>
+              <div class="review-name">Jordan M.</div>
+              <div class="stars" aria-label="5 out of 5">★★★★★</div>
+            </div>
+            <div class="review-date">Nov 2024</div>
+          </div>
+          <div class="review-text">Showed up on time, moved fast, and the bathrooms looked brand new. Kitchen counters + sink were spotless.</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-head">
+            <div>
+              <div class="review-name">Emily R.</div>
+              <div class="stars" aria-label="5 out of 5">★★★★★</div>
+            </div>
+            <div class="review-date">Oct 2024</div>
+          </div>
+          <div class="review-text">Deep clean before guests. Floors looked great and the stove area finally didn’t feel greasy. Super easy communication.</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-head">
+            <div>
+              <div class="review-name">Chris T.</div>
+              <div class="stars" aria-label="4 out of 5">★★★★☆</div>
+            </div>
+            <div class="review-date">Oct 2024</div>
+          </div>
+          <div class="review-text">Clear pricing and no weird upsells. Solid clean. Only note: I should’ve booked a deep clean for the first visit.</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-head">
+            <div>
+              <div class="review-name">Maya S.</div>
+              <div class="stars" aria-label="5 out of 5">★★★★★</div>
+            </div>
+            <div class="review-date">Sep 2024</div>
+          </div>
+          <div class="review-text">We do bi-weekly now. They’re consistent and respectful of the space. Bathrooms and floors are always on point.</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-head">
+            <div>
+              <div class="review-name">Alex P.</div>
+              <div class="stars" aria-label="5 out of 5">★★★★★</div>
+            </div>
+            <div class="review-date">Aug 2024</div>
+          </div>
+          <div class="review-text">Move-out clean. Landlord had no complaints. Inside cabinets + fridge add-on was worth it.</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-head">
+            <div>
+              <div class="review-name">Samantha K.</div>
+              <div class="stars" aria-label="4 out of 5">★★★★☆</div>
+            </div>
+            <div class="review-date">Aug 2024</div>
+          </div>
+          <div class="review-text">Booked last minute and they still made it happen. Good attention to detail in the kitchen and bathroom.</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-head">
+            <div>
+              <div class="review-name">Derek W.</div>
+              <div class="stars" aria-label="5 out of 5">★★★★★</div>
+            </div>
+            <div class="review-date">Jul 2024</div>
+          </div>
+          <div class="review-text">Professional, efficient, and the quote matched the final price. That’s rare. Would recommend.</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-head">
+            <div>
+              <div class="review-name">Natalie B.</div>
+              <div class="stars" aria-label="5 out of 5">★★★★★</div>
+            </div>
+            <div class="review-date">Jun 2024</div>
+          </div>
+          <div class="review-text">I’m picky. They handled it. Base clean + oven add-on — kitchen looks and smells fresh.</div>
+        </div>
       </div>
+
+      <p class="small-note" style="margin-top:12px;">
+        These are example reviews for layout. Replace with real client feedback when live.
+      </p>
     </article>
 
-    <!-- RIGHT: FORM -->
+    <!-- RIGHT -->
     <aside class="panel">
       <h2>Leave a review</h2>
-      <p class="sub">Help others decide. Be fair. Be specific.</p>
+      <p class="sub">Help other people decide. Be fair. Be specific.</p>
 
       <form id="newReviewForm">
         <div class="form-grid">
@@ -94,6 +183,10 @@
         <div class="right-actions" style="justify-content:flex-end;margin-top:12px;">
           <button class="btn btn-primary" type="submit">Post Review</button>
         </div>
+
+        <p class="small-note" style="margin-top:10px;">
+          Posted reviews are saved in this browser (demo). For real reviews we’ll connect a form/email or Google reviews.
+        </p>
       </form>
     </aside>
 
@@ -110,3 +203,4 @@
 <script src="app.js"></script>
 </body>
 </html>
+
