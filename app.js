@@ -1,32 +1,25 @@
 /* ClearlinePDX — app.js
-   - Calculator (rich like original)
-   - Quote modal (mailto)
-   - Reviews (localStorage)
+   - Calculator logic + time estimate
+   - Add-ons: no "windows" or "laundry room" text
+   - Quote modal uses mailto
+   - Reviews stored in localStorage (demo)
 */
 
 const CONFIG = {
   businessName: "ClearlinePDX",
-  quoteEmail: "santa.on@gmail.com", // поменяй на свой
-  phoneTel: "+15035550123",         // поменяй на свой
+  quoteEmail: "santa.on@gmail.com", // change if needed
+  phoneTel: "+15035550123",
   phonePretty: "(503) 555-0123"
 };
 
 function $(sel, root=document){ return root.querySelector(sel); }
 function $all(sel, root=document){ return [...root.querySelectorAll(sel)]; }
 function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
-function money(n){
-  const v = Math.round(n);
-  return `$${v.toLocaleString("en-US")}`;
-}
+function money(n){ return `$${Math.round(n).toLocaleString("en-US")}`; }
 
-/* ---------- Call buttons ---------- */
 function wireCallButtons(){
-  $all("[data-call-btn]").forEach(a=>{
-    a.href = `tel:${CONFIG.phoneTel}`;
-  });
-  $all("[data-phone]").forEach(s=>{
-    s.textContent = CONFIG.phonePretty;
-  });
+  $all("[data-call-btn]").forEach(a => a.href = `tel:${CONFIG.phoneTel}`);
+  $all("[data-phone]").forEach(s => s.textContent = CONFIG.phonePretty);
 }
 
 /* ==============================
@@ -45,25 +38,53 @@ function initIndex(){
     sqftLabel: $("#sqftLabel"),
     condition: $("#condition"),
     pets: $("#pets"),
+
+    // Add-ons (IDs must match HTML)
     addonFridge: $("#addonFridge"),
     addonOven: $("#addonOven"),
-    addonWindows: $("#addonWindows"),
-    addonLaundry: $("#addonLaundry"),
+    addonMicrowave: $("#addonMicrowave"),
+    addonCabinets: $("#addonCabinets"),
+    addonLaundry: $("#addonLaundry"), // we repurposed this as "Blinds / window tracks"
+    addonBedSheets: $("#addonBedSheets"),
+    addonDish: $("#addonDish"),
+    addonBaseboards: $("#addonBaseboards"),
+    addonWalls: $("#addonWalls"),
+    addonPetHair: $("#addonPetHair"),
+    addonExtraDirty: $("#addonExtraDirty"),
+    addonPostConstruction: $("#addonPostConstruction"),
+
     estPrice: $("#estPrice"),
     estTime: $("#estTime"),
     estNotes: $("#estNotes"),
     openQuote: $all('[data-open-quote]')
   };
 
-  // Pricing model similar to what you had: base by bedrooms + adders
-  const baseByBeds = { studio: 105, 1: 130, 2: 160, 3: 215, 4: 275 };
+  // Base pricing anchors (Portland-ish ballpark)
+  const baseByBeds = { studio: 105, 1: 130, 2: 160, 3: 215, 4: 270 };
   const bathAdj = { 1: 0, 2: 18, 3: 35 };
   const typeAdj = { standard: 0, deep: 40, move: 55, office: 65 };
-  const conditionAdj = { normal: 0, messy: 35, heavy: 70 };
+  const conditionAdj = { normal: 0, messy: 30, heavy: 70 };
   const petsAdj = { none: 0, cat: 10, dog: 18, multiple: 28 };
   const frequencyMult = { onetime: 1.0, monthly: 0.93, biweekly: 0.88, weekly: 0.82 };
 
-  function estimateTimeHours(type, beds, baths, sqft, condition){
+  // Add-on pricing + time (hours)
+  const ADDONS = [
+    { id:"addonFridge",          price:25, time:0.30, label:"Inside fridge" },
+    { id:"addonOven",            price:30, time:0.35, label:"Inside oven" },
+    { id:"addonMicrowave",       price:10, time:0.12, label:"Inside microwave" },
+    { id:"addonCabinets",        price:35, time:0.45, label:"Inside cabinets" },
+    // repurposed
+    { id:"addonLaundry",         price:25, time:0.30, label:"Blinds / window tracks" },
+    { id:"addonBedSheets",       price:15, time:0.20, label:"Change bed sheets" },
+    { id:"addonDish",            price:25, time:0.35, label:"Dishes" },
+    { id:"addonBaseboards",      price:20, time:0.25, label:"Baseboards detail" },
+    { id:"addonWalls",           price:35, time:0.45, label:"Spot clean walls" },
+    { id:"addonPetHair",         price:25, time:0.30, label:"Pet hair boost" },
+    { id:"addonExtraDirty",      price:60, time:0.80, label:"Extra dirty / heavy buildup" },
+    { id:"addonPostConstruction",price:80, time:1.10, label:"Post-construction" }
+  ];
+
+  function estimateBaseHours(type, beds, baths, sqft, condition){
     let h = 2.0;
     const b = beds === "studio" ? 0 : parseInt(beds, 10);
     h += b * 0.9;
@@ -98,28 +119,43 @@ function initIndex(){
     const cAdj = conditionAdj[condition] ?? 0;
     const pAdj = petsAdj[pets] ?? 0;
 
-    const addons =
-      (el.addonFridge.checked ? 25 : 0) +
-      (el.addonOven.checked ? 25 : 0) +
-      (el.addonWindows.checked ? 45 : 0) +
-      (el.addonLaundry.checked ? 20 : 0);
+    // addons sum
+    let addonsPrice = 0;
+    let addonsTime = 0;
+    const picked = [];
 
-    let subtotal = base + bAdj + sAdj + tAdj + cAdj + pAdj + addons;
+    for(const a of ADDONS){
+      const node = el[a.id];
+      if(node && node.checked){
+        addonsPrice += a.price;
+        addonsTime += a.time;
+        picked.push(`${a.label} (+$${a.price})`);
+      }
+    }
+
+    // subtotal
+    let subtotal = base + bAdj + sAdj + tAdj + cAdj + pAdj + addonsPrice;
     subtotal *= (frequencyMult[freq] ?? 1);
     subtotal = Math.round(subtotal / 5) * 5;
 
-    const hours = estimateTimeHours(type, beds, baths, sqft, condition);
+    // hours
+    const baseHours = estimateBaseHours(type, beds, baths, sqft, condition);
+    const hours = clamp(baseHours + addonsTime, 2.0, 12.5);
 
     el.estPrice.textContent = money(subtotal);
     el.estTime.textContent = `${hours.toFixed(1)}–${(hours+0.7).toFixed(1)} hours`;
-    el.estNotes.textContent = (freq === "onetime")
-      ? "Ballpark estimate. Final quote after details."
+
+    const freqNote = (freq === "onetime")
+      ? "One-time estimate. Final quote after details."
       : "Maintenance estimate. Final quote after details.";
 
-    return { type, freq, beds, baths, sqft, condition, pets, addons, subtotal, hours };
+    const addonsNote = picked.length ? `Add-ons: ${picked.join(", ")}` : "No add-ons selected.";
+    el.estNotes.textContent = `${freqNote} ${addonsNote}`;
+
+    return { type, freq, beds, baths, sqft, condition, pets, subtotal, hours, addonsNote };
   }
 
-  // Bind
+  // Bind inputs
   $all("select, input", calc).forEach(x => x.addEventListener("change", compute));
   el.sqft.addEventListener("input", compute);
 
@@ -139,8 +175,8 @@ Baths: ${data.baths}
 Sqft: ${data.sqft}
 Condition: ${data.condition}
 Pets: ${data.pets}
-Add-ons: ${data.addons}
-Estimated time: ${data.hours.toFixed(1)}–${(data.hours+0.7).toFixed(1)} hours`;
+Estimated time: ${data.hours.toFixed(1)}–${(data.hours+0.7).toFixed(1)} hours
+${data.addonsNote}`;
 
     backdrop.style.display = "flex";
     modal.setAttribute("aria-hidden", "false");
@@ -154,7 +190,9 @@ Estimated time: ${data.hours.toFixed(1)}–${(data.hours+0.7).toFixed(1)} hours`
   el.openQuote.forEach(btn => btn.addEventListener("click", openModal));
   closeBtns.forEach(btn => btn.addEventListener("click", closeModal));
   backdrop.addEventListener("click", (e) => { if(e.target === backdrop) closeModal(); });
-  document.addEventListener("keydown", (e) => { if(e.key === "Escape" && backdrop.style.display === "flex") closeModal(); });
+  document.addEventListener("keydown", (e) => {
+    if(e.key === "Escape" && backdrop.style.display === "flex") closeModal();
+  });
 
   // mailto submit
   $("#quoteForm").addEventListener("submit", (e) => {
@@ -175,7 +213,7 @@ Estimated time: ${data.hours.toFixed(1)}–${(data.hours+0.7).toFixed(1)} hours`
 Name: ${name}
 Phone: ${phone}
 Email: ${email}
-Address: ${address}
+Address/Area: ${address}
 
 Estimate shown: ${estimate}
 
@@ -195,7 +233,7 @@ ${notes}
 }
 
 /* ==============================
-   REVIEWS: localStorage
+   REVIEWS: localStorage demo
 ================================ */
 const REV_KEY = "clearline_reviews_v1";
 
@@ -264,7 +302,7 @@ function initReviews(){
     const text = $("#r_text").value.trim();
 
     if(text.length < 10){
-      alert("Напиши чуть подробнее (минимум 10 символов).");
+      alert("Write a bit more (min 10 characters).");
       return;
     }
     const list = loadReviews();
