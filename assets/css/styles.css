@@ -1,22 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap');
 
 :root{
-  --bg: #F6F8F7;
-  --surface: #FFFFFF;
-  --text: #0F1A17;
-  --muted: #4C5A56;
-  --border: #D8E1DD;
+  --bg: #F5F7F6;
+  --surface: rgba(255,255,255,.82);
+  --text: #0E1714;
+  --muted: #4A5854;
+  --border: rgba(216,225,221,.85);
 
-  --primary: #2E8B7C;
-  --primary-2: #1E6F63;
-  --ring: rgba(46,139,124,.25);
+  /* more contrast / “richer” green */
+  --primary: #1F7F6F;
+  --primary-2: #156557;
+  --ring: rgba(31,127,111,.28);
 
-  --radius-sm: 8px;   /* buttons/inputs */
-  --radius-md: 14px;  /* cards */
-  --radius-lg: 18px;  /* hero */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
 
-  --shadow-sm: 0 8px 24px rgba(0,0,0,.06);
-  --shadow-md: 0 16px 44px rgba(0,0,0,.10);
+  --shadow-sm: 0 10px 26px rgba(0,0,0,.06);
+  --shadow-md: 0 18px 52px rgba(0,0,0,.10);
 
   --container: 1100px;
 }
@@ -29,8 +30,9 @@ body{
   font-family: "Inter Tight", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: var(--text);
   background:
-    radial-gradient(900px 500px at 15% 15%, rgba(46,139,124,.10), transparent 60%),
-    radial-gradient(900px 500px at 85% 25%, rgba(15,26,23,.06), transparent 55%),
+    radial-gradient(900px 520px at 18% 18%, rgba(31,127,111,.12), transparent 60%),
+    radial-gradient(900px 520px at 82% 20%, rgba(14,23,20,.08), transparent 58%),
+    radial-gradient(900px 520px at 80% 70%, rgba(31,127,111,.06), transparent 60%),
     var(--bg);
   overflow-x: hidden;
 }
@@ -47,13 +49,13 @@ small{ color: var(--muted); }
   margin: 0 auto;
 }
 
-/* ===== Navbar ===== */
+/* Navbar */
 .navbar{
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(246,248,247,.75);
-  backdrop-filter: blur(10px);
+  background: rgba(245,247,246,.78);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(216,225,221,.65);
 }
 
@@ -79,9 +81,9 @@ small{ color: var(--muted); }
   display: grid;
   place-items: center;
   background:
-    radial-gradient(18px 18px at 30% 30%, rgba(255,255,255,.9), rgba(255,255,255,.2)),
-    linear-gradient(135deg, rgba(46,139,124,.35), rgba(15,26,23,.12));
-  border: 1px solid rgba(216,225,221,.7);
+    radial-gradient(18px 18px at 30% 30%, rgba(255,255,255,.95), rgba(255,255,255,.2)),
+    linear-gradient(135deg, rgba(31,127,111,.38), rgba(14,23,20,.12));
+  border: 1px solid rgba(216,225,221,.75);
   box-shadow: 0 10px 22px rgba(0,0,0,.06);
 }
 
@@ -90,7 +92,7 @@ small{ color: var(--muted); }
   align-items: center;
   gap: 18px;
   font-weight: 650;
-  color: rgba(15,26,23,.82);
+  color: rgba(14,23,20,.84);
 }
 
 .nav-links a{
@@ -100,8 +102,8 @@ small{ color: var(--muted); }
 
 .nav-links a.active,
 .nav-links a:hover{
-  background: rgba(255,255,255,.6);
-  border: 1px solid rgba(216,225,221,.65);
+  background: rgba(255,255,255,.62);
+  border: 1px solid rgba(216,225,221,.70);
 }
 
 .nav-cta{
@@ -110,7 +112,7 @@ small{ color: var(--muted); }
   gap: 10px;
 }
 
-/* ===== Buttons ===== */
+/* Buttons */
 .btn{
   appearance: none;
   border: 1px solid transparent;
@@ -129,71 +131,61 @@ small{ color: var(--muted); }
 .btn-primary{
   background: var(--primary);
   color: #fff;
-  box-shadow: 0 10px 24px rgba(46,139,124,.22);
+  box-shadow: 0 12px 26px rgba(31,127,111,.22);
 }
 
 .btn-primary:hover{
   background: var(--primary-2);
-  box-shadow: 0 14px 30px rgba(46,139,124,.26);
+  box-shadow: 0 16px 34px rgba(31,127,111,.26);
 }
 
 .btn-secondary{
-  background: rgba(255,255,255,.72);
+  background: rgba(255,255,255,.78);
   color: var(--text);
-  border-color: var(--border);
+  border-color: rgba(216,225,221,.95);
 }
 
 .btn-secondary:hover{
-  border-color: rgba(46,139,124,.35);
+  border-color: rgba(31,127,111,.35);
   box-shadow: 0 10px 24px rgba(0,0,0,.06);
 }
 
 .btn-ghost{
   background: transparent;
-  border-color: rgba(216,225,221,.65);
-  color: rgba(15,26,23,.85);
+  border-color: rgba(216,225,221,.75);
+  color: rgba(14,23,20,.86);
 }
 
 .btn-ghost:hover{
-  background: rgba(255,255,255,.5);
+  background: rgba(255,255,255,.55);
 }
 
-/* ===== Hero ===== */
+/* Hero */
 .hero-wrap{ padding: 34px 0 28px; }
 
 .hero{
   border-radius: var(--radius-lg);
-  /* “not empty” look: add subtle blended hero.jpg only inside hero */
-  background-image:
-    radial-gradient(900px 420px at 85% 30%, rgba(46,139,124,.18), transparent 60%),
-    radial-gradient(700px 380px at 70% 20%, rgba(15,26,23,.10), transparent 55%),
-    linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70)),
-    url("../../hero.jpg");
-  background-size: cover;
-  background-position: center;
-  background-blend-mode: soft-light;
-  border: 1px solid rgba(216,225,221,.85);
+  background:
+    radial-gradient(900px 420px at 86% 28%, rgba(31,127,111,.22), transparent 60%),
+    radial-gradient(780px 420px at 70% 18%, rgba(14,23,20,.10), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.72));
+  border: 1px solid rgba(216,225,221,.90);
   box-shadow: var(--shadow-md);
   padding: 44px 42px;
   position: relative;
   overflow: hidden;
 }
 
-.hero::after{
-  content: "";
-  position: absolute;
-  inset: -40px -80px auto auto;
-  width: 380px;
-  height: 380px;
-  background: radial-gradient(circle at 30% 30%, rgba(46,139,124,.24), transparent 60%);
-  border-radius: 999px;
-  pointer-events: none;
-}
-
+/* Subtle “glass panel” behind text for readability */
 .hero-content{
   position: relative;
   z-index: 1;
-  max-width: 720px;
+  max-width: 760px;
+  background: rgba(255,255,255,.72);
+  border: 1px solid rgba(216,225,221,.80);
+  border-radius: 14px;
+  padding: 18px 18px;
+  backdrop-filter: blur(10px);
 }
 
 .hero-sub{
@@ -218,15 +210,15 @@ small{ color: var(--muted); }
 
 .pill{
   padding: 10px 12px;
-  border: 1px solid rgba(216,225,221,.85);
-  background: rgba(255,255,255,.6);
+  border: 1px solid rgba(216,225,221,.90);
+  background: rgba(255,255,255,.66);
   border-radius: 999px;
   font-weight: 650;
   font-size: 13px;
-  color: rgba(15,26,23,.85);
+  color: rgba(14,23,20,.86);
 }
 
-/* ===== Main grid / cards ===== */
+/* Main grid / cards */
 .grid{
   display: grid;
   grid-template-columns: 1.2fr .8fr;
@@ -235,11 +227,11 @@ small{ color: var(--muted); }
 }
 
 .card{
-  background: rgba(255,255,255,.78);
-  border: 1px solid rgba(216,225,221,.75);
+  background: var(--surface);
+  border: 1px solid rgba(216,225,221,.80);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
   padding: 20px;
 }
 
@@ -256,14 +248,14 @@ small{ color: var(--muted); }
 
 .label{
   font-size: 13px;
-  color: rgba(15,26,23,.75);
+  color: rgba(14,23,20,.76);
   font-weight: 650;
   margin-bottom: 8px;
 }
 
 .input, select, textarea{
   width: 100%;
-  border: 1px solid rgba(216,225,221,.95);
+  border: 1px solid rgba(216,225,221,.98);
   border-radius: var(--radius-sm);
   padding: 12px 12px;
   background: #fff;
@@ -274,7 +266,7 @@ small{ color: var(--muted); }
 }
 
 .input:focus, select:focus, textarea:focus{
-  border-color: rgba(46,139,124,.45);
+  border-color: rgba(31,127,111,.45);
   box-shadow: 0 0 0 4px var(--ring);
 }
 
@@ -285,7 +277,7 @@ small{ color: var(--muted); }
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  color: rgba(15,26,23,.78);
+  color: rgba(14,23,20,.78);
   font-size: 13px;
   font-weight: 650;
 }
@@ -299,33 +291,44 @@ small{ color: var(--muted); }
 }
 
 .check{
-  display: flex;
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
   gap: 10px;
-  align-items: flex-start;
+  align-items: start;
   padding: 12px;
   border-radius: 12px;
-  border: 1px solid rgba(216,225,221,.85);
-  background: rgba(255,255,255,.62);
+  border: 1px solid rgba(216,225,221,.88);
+  background: rgba(255,255,255,.64);
   cursor: pointer;
 }
 
 .check input{
-  margin-top: 4px;
+  margin-top: 3px;
   width: 18px;
   height: 18px;
 }
 
-.check b{
+.check-text b{
   display:block;
   font-weight: 750;
-  color: rgba(15,26,23,.92);
+  color: rgba(14,23,20,.92);
 }
 
-.check span{
+.check-text span{
   display:block;
   margin-top: 2px;
   font-size: 12px;
-  color: rgba(15,26,23,.62);
+  color: rgba(14,23,20,.62);
+}
+
+.check-price{
+  font-weight: 800;
+  color: rgba(14,23,20,.78);
+  background: rgba(255,255,255,.66);
+  border: 1px solid rgba(216,225,221,.82);
+  border-radius: 10px;
+  padding: 8px 10px;
+  line-height: 1;
 }
 
 /* Estimate */
@@ -333,8 +336,8 @@ small{ color: var(--muted); }
   margin-top: 14px;
   padding: 14px;
   border-radius: 12px;
-  border: 1px solid rgba(216,225,221,.85);
-  background: rgba(255,255,255,.62);
+  border: 1px solid rgba(216,225,221,.88);
+  background: rgba(255,255,255,.66);
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -348,7 +351,7 @@ small{ color: var(--muted); }
 
 .mini{
   font-size: 12px;
-  color: rgba(15,26,23,.6);
+  color: rgba(14,23,20,.60);
 }
 
 /* How it works */
@@ -358,9 +361,9 @@ small{ color: var(--muted); }
 }
 
 .step{
-  border: 1px solid rgba(216,225,221,.85);
+  border: 1px solid rgba(216,225,221,.88);
   border-radius: 12px;
-  background: rgba(255,255,255,.62);
+  background: rgba(255,255,255,.66);
   padding: 14px;
 }
 
@@ -372,14 +375,14 @@ small{ color: var(--muted); }
 /* Footer */
 .footer{
   padding: 26px 0 40px;
-  color: rgba(15,26,23,.6);
+  color: rgba(14,23,20,.60);
 }
 
 /* Modal */
 .modal-overlay{
   position: fixed;
   inset: 0;
-  background: rgba(15,26,23,.45);
+  background: rgba(14,23,20,.48);
   display: none;
   align-items: center;
   justify-content: center;
@@ -391,12 +394,12 @@ small{ color: var(--muted); }
 
 .modal{
   width: min(560px, 100%);
-  background: rgba(255,255,255,.92);
-  border: 1px solid rgba(216,225,221,.85);
+  background: rgba(255,255,255,.94);
+  border: 1px solid rgba(216,225,221,.88);
   border-radius: 16px;
   box-shadow: var(--shadow-md);
   padding: 18px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 }
 
 .modal-head{
@@ -425,18 +428,10 @@ small{ color: var(--muted); }
   flex-wrap: wrap;
 }
 
-/* Reviews page layout helpers (your reviews.html already uses .reviews-grid) */
-.reviews-grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  padding: 18px 0 34px;
-}
-
 @media (max-width: 900px){
   .grid{ grid-template-columns: 1fr; }
-  .reviews-grid{ grid-template-columns: 1fr; }
-  .hero{ padding: 34px 22px; }
+  .hero{ padding: 26px 18px; }
+  .hero-content{ padding: 16px; }
   .nav-links{ display: none; }
 }
 
