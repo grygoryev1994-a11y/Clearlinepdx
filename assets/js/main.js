@@ -1,9 +1,8 @@
 // assets/js/main.js
-
 (function(){
-  // ====== CONFIG ======
-  const COMPANY_PHONE = "+15035551234";      // <-- ВПИШИ СВОЙ
-  const COMPANY_EMAIL = "santa.on@gmail.com"; // <-- ВПИШИ СВОЙ (или тот, куда слать)
+  // ====== CONFIG (EDIT THESE) ======
+  const COMPANY_PHONE = "+15035551234";       // <-- put your number
+  const COMPANY_EMAIL = "santa.on@gmail.com"; // <-- put your email
 
   // ====== Helpers ======
   const $ = (sel, root=document) => root.querySelector(sel);
@@ -13,7 +12,7 @@
     return `$${Math.round(n).toLocaleString("en-US")}`;
   }
 
-  // ====== Navbar Call buttons ======
+  // ====== Call buttons ======
   $$("[data-call]").forEach(btn=>{
     btn.addEventListener("click", ()=>{
       window.location.href = `tel:${COMPANY_PHONE}`;
@@ -48,7 +47,7 @@
     });
   }
 
-  // ====== Calculator ======
+  // ====== Calculator elements ======
   const calc = {
     type: $("#cleaningType"),
     freq: $("#frequency"),
@@ -60,11 +59,16 @@
     pets: $("#pets"),
     totalEl: $("#estimateTotal"),
     detailsEl: $("#estimateDetails"),
+
+    // Add-ons (optional)
+    addonFridge: $("#addonFridge"),
+    addonOven: $("#addonOven"),
+    addonWindows: $("#addonWindows"),
+    addonPetHair: $("#addonPetHair"),
   };
 
   function getBaseRate({beds, baths}){
-    // Базовые цены (можешь менять)
-    // цель: правдоподобно для Portland
+    // Base pricing matrix (reasonable for Portland starters)
     const matrix = {
       "0": { "1": 105, "2": 125, "3": 145 },
       "1": { "1": 130, "2": 155, "3": 180 },
@@ -75,8 +79,6 @@
 
     const b = String(beds);
     const ba = String(baths);
-
-    // если вдруг нет — fallback
     if(!matrix[b] || !matrix[b][ba]) return 200;
     return matrix[b][ba];
   }
@@ -92,16 +94,14 @@
     const condition   = calc.condition?.value || "normal";
     const pets        = calc.pets?.value || "no";
 
-    // base
     let total = getBaseRate({beds, baths});
 
-    // sqft influence: smooth scaling around 1500-2200
-    // +$12 per 500 sqft above 1500, -$8 per 500 sqft below 1500 (cap)
+    // sqft adjustment
     const delta = sqft - 1500;
     const steps = delta / 500;
     total += steps > 0 ? steps * 12 : Math.max(steps * 8, -20);
 
-    // cleaning type multipliers
+    // type multipliers
     if(cleaningType === "deep") total *= 1.30;
     if(cleaningType === "move") total *= 1.55;
 
@@ -114,16 +114,28 @@
     if(condition === "heavy") total += 35;
     if(condition === "very-heavy") total += 65;
 
-    // pets
+    // pets selector
     if(pets === "yes") total += 20;
 
-    // round and clamp
-    total = Math.max(95, Math.min(total, 600));
+    // Add-ons (checkboxes)
+    if(calc.addonFridge?.checked) total += 25;
+    if(calc.addonOven?.checked) total += 30;
+    if(calc.addonWindows?.checked) total += 20;
+    if(calc.addonPetHair?.checked) total += 20;
+
+    // clamp
+    total = Math.max(95, Math.min(total, 700));
     total = Math.round(total);
 
     calc.totalEl.textContent = money(total);
 
-    // details
+    // Build details line
+    const addons = [];
+    if(calc.addonFridge?.checked) addons.push("fridge");
+    if(calc.addonOven?.checked) addons.push("oven");
+    if(calc.addonWindows?.checked) addons.push("windows");
+    if(calc.addonPetHair?.checked) addons.push("pet hair");
+
     if(calc.detailsEl){
       const lines = [
         `${beds} bed / ${baths} bath`,
@@ -131,17 +143,23 @@
         `${cleaningType} • ${frequency}`,
         `${condition}${pets === "yes" ? " • pets" : ""}`
       ];
+
+      if(addons.length) lines.push(`addons: ${addons.join(", ")}`);
       calc.detailsEl.textContent = lines.join(" · ");
     }
 
-    // update modal prefill if open
+    // update hidden prefill for quote form
     const hidden = $("#quotePrefill");
     if(hidden){
-      hidden.value = `Estimate: ${money(total)} | ${beds} bed / ${baths} bath | ${sqft} sq ft | ${cleaningType} | ${frequency} | condition: ${condition} | pets: ${pets}`;
+      hidden.value =
+        `Estimate: ${money(total)} | ` +
+        `${beds} bed / ${baths} bath | ${sqft} sq ft | ` +
+        `${cleaningType} | ${frequency} | condition: ${condition} | pets: ${pets}` +
+        (addons.length ? ` | addons: ${addons.join(", ")}` : "");
     }
   }
 
-  // init slider label
+  // slider label
   if(calc.sqft && calc.sqftLabel){
     const updateSqft = ()=> calc.sqftLabel.textContent = `${calc.sqft.value} sq ft`;
     calc.sqft.addEventListener("input", ()=>{
@@ -151,26 +169,31 @@
     updateSqft();
   }
 
-  // bind calculator fields
+  // binds
   [calc.type, calc.freq, calc.beds, calc.baths, calc.condition, calc.pets].forEach(el=>{
+    if(!el) return;
+    el.addEventListener("change", computeEstimate);
+  });
+
+  [calc.addonFridge, calc.addonOven, calc.addonWindows, calc.addonPetHair].forEach(el=>{
     if(!el) return;
     el.addEventListener("change", computeEstimate);
   });
 
   computeEstimate();
 
-  // ====== Quote form -> mailto (always works) ======
+  // ====== Quote form -> mailto ======
   const form = $("#quoteForm");
   if(form){
     form.addEventListener("submit", (e)=>{
       e.preventDefault();
 
-      const name = $("#qName").value.trim();
-      const phone = $("#qPhone").value.trim();
-      const email = $("#qEmail").value.trim();
-      const address = $("#qAddress").value.trim();
-      const message = $("#qMessage").value.trim();
-      const prefill = $("#quotePrefill").value;
+      const name = $("#qName")?.value.trim() || "";
+      const phone = $("#qPhone")?.value.trim() || "";
+      const email = $("#qEmail")?.value.trim() || "";
+      const address = $("#qAddress")?.value.trim() || "";
+      const message = $("#qMessage")?.value.trim() || "";
+      const prefill = $("#quotePrefill")?.value || "";
 
       const subject = encodeURIComponent(`ClearlinePDX Quote Request — ${name || "New lead"}`);
       const body = encodeURIComponent(
@@ -188,6 +211,12 @@ ${message}`
       window.location.href = `mailto:${COMPANY_EMAIL}?subject=${subject}&body=${body}`;
       closeModal();
       form.reset();
+
+      // reset addons if present
+      [calc.addonFridge, calc.addonOven, calc.addonWindows, calc.addonPetHair].forEach(el=>{
+        if(el) el.checked = false;
+      });
+      computeEstimate();
     });
   }
 
