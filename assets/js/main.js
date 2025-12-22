@@ -1,10 +1,17 @@
 // assets/js/main.js
 (function(){
   // ====== CONFIG (EDIT THESE) ======
-  const COMPANY_PHONE = "+15035551234";       // <-- put your number
-  const COMPANY_EMAIL = "santa.on@gmail.com"; // <-- put your email
+  const COMPANY_PHONE = "+15035551234";        // <-- put your number
+  const COMPANY_EMAIL = "santa.on@gmail.com";  // <-- put your email
 
-  // ====== Helpers ======
+  // Add-on prices (single source of truth)
+  const ADDON_PRICES = {
+    fridge: 25,
+    oven: 30,
+    windows: 20,
+    petHair: 20
+  };
+
   const $ = (sel, root=document) => root.querySelector(sel);
   const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
@@ -60,15 +67,24 @@
     totalEl: $("#estimateTotal"),
     detailsEl: $("#estimateDetails"),
 
-    // Add-ons (optional)
     addonFridge: $("#addonFridge"),
     addonOven: $("#addonOven"),
     addonWindows: $("#addonWindows"),
     addonPetHair: $("#addonPetHair"),
   };
 
+  // Paint prices into UI (so it never “disappears”)
+  function renderAddonPrices(){
+    const nodes = $$("[data-addon-price]");
+    nodes.forEach(n=>{
+      const key = n.getAttribute("data-addon-price");
+      if(!key || !(key in ADDON_PRICES)) return;
+      n.textContent = `+$${ADDON_PRICES[key]}`;
+    });
+  }
+  renderAddonPrices();
+
   function getBaseRate({beds, baths}){
-    // Base pricing matrix (reasonable for Portland starters)
     const matrix = {
       "0": { "1": 105, "2": 125, "3": 145 },
       "1": { "1": 130, "2": 155, "3": 180 },
@@ -76,11 +92,19 @@
       "3": { "1": 210, "2": 245, "3": 275 },
       "4": { "1": 255, "2": 295, "3": 335 },
     };
-
     const b = String(beds);
     const ba = String(baths);
     if(!matrix[b] || !matrix[b][ba]) return 200;
     return matrix[b][ba];
+  }
+
+  function getSelectedAddons(){
+    const addons = [];
+    if(calc.addonFridge?.checked) addons.push({key:"fridge", label:"fridge", price:ADDON_PRICES.fridge});
+    if(calc.addonOven?.checked) addons.push({key:"oven", label:"oven", price:ADDON_PRICES.oven});
+    if(calc.addonWindows?.checked) addons.push({key:"windows", label:"windows", price:ADDON_PRICES.windows});
+    if(calc.addonPetHair?.checked) addons.push({key:"petHair", label:"pet hair", price:ADDON_PRICES.petHair});
+    return addons;
   }
 
   function computeEstimate(){
@@ -117,24 +141,15 @@
     // pets selector
     if(pets === "yes") total += 20;
 
-    // Add-ons (checkboxes)
-    if(calc.addonFridge?.checked) total += 25;
-    if(calc.addonOven?.checked) total += 30;
-    if(calc.addonWindows?.checked) total += 20;
-    if(calc.addonPetHair?.checked) total += 20;
+    // add-ons (checkboxes)
+    const addons = getSelectedAddons();
+    addons.forEach(a => { total += a.price; });
 
-    // clamp
-    total = Math.max(95, Math.min(total, 700));
+    // clamp + round
+    total = Math.max(95, Math.min(total, 900));
     total = Math.round(total);
 
     calc.totalEl.textContent = money(total);
-
-    // Build details line
-    const addons = [];
-    if(calc.addonFridge?.checked) addons.push("fridge");
-    if(calc.addonOven?.checked) addons.push("oven");
-    if(calc.addonWindows?.checked) addons.push("windows");
-    if(calc.addonPetHair?.checked) addons.push("pet hair");
 
     if(calc.detailsEl){
       const lines = [
@@ -143,23 +158,22 @@
         `${cleaningType} • ${frequency}`,
         `${condition}${pets === "yes" ? " • pets" : ""}`
       ];
-
-      if(addons.length) lines.push(`addons: ${addons.join(", ")}`);
+      if(addons.length){
+        lines.push(`addons: ${addons.map(a=>a.label).join(", ")}`);
+      }
       calc.detailsEl.textContent = lines.join(" · ");
     }
 
-    // update hidden prefill for quote form
     const hidden = $("#quotePrefill");
     if(hidden){
       hidden.value =
         `Estimate: ${money(total)} | ` +
         `${beds} bed / ${baths} bath | ${sqft} sq ft | ` +
         `${cleaningType} | ${frequency} | condition: ${condition} | pets: ${pets}` +
-        (addons.length ? ` | addons: ${addons.join(", ")}` : "");
+        (addons.length ? ` | addons: ${addons.map(a=>`${a.label}+$${a.price}`).join(", ")}` : "");
     }
   }
 
-  // slider label
   if(calc.sqft && calc.sqftLabel){
     const updateSqft = ()=> calc.sqftLabel.textContent = `${calc.sqft.value} sq ft`;
     calc.sqft.addEventListener("input", ()=>{
@@ -169,7 +183,6 @@
     updateSqft();
   }
 
-  // binds
   [calc.type, calc.freq, calc.beds, calc.baths, calc.condition, calc.pets].forEach(el=>{
     if(!el) return;
     el.addEventListener("change", computeEstimate);
@@ -212,7 +225,6 @@ ${message}`
       closeModal();
       form.reset();
 
-      // reset addons if present
       [calc.addonFridge, calc.addonOven, calc.addonWindows, calc.addonPetHair].forEach(el=>{
         if(el) el.checked = false;
       });
