@@ -1,6 +1,3 @@
-/* assets/css/styles.css */
-
-/* ===== Google Font ===== */
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap');
 
 :root{
@@ -20,6 +17,8 @@
 
   --shadow-sm: 0 8px 24px rgba(0,0,0,.06);
   --shadow-md: 0 16px 44px rgba(0,0,0,.10);
+
+  --container: 1100px;
 }
 
 *{ box-sizing: border-box; }
@@ -33,6 +32,7 @@ body{
     radial-gradient(900px 500px at 15% 15%, rgba(46,139,124,.10), transparent 60%),
     radial-gradient(900px 500px at 85% 25%, rgba(15,26,23,.06), transparent 55%),
     var(--bg);
+  overflow-x: hidden;
 }
 
 a{ color: inherit; text-decoration: none; }
@@ -43,7 +43,7 @@ h2{ font-weight: 750; font-size: 22px; }
 small{ color: var(--muted); }
 
 .container{
-  width: min(1100px, calc(100% - 32px));
+  width: min(var(--container), calc(100% - 32px));
   margin: 0 auto;
 }
 
@@ -181,7 +181,6 @@ small{ color: var(--muted); }
   width: 380px;
   height: 380px;
   background: radial-gradient(circle at 30% 30%, rgba(46,139,124,.24), transparent 60%);
-  filter: blur(2px);
   border-radius: 999px;
   pointer-events: none;
 }
@@ -222,7 +221,7 @@ small{ color: var(--muted); }
   color: rgba(15,26,23,.85);
 }
 
-/* ===== Sections / Cards ===== */
+/* ===== Main grid / cards ===== */
 .grid{
   display: grid;
   grid-template-columns: 1.2fr .8fr;
@@ -275,9 +274,7 @@ small{ color: var(--muted); }
 }
 
 .range-wrap{ margin: 10px 0 6px; }
-.range{
-  width: 100%;
-}
+.range{ width: 100%; }
 
 .row-split{
   display: flex;
@@ -288,7 +285,7 @@ small{ color: var(--muted); }
   font-weight: 650;
 }
 
-/* Estimate result */
+/* Estimate */
 .estimate{
   margin-top: 14px;
   padding: 14px;
@@ -311,7 +308,7 @@ small{ color: var(--muted); }
   color: rgba(15,26,23,.6);
 }
 
-/* How it works list */
+/* How it works */
 .steps{
   display: grid;
   gap: 12px;
@@ -385,7 +382,7 @@ small{ color: var(--muted); }
   flex-wrap: wrap;
 }
 
-/* ===== Reviews page ===== */
+/* Reviews page */
 .reviews-grid{
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -393,29 +390,9 @@ small{ color: var(--muted); }
   padding: 18px 0 34px;
 }
 
-.review-item{
-  border: 1px solid rgba(216,225,221,.85);
-  border-radius: 14px;
-  background: rgba(255,255,255,.65);
-  padding: 16px;
-}
-
-.review-top{
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.stars{ letter-spacing: 1px; font-size: 14px; }
-.name{ font-weight: 800; }
-.date{ color: rgba(15,26,23,.55); font-size: 12px; font-weight: 650; }
-.quote{ color: rgba(15,26,23,.78); }
-
 @media (max-width: 900px){
   .grid{ grid-template-columns: 1fr; }
   .reviews-grid{ grid-template-columns: 1fr; }
   .hero{ padding: 34px 22px; }
-  .nav-links{ display: none; } /* если хочешь — сделаем бургер позже */
+  .nav-links{ display: none; }
 }
