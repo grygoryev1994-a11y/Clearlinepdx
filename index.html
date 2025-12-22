@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>ClearlinePDX — Cleaning Services in Portland</title>
+  <title>ClearlinePDX — Cleaning Services</title>
   <link rel="stylesheet" href="assets/css/styles.css"/>
 </head>
 <body>
@@ -28,7 +28,7 @@
     </div>
   </header>
 
-  <section class="hero-wrap">
+  <section class="hero-bleed">
     <div class="container">
       <div class="hero">
         <div class="hero-content">
@@ -42,7 +42,7 @@
 
           <div class="pills">
             <div class="pill">Whole-home cleaning</div>
-            <div class="pill">Interior windows included</div>
+            <div class="pill">Kitchen & baths focused</div>
             <div class="pill">Fast quotes</div>
           </div>
         </div>
@@ -50,12 +50,12 @@
     </div>
   </section>
 
-  <section class="container">
-    <div class="grid">
+  <section class="container section">
+    <div class="grid single-col">
 
       <div class="card">
         <h2>Smart Price Estimate</h2>
-        <p class="desc">Estimate includes whole-home cleaning + interior windows. Add extras only if you need them.</p>
+        <p class="desc">Estimate includes whole-home cleaning. Add extras only if you need them.</p>
 
         <div class="field-row">
           <div>
@@ -125,7 +125,7 @@
           </div>
         </div>
 
-        <!-- Add-ons (prices are back) -->
+        <!-- ✅ Add-ons WITHOUT windows and WITHOUT pet hair -->
         <div class="label" style="margin-top:14px;">Add-ons (optional)</div>
         <div class="addons">
           <label class="check">
@@ -134,7 +134,7 @@
               <b>Inside fridge</b>
               <span>Quick refresh</span>
             </div>
-            <div class="check-price" data-addon-price="fridge">+$25</div>
+            <div class="check-price" data-addon-price="fridge">+$0</div>
           </label>
 
           <label class="check">
@@ -143,25 +143,25 @@
               <b>Inside oven</b>
               <span>Degrease + detail</span>
             </div>
-            <div class="check-price" data-addon-price="oven">+$30</div>
+            <div class="check-price" data-addon-price="oven">+$0</div>
           </label>
 
           <label class="check">
-            <input type="checkbox" id="addonWindows">
+            <input type="checkbox" id="addonCabinets">
             <div class="check-text">
-              <b>Extra windows</b>
-              <span>Beyond included interior</span>
+              <b>Inside cabinets</b>
+              <span>Kitchen cabinet wipe-down</span>
             </div>
-            <div class="check-price" data-addon-price="windows">+$20</div>
+            <div class="check-price" data-addon-price="cabinets">+$0</div>
           </label>
 
           <label class="check">
-            <input type="checkbox" id="addonPetHair">
+            <input type="checkbox" id="addonMicrowave">
             <div class="check-text">
-              <b>Pet hair focus</b>
-              <span>Extra vacuum time</span>
+              <b>Inside microwave</b>
+              <span>Quick detail</span>
             </div>
-            <div class="check-price" data-addon-price="petHair">+$20</div>
+            <div class="check-price" data-addon-price="microwave">+$0</div>
           </label>
         </div>
 
@@ -175,7 +175,7 @@
 
         <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
           <button class="btn btn-primary" data-open-quote>Request Quote</button>
-          <a class="btn btn-secondary" href="reviews.html" style="display:inline-flex; align-items:center;">Read Reviews</a>
+          <a class="btn btn-secondary" href="reviews.html" style="display:inline-flex;align-items:center;">Read Reviews</a>
         </div>
       </div>
 
@@ -249,7 +249,7 @@
 
         <div>
           <div class="label">Message</div>
-          <textarea class="input" id="qMessage" rows="4" placeholder="Preferred date/time, any details, pets, special requests..."></textarea>
+          <textarea class="input" id="qMessage" rows="4" placeholder="Preferred date/time, any details, special requests..."></textarea>
         </div>
 
         <div class="modal-actions">
@@ -260,9 +260,7 @@
     </div>
   </div>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>
