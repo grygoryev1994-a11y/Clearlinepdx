@@ -2,7 +2,6 @@
   const COMPANY_PHONE = "+15035551234";        // <- поставь свой
   const COMPANY_EMAIL = "santa.on@gmail.com";  // <- поставь свой
 
-  // ✅ Add-ons we want (NO windows, NO pet hair)
   const ADDON_PRICES = {
     fridge: 25,
     oven: 30,
@@ -12,15 +11,65 @@
 
   const $ = (s, r=document)=> r.querySelector(s);
   const $$ = (s, r=document)=> Array.from(r.querySelectorAll(s));
-
   const money = (n)=> `$${Math.round(n).toLocaleString("en-US")}`;
 
-  // Call buttons
+  /* =========================
+     Call buttons
+  ========================= */
   $$("[data-call]").forEach(b=>{
     b.addEventListener("click", ()=> window.location.href = `tel:${COMPANY_PHONE}`);
   });
 
-  // Modal
+  /* =========================
+     Mobile menu (burger)
+  ========================= */
+  const navToggle = $(".nav-toggle");
+  const mobileNav = $("#mobileNav");
+  const mobileClose = $(".mobile-close");
+  const mobileLinks = mobileNav ? $$("a", mobileNav) : [];
+
+  function openMobileNav(){
+    if(!mobileNav || !navToggle) return;
+    mobileNav.classList.add("open");
+    mobileNav.setAttribute("aria-hidden", "false");
+    navToggle.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMobileNav(){
+    if(!mobileNav || !navToggle) return;
+    mobileNav.classList.remove("open");
+    mobileNav.setAttribute("aria-hidden", "true");
+    navToggle.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
+
+  if(navToggle && mobileNav){
+    navToggle.addEventListener("click", ()=>{
+      const isOpen = mobileNav.classList.contains("open");
+      isOpen ? closeMobileNav() : openMobileNav();
+    });
+
+    if(mobileClose) mobileClose.addEventListener("click", closeMobileNav);
+
+    // close on overlay click
+    mobileNav.addEventListener("click", (e)=>{
+      if(e.target === mobileNav) closeMobileNav();
+    });
+
+    // close on link click (and allow anchor navigation)
+    mobileLinks.forEach(a=>{
+      a.addEventListener("click", ()=> closeMobileNav());
+    });
+
+    document.addEventListener("keydown", (e)=>{
+      if(e.key === "Escape") closeMobileNav();
+    });
+  }
+
+  /* =========================
+     Quote Modal
+  ========================= */
   const overlay = $("#quoteModal");
   const openBtns = $$("[data-open-quote]");
   const closeBtns = $$("[data-close-quote]");
@@ -30,7 +79,7 @@
     overlay.classList.add("open");
     document.body.style.overflow = "hidden";
 
-    // IMPORTANT: show estimate in message automatically
+    // prefill estimate into message
     const msg = $("#qMessage");
     const prefill = $("#quotePrefill")?.value || "";
     if(msg && prefill && !msg.value.includes("Estimate:")){
@@ -43,7 +92,11 @@
     document.body.style.overflow = "";
   }
 
-  openBtns.forEach(b=> b.addEventListener("click", openModal));
+  openBtns.forEach(b=> b.addEventListener("click", ()=>{
+    // If mobile menu is open, close it before opening modal
+    closeMobileNav();
+    openModal();
+  }));
   closeBtns.forEach(b=> b.addEventListener("click", closeModal));
 
   if(overlay){
@@ -51,7 +104,9 @@
     document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeModal(); });
   }
 
-  // Calculator elements
+  /* =========================
+     Calculator
+  ========================= */
   const calc = {
     type: $("#cleaningType"),
     freq: $("#frequency"),
@@ -70,7 +125,7 @@
     addonMicrowave: $("#addonMicrowave"),
   };
 
-  // paint add-on prices into UI
+  // Paint add-on prices
   $$("[data-addon-price]").forEach(n=>{
     const key = n.getAttribute("data-addon-price");
     if(key && ADDON_PRICES[key] != null) n.textContent = `+$${ADDON_PRICES[key]}`;
@@ -128,7 +183,7 @@
     if(condition==="heavy") total += 35;
     if(condition==="very-heavy") total += 65;
 
-    // pets (ONLY here, NOT in add-ons)
+    // pets (only here)
     if(pets==="yes") total += 20;
 
     // add-ons
@@ -203,4 +258,26 @@ ${message}`
       closeModal();
     });
   }
+
+  // Smooth scroll for in-page anchors (nice UX)
+  document.addEventListener("click", (e)=>{
+    const a = e.target.closest("a[href^='#'], a[href*='index.html#']");
+    if(!a) return;
+
+    const href = a.getAttribute("href") || "";
+    const hash = href.includes("#") ? href.slice(href.indexOf("#")) : "";
+    if(!hash || hash === "#") return;
+
+    const id = hash.replace("#","");
+    const el = document.getElementById(id);
+    if(!el) return;
+
+    // only for same-page anchors
+    if(href.startsWith("#") || (href.startsWith("index.html#") && location.pathname.endsWith("index.html"))){
+      e.preventDefault();
+      closeMobileNav();
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      history.replaceState(null, "", hash);
+    }
+  });
 })();
