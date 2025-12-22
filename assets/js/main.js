@@ -2,7 +2,13 @@
   const COMPANY_PHONE = "+15035551234";        // <- поставь свой
   const COMPANY_EMAIL = "santa.on@gmail.com";  // <- поставь свой
 
-  const ADDON_PRICES = { fridge:25, oven:30, windows:20, petHair:20 };
+  // ✅ Add-ons we want (NO windows, NO pet hair)
+  const ADDON_PRICES = {
+    fridge: 25,
+    oven: 30,
+    cabinets: 35,
+    microwave: 15
+  };
 
   const $ = (s, r=document)=> r.querySelector(s);
   const $$ = (s, r=document)=> Array.from(r.querySelectorAll(s));
@@ -19,25 +25,16 @@
   const openBtns = $$("[data-open-quote]");
   const closeBtns = $$("[data-close-quote]");
 
-  function getPrefillText(){
-    const hidden = $("#quotePrefill");
-    return hidden?.value ? `\n\n---\n${hidden.value}\n---\n` : "";
-  }
-
   function openModal(){
     if(!overlay) return;
     overlay.classList.add("open");
     document.body.style.overflow = "hidden";
 
-    // IMPORTANT: put estimate into textarea so user sees it
+    // IMPORTANT: show estimate in message automatically
     const msg = $("#qMessage");
-    const prefill = getPrefillText();
-    if(msg){
-      const base = msg.value.trim();
-      // don’t spam duplicates
-      if(!base.includes("Estimate:") && prefill){
-        msg.value = (base ? base + "\n" : "") + prefill.trim();
-      }
+    const prefill = $("#quotePrefill")?.value || "";
+    if(msg && prefill && !msg.value.includes("Estimate:")){
+      msg.value = (msg.value.trim() ? msg.value.trim() + "\n\n" : "") + prefill;
     }
   }
   function closeModal(){
@@ -54,7 +51,7 @@
     document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeModal(); });
   }
 
-  // Calculator
+  // Calculator elements
   const calc = {
     type: $("#cleaningType"),
     freq: $("#frequency"),
@@ -66,10 +63,11 @@
     pets: $("#pets"),
     totalEl: $("#estimateTotal"),
     detailsEl: $("#estimateDetails"),
+
     addonFridge: $("#addonFridge"),
     addonOven: $("#addonOven"),
-    addonWindows: $("#addonWindows"),
-    addonPetHair: $("#addonPetHair"),
+    addonCabinets: $("#addonCabinets"),
+    addonMicrowave: $("#addonMicrowave"),
   };
 
   // paint add-on prices into UI
@@ -94,8 +92,8 @@
     const a = [];
     if(calc.addonFridge?.checked) a.push(["fridge", ADDON_PRICES.fridge]);
     if(calc.addonOven?.checked) a.push(["oven", ADDON_PRICES.oven]);
-    if(calc.addonWindows?.checked) a.push(["windows", ADDON_PRICES.windows]);
-    if(calc.addonPetHair?.checked) a.push(["pet hair", ADDON_PRICES.petHair]);
+    if(calc.addonCabinets?.checked) a.push(["cabinets", ADDON_PRICES.cabinets]);
+    if(calc.addonMicrowave?.checked) a.push(["microwave", ADDON_PRICES.microwave]);
     return a;
   }
 
@@ -130,14 +128,14 @@
     if(condition==="heavy") total += 35;
     if(condition==="very-heavy") total += 65;
 
-    // pets
+    // pets (ONLY here, NOT in add-ons)
     if(pets==="yes") total += 20;
 
-    // addons
+    // add-ons
     const addons = selectedAddons();
     addons.forEach(([,price])=> total += price);
 
-    total = Math.max(95, Math.min(total, 1200));
+    total = Math.max(95, Math.min(total, 1400));
     total = Math.round(total);
 
     calc.totalEl.textContent = money(total);
@@ -151,7 +149,6 @@
     if(addons.length) details.push(`addons: ${addons.map(x=>x[0]).join(", ")}`);
     if(calc.detailsEl) calc.detailsEl.textContent = details.join(" · ");
 
-    // hidden prefill used by modal + email
     const hidden = $("#quotePrefill");
     if(hidden){
       hidden.value =
@@ -167,8 +164,9 @@
     paint();
   }
 
-  [calc.type, calc.freq, calc.beds, calc.baths, calc.condition, calc.pets,
-   calc.addonFridge, calc.addonOven, calc.addonWindows, calc.addonPetHair
+  [
+    calc.type, calc.freq, calc.beds, calc.baths, calc.condition, calc.pets,
+    calc.addonFridge, calc.addonOven, calc.addonCabinets, calc.addonMicrowave
   ].forEach(el=>{
     if(el) el.addEventListener("change", compute);
   });
