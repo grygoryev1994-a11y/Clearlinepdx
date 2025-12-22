@@ -8,7 +8,6 @@
 </head>
 <body>
 
-  <!-- Navbar -->
   <header class="navbar">
     <div class="container nav-inner">
       <a class="brand" href="index.html">
@@ -29,7 +28,6 @@
     </div>
   </header>
 
-  <!-- Hero -->
   <section class="hero-wrap">
     <div class="container">
       <div class="hero">
@@ -52,11 +50,9 @@
     </div>
   </section>
 
-  <!-- Main grid -->
   <section class="container">
     <div class="grid">
 
-      <!-- Calculator -->
       <div class="card">
         <h2>Smart Price Estimate</h2>
         <p class="desc">Estimate includes whole-home cleaning + interior windows. Add extras only if you need them.</p>
@@ -129,39 +125,43 @@
           </div>
         </div>
 
-        <!-- Add-ons (RETURNED) -->
+        <!-- Add-ons (prices are back) -->
         <div class="label" style="margin-top:14px;">Add-ons (optional)</div>
         <div class="addons">
           <label class="check">
             <input type="checkbox" id="addonFridge">
-            <div>
+            <div class="check-text">
               <b>Inside fridge</b>
               <span>Quick refresh</span>
             </div>
+            <div class="check-price" data-addon-price="fridge">+$25</div>
           </label>
 
           <label class="check">
             <input type="checkbox" id="addonOven">
-            <div>
+            <div class="check-text">
               <b>Inside oven</b>
               <span>Degrease + detail</span>
             </div>
+            <div class="check-price" data-addon-price="oven">+$30</div>
           </label>
 
           <label class="check">
             <input type="checkbox" id="addonWindows">
-            <div>
+            <div class="check-text">
               <b>Extra windows</b>
               <span>Beyond included interior</span>
             </div>
+            <div class="check-price" data-addon-price="windows">+$20</div>
           </label>
 
           <label class="check">
             <input type="checkbox" id="addonPetHair">
-            <div>
+            <div class="check-text">
               <b>Pet hair focus</b>
               <span>Extra vacuum time</span>
             </div>
+            <div class="check-price" data-addon-price="petHair">+$20</div>
           </label>
         </div>
 
@@ -179,7 +179,6 @@
         </div>
       </div>
 
-      <!-- How it works -->
       <div class="card">
         <h2>How it works</h2>
         <p class="desc">Simple process. Clean results.</p>
@@ -208,14 +207,12 @@
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <small>© <span id="year"></span> ClearlinePDX • Portland, OR</small>
     </div>
   </footer>
 
-  <!-- Quote Modal -->
   <div class="modal-overlay" id="quoteModal" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-label="Request a quote">
       <div class="modal-head">
