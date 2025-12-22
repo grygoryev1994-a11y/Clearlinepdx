@@ -8,157 +8,122 @@
 </head>
 <body>
 
-  <header class="navbar">
-    <div class="container nav-inner">
-      <a class="brand" href="index.html">
-        <div class="brand-badge">⌂</div>
-        <div>ClearlinePDX</div>
-      </a>
+<header class="navbar">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html">
+      <div class="brand-badge">⌂</div>
+      <div>ClearlinePDX</div>
+    </a>
 
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a class="active" href="reviews.html">Reviews</a>
-        <a href="services.html">Services</a>
-        <a href="contact.html">Contact</a>
-      </nav>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a class="active" href="reviews.html">Reviews</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+    </nav>
 
-      <div class="nav-cta">
-        <button class="btn btn-secondary" data-call>Call</button>
-      </div>
+    <div class="nav-cta">
+      <button class="btn btn-secondary" data-call>Call</button>
     </div>
-  </header>
+  </div>
+</header>
 
-  <section class="hero-wrap">
-    <div class="container">
-      <div class="hero">
-        <div class="hero-content">
-          <h1>Reviews</h1>
-          <p class="hero-sub">Real feedback from Portland clients. Consistency over hype.</p>
+<section class="hero-bleed">
+  <div class="container">
+    <div class="hero">
+      <div class="hero-content">
+        <h1>Reviews</h1>
+        <p class="hero-sub">Real feedback from Portland clients. Consistency over hype.</p>
 
-          <div class="hero-actions">
-            <a class="btn btn-secondary" href="index.html">Get estimate</a>
-            <button class="btn btn-primary" data-open-quote>Request quote</button>
-          </div>
+        <div class="hero-actions">
+          <a class="btn btn-secondary" href="index.html">Get estimate</a>
+          <a class="btn btn-primary" href="index.html#quote">Request quote</a>
+        </div>
 
-          <div class="pills">
-            <div class="pill">On-time arrivals</div>
-            <div class="pill">Clear pricing</div>
-            <div class="pill">Reliable quality</div>
-          </div>
+        <div class="pills">
+          <div class="pill">On-time arrivals</div>
+          <div class="pill">Clear pricing</div>
+          <div class="pill">Reliable quality</div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="container">
-    <div class="reviews-grid">
+<section class="container section">
+  <div class="stack">
 
-      <div class="card">
-        <h2>What clients say</h2>
-        <p class="desc">A few recent reviews. You can add yours below.</p>
+    <div class="card">
+      <div class="reviews-head">
+        <div>
+          <h2>What clients say</h2>
+          <p class="desc">A few recent reviews. You can add yours below.</p>
+        </div>
 
-        <div id="reviewsList" class="reviews-grid" style="grid-template-columns:1fr; padding:0; gap:12px;"></div>
+        <div class="reviews-summary">
+          <div class="avg">
+            <div class="avg-num" id="avgRating">4.9</div>
+            <div class="avg-sub">
+              <div class="stars" aria-hidden="true">
+                <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span>
+              </div>
+              <div class="mini" id="reviewCount">— reviews</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="card">
-        <h2>Leave a review</h2>
-        <p class="desc">It takes 30 seconds. Be honest — we actually use this feedback.</p>
+      <div class="reviews-grid" id="reviewsList">
+        <!-- reviews.js will render cards here -->
+      </div>
+    </div>
 
-        <form id="reviewForm">
-          <div style="margin-bottom:12px;">
+    <div class="card">
+      <h2>Leave a review</h2>
+      <p class="desc">It takes 30 seconds. Be honest — we actually use this feedback.</p>
+
+      <form id="reviewForm">
+        <div class="field-row">
+          <div>
             <div class="label">Name</div>
             <input class="input" id="rName" placeholder="Your name" required/>
           </div>
-
-          <div class="field-row">
-            <div>
-              <div class="label">Rating</div>
-              <select id="rStars">
-                <option value="5" selected>★★★★★ (5)</option>
-                <option value="4">★★★★☆ (4)</option>
-                <option value="3">★★★☆☆ (3)</option>
-                <option value="2">★★☆☆☆ (2)</option>
-                <option value="1">★☆☆☆☆ (1)</option>
-              </select>
-            </div>
-            <div>
-              <div class="label">Quick note</div>
-              <input class="input" value="Portland, OR" disabled/>
-            </div>
-          </div>
-
-          <div style="margin-bottom:12px;">
-            <div class="label">Your review</div>
-            <textarea class="input" id="rText" rows="5" placeholder="What went well? What could be better? (10+ characters)" required></textarea>
-          </div>
-
-          <div style="display:flex; gap:10px; justify-content:flex-end;">
-            <button class="btn btn-primary" type="submit">Post review</button>
-          </div>
-        </form>
-      </div>
-
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="container">
-      <small>© <span id="year"></span> ClearlinePDX • Portland, OR</small>
-    </div>
-  </footer>
-
-  <!-- Quote Modal (same as index) -->
-  <div class="modal-overlay" id="quoteModal" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Request a quote">
-      <div class="modal-head">
-        <div class="modal-title">Request a quote</div>
-        <button class="btn btn-ghost modal-close" data-close-quote type="button">Close</button>
-      </div>
-
-      <p style="margin-bottom:12px;">Send your details — we’ll confirm scope and availability fast.</p>
-
-      <form id="quoteForm">
-        <input type="hidden" id="quotePrefill" value="Reviews page — request quote"/>
-
-        <div class="field-row">
           <div>
-            <div class="label">Name</div>
-            <input class="input" id="qName" placeholder="Your name" required/>
-          </div>
-          <div>
-            <div class="label">Phone</div>
-            <input class="input" id="qPhone" placeholder="(503) 000-0000" required/>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div>
-            <div class="label">Email</div>
-            <input class="input" id="qEmail" type="email" placeholder="you@email.com"/>
-          </div>
-          <div>
-            <div class="label">Address / Area</div>
-            <input class="input" id="qAddress" placeholder="Portland, OR"/>
+            <div class="label">Rating</div>
+            <select id="rStars">
+              <option value="5" selected>★★★★★ (5)</option>
+              <option value="4">★★★★☆ (4)</option>
+              <option value="3">★★★☆☆ (3)</option>
+              <option value="2">★★☆☆☆ (2)</option>
+              <option value="1">★☆☆☆☆ (1)</option>
+            </select>
           </div>
         </div>
 
         <div>
-          <div class="label">Message</div>
-          <textarea class="input" id="qMessage" rows="4" placeholder="Preferred date/time, any details, pets, special requests..."></textarea>
+          <div class="label">Review</div>
+          <textarea class="input" id="rText" rows="4" placeholder="What went well? What could be better?" required></textarea>
         </div>
 
-        <div class="modal-actions">
-          <button class="btn btn-secondary" data-close-quote type="button">Cancel</button>
-          <button class="btn btn-primary" type="submit">Send</button>
+        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-primary" type="submit">Submit</button>
+          <a class="btn btn-secondary" href="index.html">Back to estimate</a>
         </div>
       </form>
     </div>
-  </div>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/reviews.js"></script>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <small>© <span id="year"></span> ClearlinePDX • Portland, OR</small>
+  </div>
+</footer>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/reviews.js"></script>
 </body>
 </html>
+
