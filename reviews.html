@@ -1,151 +1,164 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Reviews — ClearlinePDX</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>ClearlinePDX — Reviews</title>
+  <link rel="stylesheet" href="assets/css/styles.css"/>
 </head>
 <body>
 
-<header class="navbar">
-  <div class="container navbar-inner">
-    <div class="brand">
-      <div class="brand-badge" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M3 10.5L12 3l9 7.5" stroke="rgba(15,42,42,.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M5.5 10.5V21h13V10.5" stroke="rgba(15,42,42,.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-badge">⌂</div>
+        <div>ClearlinePDX</div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a class="active" href="reviews.html">Reviews</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-cta">
+        <button class="btn btn-secondary" data-call>Call</button>
       </div>
-      <span>ClearlinePDX</span>
     </div>
+  </header>
 
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="reviews.html">Reviews</a>
-      <a href="index.html#services">Services</a>
-      <a href="index.html#contact">Contact</a>
-    </nav>
+  <section class="hero-wrap">
+    <div class="container">
+      <div class="hero">
+        <div class="hero-content">
+          <h1>Reviews</h1>
+          <p class="hero-sub">Real feedback from Portland clients. Consistency over hype.</p>
 
-    <div class="nav-cta">
-      <a class="btn btn-ghost" href="tel:+15035550123">Call</a>
-    </div>
-  </div>
-</header>
+          <div class="hero-actions">
+            <a class="btn btn-secondary" href="index.html">Get estimate</a>
+            <button class="btn btn-primary" data-open-quote>Request quote</button>
+          </div>
 
-<main class="container" id="reviewsPage">
-
-  <section class="hero">
-    <div class="hero-card">
-      <h1>Reviews</h1>
-      <p>Recent client feedback from Portland.</p>
-
-      <div class="pills">
-        <div class="pill">On-time</div>
-        <div class="pill">Clear pricing</div>
-        <div class="pill">Consistent quality</div>
+          <div class="pills">
+            <div class="pill">On-time arrivals</div>
+            <div class="pill">Clear pricing</div>
+            <div class="pill">Reliable quality</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="main-grid reviews-grid">
+  <section class="container">
+    <div class="reviews-grid">
 
-    <!-- LEFT -->
-    <article class="panel">
-      <h2>What clients say</h2>
-      <p class="sub">Short. Honest. Useful.</p>
+      <div class="card">
+        <h2>What clients say</h2>
+        <p class="desc">A few recent reviews. You can add yours below.</p>
 
-      <!-- 3 свежих отзыва по умолчанию -->
-      <div id="reviewsList" class="review-grid">
-        <div class="review-card">
-          <div class="review-head">
-            <div>
-              <div class="review-name">Jordan M.</div>
-              <div class="stars" aria-label="5 out of 5">★★★★★</div>
-            </div>
-            <div class="review-date">Dec 2025</div>
-          </div>
-          <div class="review-text">On time, super detailed. Bathrooms looked brand new and the kitchen counters were perfect.</div>
-        </div>
-
-        <div class="review-card">
-          <div class="review-head">
-            <div>
-              <div class="review-name">Emily R.</div>
-              <div class="stars" aria-label="5 out of 5">★★★★★</div>
-            </div>
-            <div class="review-date">Dec 2025</div>
-          </div>
-          <div class="review-text">Deep clean before guests — floors and stove area finally felt “reset”. Easy communication.</div>
-        </div>
-
-        <div class="review-card">
-          <div class="review-head">
-            <div>
-              <div class="review-name">Chris T.</div>
-              <div class="stars" aria-label="4 out of 5">★★★★☆</div>
-            </div>
-            <div class="review-date">Nov 2025</div>
-          </div>
-          <div class="review-text">Quote matched the final price. Solid work. Next time I’ll book deep clean for the first visit.</div>
-        </div>
+        <div id="reviewsList" class="reviews-grid" style="grid-template-columns:1fr; padding:0; gap:12px;"></div>
       </div>
 
-      <p class="small-note" style="margin-top:12px;">
-        When you start collecting real reviews, replace these with actual client feedback.
-      </p>
-    </article>
+      <div class="card">
+        <h2>Leave a review</h2>
+        <p class="desc">It takes 30 seconds. Be honest — we actually use this feedback.</p>
 
-    <!-- RIGHT -->
-    <aside class="panel">
-      <h2>Leave a review</h2>
-      <p class="sub">Help other people decide. Be fair. Be specific.</p>
-
-      <form id="newReviewForm">
-        <div class="form-grid">
-          <div class="field">
-            <label for="r_name">Name</label>
-            <input class="input" id="r_name" placeholder="Your name (optional)" />
+        <form id="reviewForm">
+          <div style="margin-bottom:12px;">
+            <div class="label">Name</div>
+            <input class="input" id="rName" placeholder="Your name" required/>
           </div>
 
-          <div class="field">
-            <label for="r_rating">Rating</label>
-            <select id="r_rating">
-              <option value="5">★★★★★ (5)</option>
-              <option value="4">★★★★☆ (4)</option>
-              <option value="3">★★★☆☆ (3)</option>
-              <option value="2">★★☆☆☆ (2)</option>
-              <option value="1">★☆☆☆☆ (1)</option>
-            </select>
+          <div class="field-row">
+            <div>
+              <div class="label">Rating</div>
+              <select id="rStars">
+                <option value="5" selected>★★★★★ (5)</option>
+                <option value="4">★★★★☆ (4)</option>
+                <option value="3">★★★☆☆ (3)</option>
+                <option value="2">★★☆☆☆ (2)</option>
+                <option value="1">★☆☆☆☆ (1)</option>
+              </select>
+            </div>
+            <div>
+              <div class="label">Quick note</div>
+              <input class="input" value="Portland, OR" disabled/>
+            </div>
           </div>
 
-          <div class="field slider-row">
-            <label for="r_text">Review</label>
-            <textarea id="r_text" placeholder="What did you like? What could be better? (min 10 chars)" required></textarea>
+          <div style="margin-bottom:12px;">
+            <div class="label">Your review</div>
+            <textarea class="input" id="rText" rows="5" placeholder="What went well? What could be better? (10+ characters)" required></textarea>
           </div>
-        </div>
 
-        <div class="right-actions" style="justify-content:flex-end;margin-top:12px;">
-          <button class="btn btn-primary" type="submit">Post Review</button>
-        </div>
+          <div style="display:flex; gap:10px; justify-content:flex-end;">
+            <button class="btn btn-primary" type="submit">Post review</button>
+          </div>
+        </form>
+      </div>
 
-        <p class="small-note" style="margin-top:10px;">
-          Demo: posted reviews are saved in this browser (localStorage).
-        </p>
-      </form>
-    </aside>
-
+    </div>
   </section>
 
   <footer class="footer">
-    © <span id="year"></span> ClearlinePDX • Portland, OR
+    <div class="container">
+      <small>© <span id="year"></span> ClearlinePDX • Portland, OR</small>
+    </div>
   </footer>
-</main>
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
-<script src="app.js"></script>
+  <!-- Quote Modal (same as index) -->
+  <div class="modal-overlay" id="quoteModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Request a quote">
+      <div class="modal-head">
+        <div class="modal-title">Request a quote</div>
+        <button class="btn btn-ghost modal-close" data-close-quote type="button">Close</button>
+      </div>
+
+      <p style="margin-bottom:12px;">Send your details — we’ll confirm scope and availability fast.</p>
+
+      <form id="quoteForm">
+        <input type="hidden" id="quotePrefill" value="Reviews page — request quote"/>
+
+        <div class="field-row">
+          <div>
+            <div class="label">Name</div>
+            <input class="input" id="qName" placeholder="Your name" required/>
+          </div>
+          <div>
+            <div class="label">Phone</div>
+            <input class="input" id="qPhone" placeholder="(503) 000-0000" required/>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div>
+            <div class="label">Email</div>
+            <input class="input" id="qEmail" type="email" placeholder="you@email.com"/>
+          </div>
+          <div>
+            <div class="label">Address / Area</div>
+            <input class="input" id="qAddress" placeholder="Portland, OR"/>
+          </div>
+        </div>
+
+        <div>
+          <div class="label">Message</div>
+          <textarea class="input" id="qMessage" rows="4" placeholder="Preferred date/time, any details, pets, special requests..."></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-secondary" data-close-quote type="button">Cancel</button>
+          <button class="btn btn-primary" type="submit">Send</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/reviews.js"></script>
 </body>
 </html>
-
