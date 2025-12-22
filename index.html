@@ -8,259 +8,294 @@
 </head>
 <body>
 
-  <header class="navbar">
-    <div class="container nav-inner">
-      <a class="brand" href="index.html">
-        <div class="brand-badge">⌂</div>
-        <div>ClearlinePDX</div>
-      </a>
+<header class="navbar">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html">
+      <div class="brand-badge">⌂</div>
+      <div>ClearlinePDX</div>
+    </a>
 
-      <nav class="nav-links">
-        <a class="active" href="index.html">Home</a>
-        <a href="reviews.html">Reviews</a>
-        <a href="services.html">Services</a>
-        <a href="contact.html">Contact</a>
-      </nav>
+    <nav class="nav-links">
+      <a class="active" href="index.html">Home</a>
+      <a href="reviews.html">Reviews</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+    </nav>
 
-      <div class="nav-cta">
+    <div class="nav-cta">
+      <button class="btn btn-secondary" data-call>Call</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero-bleed">
+  <div class="container">
+    <div class="hero">
+      <div class="hero-content">
+        <h1>Clean homes. Clear standards.</h1>
+        <p class="hero-sub">Portland cleaning service. Clear pricing, consistent quality, zero drama.</p>
+
+        <div class="hero-actions">
+          <button class="btn btn-primary" data-open-quote>Book / Get Quote</button>
+          <button class="btn btn-secondary" data-call>Call</button>
+        </div>
+
+        <div class="pills">
+          <div class="pill">Whole-home cleaning</div>
+          <div class="pill">Kitchen & baths focused</div>
+          <div class="pill">Fast quotes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="stack">
+
+    <!-- Calculator -->
+    <div class="card">
+      <h2>Smart Price Estimate</h2>
+      <p class="desc">Estimate includes whole-home cleaning. Add extras only if you need them.</p>
+
+      <div class="field-row">
+        <div>
+          <div class="label">Cleaning Type</div>
+          <select id="cleaningType">
+            <option value="standard">Standard Cleaning</option>
+            <option value="deep">Deep Cleaning</option>
+            <option value="move">Move In / Move Out</option>
+          </select>
+        </div>
+        <div>
+          <div class="label">Frequency</div>
+          <select id="frequency">
+            <option value="one-time">One-time</option>
+            <option value="weekly">Weekly</option>
+            <option value="biweekly">Bi-weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div>
+          <div class="label">Bedrooms</div>
+          <select id="bedrooms">
+            <option value="0">Studio</option>
+            <option value="1" selected>1 Bedroom</option>
+            <option value="2">2 Bedrooms</option>
+            <option value="3">3 Bedrooms</option>
+            <option value="4">4+ Bedrooms</option>
+          </select>
+        </div>
+        <div>
+          <div class="label">Bathrooms</div>
+          <select id="bathrooms">
+            <option value="1" selected>1 Bath</option>
+            <option value="2">2 Bath</option>
+            <option value="3">3+ Bath</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="label">Approx. Square Footage</div>
+      <input class="range" id="sqft" type="range" min="400" max="4000" step="50" value="1800"/>
+      <div class="row-split">
+        <div id="sqftLabel">1800 sq ft</div>
+        <div class="mini">Used to adjust time & effort</div>
+      </div>
+
+      <div class="field-row" style="margin-top:12px;">
+        <div>
+          <div class="label">Home Condition</div>
+          <select id="condition">
+            <option value="normal" selected>Normal</option>
+            <option value="heavy">Heavy</option>
+            <option value="very-heavy">Very heavy</option>
+          </select>
+        </div>
+        <div>
+          <div class="label">Pets</div>
+          <select id="pets">
+            <option value="no" selected>No pets</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="label" style="margin-top:14px;">Add-ons (optional)</div>
+      <div class="addons">
+        <label class="check">
+          <input type="checkbox" id="addonFridge">
+          <div class="check-text"><b>Inside fridge</b><span>Quick refresh</span></div>
+          <div class="check-price" data-addon-price="fridge">+$0</div>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" id="addonOven">
+          <div class="check-text"><b>Inside oven</b><span>Degrease + detail</span></div>
+          <div class="check-price" data-addon-price="oven">+$0</div>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" id="addonCabinets">
+          <div class="check-text"><b>Inside cabinets</b><span>Kitchen cabinet wipe-down</span></div>
+          <div class="check-price" data-addon-price="cabinets">+$0</div>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" id="addonMicrowave">
+          <div class="check-text"><b>Inside microwave</b><span>Quick detail</span></div>
+          <div class="check-price" data-addon-price="microwave">+$0</div>
+        </label>
+      </div>
+
+      <div class="estimate">
+        <div>
+          <div class="mini">Estimated total</div>
+          <strong id="estimateTotal">$0</strong>
+        </div>
+        <div class="mini" id="estimateDetails"></div>
+      </div>
+
+      <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-primary" data-open-quote>Request Quote</button>
+        <a class="btn btn-secondary" href="reviews.html" style="display:inline-flex;align-items:center;">Read Reviews</a>
+      </div>
+    </div>
+
+    <!-- Services -->
+    <div class="card">
+      <h2>Services</h2>
+      <p class="desc">Straightforward options. No weird upsells.</p>
+
+      <div class="grid3">
+        <div class="tile">
+          <div class="k">Standard Cleaning</div>
+          <div class="t">Maintenance clean for kitchens, baths, floors, dusting, and reset.</div>
+        </div>
+        <div class="tile">
+          <div class="k">Deep Cleaning</div>
+          <div class="t">Detail-heavy clean for first-time visits or when you want a reset.</div>
+        </div>
+        <div class="tile">
+          <div class="k">Move In / Out</div>
+          <div class="t">Empty-home focus: inside surfaces, buildup removal, ready-to-show finish.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Why us -->
+    <div class="card">
+      <h2>Why ClearlinePDX</h2>
+      <p class="desc">Simple rules. Consistent results.</p>
+
+      <div class="grid3">
+        <div class="tile">
+          <div class="k">Clear pricing</div>
+          <div class="t">You see the estimate upfront. We confirm scope fast.</div>
+        </div>
+        <div class="tile">
+          <div class="k">Reliable quality</div>
+          <div class="t">Same checklist mindset. No corners cut.</div>
+        </div>
+        <div class="tile">
+          <div class="k">On-time arrivals</div>
+          <div class="t">We show up when we said we would. Respect for your day.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="card">
+      <h2>FAQ</h2>
+      <p class="desc">Quick answers. No fluff.</p>
+
+      <div class="faq">
+        <div class="q">
+          <b>How accurate is the estimate?</b>
+          <p>It’s a planning number. Final quote is confirmed after we review scope and add-ons.</p>
+        </div>
+        <div class="q">
+          <b>Do you bring supplies?</b>
+          <p>Yes — standard supplies included. If you have preferences, tell us in the quote form.</p>
+        </div>
+        <div class="q">
+          <b>What about pets?</b>
+          <p>Totally fine. Just select “Pets: Yes” so we allocate extra time.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="card">
+      <h2>Ready to book?</h2>
+      <p class="desc">Send details — we’ll reply fast with availability and final quote.</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-primary" data-open-quote>Request Quote</button>
         <button class="btn btn-secondary" data-call>Call</button>
       </div>
     </div>
-  </header>
 
-  <section class="hero-bleed">
-    <div class="container">
-      <div class="hero">
-        <div class="hero-content">
-          <h1>Clean homes. Clear standards.</h1>
-          <p class="hero-sub">Portland cleaning service. Clear pricing, consistent quality, zero drama.</p>
-
-          <div class="hero-actions">
-            <button class="btn btn-primary" data-open-quote>Book / Get Quote</button>
-            <button class="btn btn-secondary" data-call>Call</button>
-          </div>
-
-          <div class="pills">
-            <div class="pill">Whole-home cleaning</div>
-            <div class="pill">Kitchen & baths focused</div>
-            <div class="pill">Fast quotes</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="container section">
-    <div class="grid single-col">
-
-      <div class="card">
-        <h2>Smart Price Estimate</h2>
-        <p class="desc">Estimate includes whole-home cleaning. Add extras only if you need them.</p>
-
-        <div class="field-row">
-          <div>
-            <div class="label">Cleaning Type</div>
-            <select id="cleaningType">
-              <option value="standard">Standard Cleaning</option>
-              <option value="deep">Deep Cleaning</option>
-              <option value="move">Move In / Move Out</option>
-            </select>
-          </div>
-          <div>
-            <div class="label">Frequency</div>
-            <select id="frequency">
-              <option value="one-time">One-time</option>
-              <option value="weekly">Weekly</option>
-              <option value="biweekly">Bi-weekly</option>
-              <option value="monthly">Monthly</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div>
-            <div class="label">Bedrooms</div>
-            <select id="bedrooms">
-              <option value="0">Studio</option>
-              <option value="1" selected>1 Bedroom</option>
-              <option value="2">2 Bedrooms</option>
-              <option value="3">3 Bedrooms</option>
-              <option value="4">4+ Bedrooms</option>
-            </select>
-          </div>
-          <div>
-            <div class="label">Bathrooms</div>
-            <select id="bathrooms">
-              <option value="1" selected>1 Bath</option>
-              <option value="2">2 Bath</option>
-              <option value="3">3+ Bath</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="label">Approx. Square Footage</div>
-        <div class="range-wrap">
-          <input class="range" id="sqft" type="range" min="400" max="4000" step="50" value="1800"/>
-        </div>
-        <div class="row-split">
-          <div id="sqftLabel">1800 sq ft</div>
-          <div class="mini">Used to adjust time & effort</div>
-        </div>
-
-        <div class="field-row" style="margin-top:12px;">
-          <div>
-            <div class="label">Home Condition</div>
-            <select id="condition">
-              <option value="normal" selected>Normal</option>
-              <option value="heavy">Heavy</option>
-              <option value="very-heavy">Very heavy</option>
-            </select>
-          </div>
-          <div>
-            <div class="label">Pets</div>
-            <select id="pets">
-              <option value="no" selected>No pets</option>
-              <option value="yes">Yes</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- ✅ Add-ons WITHOUT windows and WITHOUT pet hair -->
-        <div class="label" style="margin-top:14px;">Add-ons (optional)</div>
-        <div class="addons">
-          <label class="check">
-            <input type="checkbox" id="addonFridge">
-            <div class="check-text">
-              <b>Inside fridge</b>
-              <span>Quick refresh</span>
-            </div>
-            <div class="check-price" data-addon-price="fridge">+$0</div>
-          </label>
-
-          <label class="check">
-            <input type="checkbox" id="addonOven">
-            <div class="check-text">
-              <b>Inside oven</b>
-              <span>Degrease + detail</span>
-            </div>
-            <div class="check-price" data-addon-price="oven">+$0</div>
-          </label>
-
-          <label class="check">
-            <input type="checkbox" id="addonCabinets">
-            <div class="check-text">
-              <b>Inside cabinets</b>
-              <span>Kitchen cabinet wipe-down</span>
-            </div>
-            <div class="check-price" data-addon-price="cabinets">+$0</div>
-          </label>
-
-          <label class="check">
-            <input type="checkbox" id="addonMicrowave">
-            <div class="check-text">
-              <b>Inside microwave</b>
-              <span>Quick detail</span>
-            </div>
-            <div class="check-price" data-addon-price="microwave">+$0</div>
-          </label>
-        </div>
-
-        <div class="estimate">
-          <div>
-            <div class="mini">Estimated total</div>
-            <strong id="estimateTotal">$0</strong>
-          </div>
-          <div class="mini" id="estimateDetails"></div>
-        </div>
-
-        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn btn-primary" data-open-quote>Request Quote</button>
-          <a class="btn btn-secondary" href="reviews.html" style="display:inline-flex;align-items:center;">Read Reviews</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>How it works</h2>
-        <p class="desc">Simple process. Clean results.</p>
-
-        <div class="steps">
-          <div class="step">
-            <div class="title">1) Get an estimate</div>
-            <p>Use the calculator — it’s close enough to plan.</p>
-          </div>
-          <div class="step">
-            <div class="title">2) Request a quote</div>
-            <p>Send your details. We confirm the scope fast.</p>
-          </div>
-          <div class="step">
-            <div class="title">3) We clean</div>
-            <p>On time. Consistent. No corners cut.</p>
-          </div>
-        </div>
-
-        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-          <a class="btn btn-secondary" href="reviews.html">Read Reviews</a>
-          <button class="btn btn-primary" data-open-quote>Request Quote</button>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="container">
-      <small>© <span id="year"></span> ClearlinePDX • Portland, OR</small>
-    </div>
-  </footer>
-
-  <div class="modal-overlay" id="quoteModal" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Request a quote">
-      <div class="modal-head">
-        <div class="modal-title">Request a quote</div>
-        <button class="btn btn-ghost modal-close" data-close-quote type="button">Close</button>
-      </div>
-
-      <p style="margin-bottom:12px;">Send your details — we’ll confirm scope and availability fast.</p>
-
-      <form id="quoteForm">
-        <input type="hidden" id="quotePrefill" value=""/>
-
-        <div class="field-row">
-          <div>
-            <div class="label">Name</div>
-            <input class="input" id="qName" placeholder="Your name" required/>
-          </div>
-          <div>
-            <div class="label">Phone</div>
-            <input class="input" id="qPhone" placeholder="(503) 000-0000" required/>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div>
-            <div class="label">Email</div>
-            <input class="input" id="qEmail" type="email" placeholder="you@email.com"/>
-          </div>
-          <div>
-            <div class="label">Address / Area</div>
-            <input class="input" id="qAddress" placeholder="Portland, OR"/>
-          </div>
-        </div>
-
-        <div>
-          <div class="label">Message</div>
-          <textarea class="input" id="qMessage" rows="4" placeholder="Preferred date/time, any details, special requests..."></textarea>
-        </div>
-
-        <div class="modal-actions">
-          <button class="btn btn-secondary" data-close-quote type="button">Cancel</button>
-          <button class="btn btn-primary" type="submit">Send</button>
-        </div>
-      </form>
-    </div>
   </div>
+</section>
 
-  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
-  <script src="assets/js/main.js"></script>
+<footer class="footer">
+  <div class="container">
+    <small>© <span id="year"></span> ClearlinePDX • Portland, OR</small>
+  </div>
+</footer>
+
+<!-- Modal -->
+<div class="modal-overlay" id="quoteModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Request a quote">
+    <div class="modal-head">
+      <div class="modal-title">Request a quote</div>
+      <button class="btn btn-ghost" data-close-quote type="button">Close</button>
+    </div>
+
+    <p style="margin-bottom:12px;">Send your details — we’ll confirm scope and availability fast.</p>
+
+    <form id="quoteForm">
+      <input type="hidden" id="quotePrefill" value=""/>
+
+      <div class="field-row">
+        <div>
+          <div class="label">Name</div>
+          <input class="input" id="qName" placeholder="Your name" required/>
+        </div>
+        <div>
+          <div class="label">Phone</div>
+          <input class="input" id="qPhone" placeholder="(503) 000-0000" required/>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div>
+          <div class="label">Email</div>
+          <input class="input" id="qEmail" type="email" placeholder="you@email.com"/>
+        </div>
+        <div>
+          <div class="label">Address / Area</div>
+          <input class="input" id="qAddress" placeholder="Portland, OR"/>
+        </div>
+      </div>
+
+      <div>
+        <div class="label">Message</div>
+        <textarea class="input" id="qMessage" rows="4" placeholder="Preferred date/time, any details, special requests..."></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-close-quote type="button">Cancel</button>
+        <button class="btn btn-primary" type="submit">Send</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="assets/js/main.js"></script>
 </body>
 </html>
