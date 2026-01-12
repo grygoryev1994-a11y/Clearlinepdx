@@ -1,6 +1,6 @@
 (function () {
-  const COMPANY_PHONE = "+15035551234";        // <-- поставь свой номер
-  const COMPANY_EMAIL = "santa.on@gmail.com";  // <-- поставь свой email
+  const COMPANY_PHONE = "+15035551234";        // <-- твой номер
+  const COMPANY_EMAIL = "santa.on@gmail.com";  // <-- твой email
 
   const ADDON_PRICES = {
     fridge: 25,
@@ -13,17 +13,16 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const money = (n) => `$${Math.round(n).toLocaleString("en-US")}`;
 
-  // Year
   const yearEl = $("#year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   function lockScroll() {
-    document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
   }
   function unlockScroll() {
-    document.body.style.overflow = "";
     document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
   }
 
   // Call buttons
@@ -31,21 +30,17 @@
     b.addEventListener("click", () => (window.location.href = `tel:${COMPANY_PHONE}`));
   });
 
-  // ===== MOBILE MENU =====
+  // ===== Mobile menu =====
   const navToggle = $(".nav-toggle");
   const mobileNav = $("#mobileNav");
-  const mobileInner = mobileNav ? $(".mobile-nav-inner", mobileNav) : null;
+  const mobileSheet = mobileNav ? $(".mobile-sheet", mobileNav) : null;
   const mobileClose = mobileNav ? $(".mobile-close", mobileNav) : null;
-
-  function isMenuOpen() {
-    return !!(mobileNav && mobileNav.classList.contains("open"));
-  }
 
   function openMenu() {
     if (!mobileNav) return;
     mobileNav.classList.add("open");
     mobileNav.setAttribute("aria-hidden", "false");
-    if (navToggle) navToggle.setAttribute("aria-expanded", "true");
+    navToggle && navToggle.setAttribute("aria-expanded", "true");
     lockScroll();
   }
 
@@ -53,48 +48,40 @@
     if (!mobileNav) return;
     mobileNav.classList.remove("open");
     mobileNav.setAttribute("aria-hidden", "true");
-    if (navToggle) navToggle.setAttribute("aria-expanded", "false");
+    navToggle && navToggle.setAttribute("aria-expanded", "false");
     unlockScroll();
+  }
+
+  function menuIsOpen() {
+    return mobileNav && mobileNav.classList.contains("open");
   }
 
   if (navToggle && mobileNav) {
     navToggle.addEventListener("click", (e) => {
       e.preventDefault();
-      isMenuOpen() ? closeMenu() : openMenu();
+      menuIsOpen() ? closeMenu() : openMenu();
     });
 
-    if (mobileClose) {
-      mobileClose.addEventListener("click", (e) => {
-        e.preventDefault();
-        closeMenu();
-      });
-    }
+    mobileClose && mobileClose.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeMenu();
+    });
 
-    // Click outside drawer closes
+    // click outside card closes
     mobileNav.addEventListener("click", (e) => {
-      if (mobileInner && !mobileInner.contains(e.target)) closeMenu();
+      if (!mobileSheet) return;
+      if (!mobileSheet.contains(e.target)) closeMenu();
     });
 
-    // ESC closes
+    // close on link click
+    $$("a", mobileNav).forEach((a) => a.addEventListener("click", () => closeMenu()));
+
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && isMenuOpen()) closeMenu();
-    });
-
-    // Любой клик по ссылке в меню — закрывает меню (и не оставляет страницу "замороженной")
-    $$("a", mobileNav).forEach((a) => {
-      a.addEventListener("click", () => closeMenu());
-    });
-
-    // И любые кнопки внутри меню (Request Quote / Call) — тоже закрывают, иначе может остаться блокировка
-    $$("button", mobileNav).forEach((btn) => {
-      btn.addEventListener("click", () => {
-        // closeMenu вызываем чуть позже, чтобы клик успел обработаться
-        setTimeout(closeMenu, 0);
-      });
+      if (e.key === "Escape" && menuIsOpen()) closeMenu();
     });
   }
 
-  // ===== QUOTE MODAL =====
+  // ===== Quote modal =====
   const quoteModal = $("#quoteModal");
   const openQuoteBtns = $$("[data-open-quote]");
   const closeQuoteBtns = $$("[data-close-quote]");
@@ -119,7 +106,7 @@
 
   openQuoteBtns.forEach((b) =>
     b.addEventListener("click", () => {
-      if (isMenuOpen()) closeMenu();
+      if (menuIsOpen()) closeMenu();
       openQuote();
     })
   );
@@ -134,7 +121,7 @@
     });
   }
 
-  // ===== CALCULATOR =====
+  // ===== Calculator =====
   const calc = {
     type: $("#cleaningType"),
     freq: $("#frequency"),
@@ -247,7 +234,7 @@
 
   compute();
 
-  // ===== Quote form -> mailto =====
+  // mailto
   const form = $("#quoteForm");
   if (form) {
     form.addEventListener("submit", (e) => {
