@@ -42,6 +42,9 @@
     mobileNav.setAttribute("aria-hidden", "false");
     navToggle && navToggle.setAttribute("aria-expanded", "true");
     lockScroll();
+
+    // фокус на Close (чтобы iOS не тупил)
+    setTimeout(() => mobileClose && mobileClose.focus(), 0);
   }
 
   function closeMenu() {
@@ -234,7 +237,6 @@
 
   compute();
 
-  // mailto
   const form = $("#quoteForm");
   if (form) {
     form.addEventListener("submit", (e) => {
