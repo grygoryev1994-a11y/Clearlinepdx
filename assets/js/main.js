@@ -13,7 +13,6 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const money = (n) => `$${Math.round(n).toLocaleString("en-US")}`;
 
-  // ========= Helpers =========
   const firstMatch = (selectors, root = document) => {
     for (const s of selectors) {
       const el = root.querySelector(s);
@@ -43,7 +42,6 @@
   });
 
   // ========= Mobile menu =========
-  // Ищем кнопку бургера максимально гибко
   const navToggle = firstMatch([
     ".nav-toggle",
     "#navToggle",
@@ -54,7 +52,6 @@
     "[data-menu-toggle]"
   ]);
 
-  // Ищем оверлей/контейнер меню
   const mobileNav = firstMatch([
     "#mobileNav",
     ".mobile-nav",
@@ -63,7 +60,15 @@
     "[data-mobile-nav]"
   ]);
 
-  // Ищем кнопку закрытия в меню
+  // Панель внутри меню (может называться по-разному)
+  const getPanel = () => mobileNav ? firstMatch([
+    ".mobile-nav-inner",
+    ".drawer",
+    ".menu-panel",
+    ".panel",
+    "[data-mobile-panel]"
+  ], mobileNav) : null;
+
   const mobileClose = mobileNav
     ? firstMatch([
         ".mobile-close",
@@ -80,12 +85,27 @@
     if (navToggle) navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
   }
 
+  function forceShow(el){
+    if(!el) return;
+    if(el.hasAttribute("hidden")) el.removeAttribute("hidden");
+    el.style.display = ""; // сброс
+    // если кто-то держит display:none инлайном
+    const cs = window.getComputedStyle(el);
+    if(cs.display === "none") el.style.display = "flex";
+    el.style.visibility = "visible";
+    el.style.opacity = "1";
+  }
+
   function openMobileNav() {
     if (!mobileNav) return;
+
+    const panel = getPanel();
+
     lastFocused = document.activeElement;
 
-    // IMPORTANT: если у тебя в HTML стоит hidden — снимаем
-    mobileNav.hidden = false;
+    // СНИМАЕМ ВСЁ, ЧТО МОЖЕТ ПРЯТАТЬ ЭЛЕМЕНТЫ
+    forceShow(mobileNav);
+    forceShow(panel);
 
     mobileNav.classList.add("open");
     setAria(true);
@@ -94,6 +114,8 @@
     setTimeout(() => {
       const first = mobileNav.querySelector("a, button, input, select, textarea");
       if (first) first.focus();
+      // если панель вдруг не нашлась — хотя бы покажем предупреждение
+      if(!panel) console.warn("[ClearlinePDX] mobile panel not found inside mobileNav");
     }, 0);
   }
 
@@ -103,9 +125,6 @@
     mobileNav.classList.remove("open");
     setAria(false);
     unlockScroll();
-
-    // если хочешь скрывать совсем:
-    // mobileNav.hidden = true;
 
     if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus();
   }
@@ -127,9 +146,13 @@
       });
     }
 
-    // клик по фону закрывает (если кликнули именно по overlay, а не по панели)
+    // Клик по фону закрывает
     mobileNav.addEventListener("click", (e) => {
-      if (e.target === mobileNav) closeMobileNav();
+      const panel = getPanel();
+      // если кликнули не внутри панели — закрываем
+      if (panel && !panel.contains(e.target)) closeMobileNav();
+      // fallback: если панели нет — закрываем по клику по overlay
+      if (!panel && e.target === mobileNav) closeMobileNav();
     });
 
     // клики по ссылкам закрывают
@@ -142,7 +165,6 @@
       if (e.key === "Escape" && isMobileNavOpen()) closeMobileNav();
     });
   } else {
-    // Если что-то не нашли — пишем в консоль, чтобы ты видел где проблема
     console.warn("[ClearlinePDX] Mobile menu init failed:", {
       navToggleFound: !!navToggle,
       mobileNavFound: !!mobileNav
