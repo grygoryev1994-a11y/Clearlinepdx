@@ -5,18 +5,14 @@
   --bg1:#0B1018;
   --ink:#EAF0FF;
   --ink2:#B8C2D6;
-
   --primary:#6EA8FF;
   --primary2:#4C86F2;
-
   --card: rgba(18, 24, 35, .72);
   --card2: rgba(18, 24, 35, .58);
   --shadow: 0 18px 60px rgba(0,0,0,.55);
-
   --r-sm: 6px;
   --r-md: 10px;
   --r-lg: 14px;
-
   --container: 1180px;
 }
 
@@ -47,7 +43,6 @@ small{ color: rgba(234,240,255,.55); }
   margin: 0 auto;
 }
 
-/* ===== Navbar ===== */
 .navbar{
   position: sticky;
   top:0;
@@ -102,13 +97,8 @@ small{ color: rgba(234,240,255,.55); }
   border: 1px solid rgba(255,255,255,.10);
 }
 
-.nav-cta{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+.nav-cta{ display:flex; align-items:center; gap:10px; }
 
-/* ===== Burger ===== */
 .nav-toggle{
   display:none;
   width: 44px;
@@ -127,7 +117,6 @@ small{ color: rgba(234,240,255,.55); }
   border-radius: 2px;
 }
 
-/* ===== Buttons ===== */
 .btn{
   appearance:none;
   border:1px solid transparent;
@@ -138,114 +127,77 @@ small{ color: rgba(234,240,255,.55); }
   line-height: 1;
   cursor:pointer;
   user-select:none;
-  transition: transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
 }
-.btn:active{ transform: translateY(1px); }
-
 .btn-primary{
   background: var(--primary2);
   color: #071018;
   border-color: rgba(255,255,255,.10);
   box-shadow: 0 18px 46px rgba(76,134,242,.24);
 }
-.btn-primary:hover{
-  background: var(--primary);
-  box-shadow: 0 22px 56px rgba(110,168,255,.26);
-}
-
 .btn-secondary{
   background: rgba(255,255,255,.06);
   color: rgba(234,240,255,.92);
   border-color: rgba(255,255,255,.12);
 }
-.btn-secondary:hover{
-  background: rgba(255,255,255,.09);
-  border-color: rgba(255,255,255,.18);
-}
-
 .btn-ghost{
   background: transparent;
   color: rgba(234,240,255,.86);
   border-color: rgba(255,255,255,.12);
 }
-.btn-ghost:hover{
-  background: rgba(255,255,255,.06);
-}
 
-/* ===== MOBILE MENU (железобетон) ===== */
+/* ===== MOBILE MENU (без transform, чтобы iOS не мудрил) ===== */
 .mobile-nav{
-  display:none !important;               /* закрыто = НЕТ */
-  position:fixed !important;            /* всегда поверх */
-  inset:0 !important;
-  z-index:9999 !important;
-  padding: calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom)) 16px !important;
-  align-items:stretch !important;
-  justify-content:flex-end !important;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  padding: calc(18px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom)) 16px;
+  background: rgba(0,0,0,.78);
+  backdrop-filter: blur(12px);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
 }
 
 .mobile-nav.open{
-  display:flex !important;              /* открыто = ЕСТЬ */
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
-.mobile-nav::before{
-  content:"";
-  position:absolute !important;
-  inset:0 !important;
-  background: rgba(0,0,0,.82) !important;
-  backdrop-filter: blur(10px) !important;
+.mobile-sheet{
+  width: min(560px, 94vw);
+  background: rgba(10,14,22,.96);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: var(--r-md);
+  box-shadow: 0 22px 70px rgba(0,0,0,.75);
+  padding: 14px;
 }
 
-.mobile-nav-inner{
-  position:relative !important;
-  z-index:2 !important;
-  width:min(520px, 92vw) !important;
-  height:100% !important;
-  overflow:hidden !important;
-
-  background: rgba(10,14,22,.96) !important;
-  border: 1px solid rgba(255,255,255,.14) !important;
-  border-radius: var(--r-md) !important;
-  box-shadow: 0 22px 70px rgba(0,0,0,.75) !important;
-
-  padding:14px !important;
-  display:flex !important;
-  flex-direction:column !important;
-
-  transform: translateX(110%);
-  animation: drawerIn 260ms cubic-bezier(.2,.9,.2,1) forwards;
-}
-
-@keyframes drawerIn{
-  from{ transform: translateX(110%); }
-  to{ transform: translateX(0); }
-}
-
-.mobile-nav-head{
+.mobile-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:10px;
-
-  padding: 12px;
-  margin: -4px -4px 10px;
-  border-bottom: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.06);     /* НЕ прозрачный */
+  gap:12px;
+  padding: 10px 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  margin-bottom: 12px;
+  background: rgba(255,255,255,.04);
+  border-radius: var(--r-md);
 }
-
 .mobile-title{
   font-weight: 820;
   color: rgba(234,240,255,.95);
 }
 
 .mobile-links{
-  padding: 10px;
   display:grid;
   gap: 10px;
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: var(--r-md);
 }
-
 .mobile-links a{
   padding: 14px 12px;
   border-radius: var(--r-sm);
@@ -256,14 +208,11 @@ small{ color: rgba(234,240,255,.55); }
 }
 
 .mobile-actions{
-  margin-top:auto;
+  margin-top: 12px;
   display:grid;
   gap:10px;
-  padding: 12px 10px 10px;
-  margin-top: 12px;
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: var(--r-md);
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,.10);
 }
 
 /* ===== Hero ===== */
@@ -282,19 +231,12 @@ small{ color: rgba(234,240,255,.55); }
   background-size: cover;
   background-position: center;
 }
-.hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background: radial-gradient(900px 500px at 30% 35%, rgba(0,0,0,.10), rgba(0,0,0,.55));
-  pointer-events:none;
-}
+
 .hero-content{
-  position: relative;
-  z-index: 2;
   max-width: 760px;
   padding: 42px 42px;
 }
+
 .hero-sub{ margin-top: 12px; font-size: 16px; font-weight: 520; }
 .hero-actions{ margin-top: 18px; display:flex; gap:12px; flex-wrap:wrap; }
 
@@ -309,7 +251,6 @@ small{ color: rgba(234,240,255,.55); }
   color: rgba(234,240,255,.86);
 }
 
-/* ===== Layout ===== */
 .section{ padding: 18px 0 48px; }
 .stack{ display:grid; gap:14px; }
 
@@ -321,22 +262,9 @@ small{ color: rgba(234,240,255,.55); }
   backdrop-filter: blur(12px);
   padding: 18px;
 }
-.card h2{ color: rgba(234,240,255,.92); }
-.card .desc{ margin-top: 6px; margin-bottom: 14px; }
 
-.label{
-  font-size: 13px;
-  color: rgba(234,240,255,.68);
-  font-weight: 650;
-  margin-bottom: 8px;
-}
-
-.field-row{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 12px;
-}
+.label{ font-size: 13px; color: rgba(234,240,255,.68); font-weight: 650; margin-bottom: 8px; }
+.field-row{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
 
 .input, select, textarea{
   width:100%;
@@ -363,13 +291,41 @@ small{ color: rgba(234,240,255,.55); }
 .estimate{ margin-top: 12px; padding: 14px; border-radius: var(--r-md); border: 1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.18); display:flex; justify-content:space-between; align-items: baseline; gap: 10px; }
 .estimate strong{ font-size: 22px; letter-spacing:-0.02em; color: rgba(234,240,255,.95); }
 
+.grid3{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.tile{ padding: 14px; border-radius: var(--r-md); border: 1px solid rgba(255,255,255,.10); background: var(--card2); }
+
 .footer{ padding: 32px 0 46px; border-top: 1px solid rgba(255,255,255,.08); background: rgba(0,0,0,.12); }
 
-/* ===== Mobile ===== */
+/* Quote modal */
+.modal-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.70);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index: 60;
+  padding: 18px;
+}
+.modal-overlay.open{ display:flex; }
+.modal{
+  width: min(620px, 100%);
+  background: rgba(18,24,35,.92);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  color: rgba(234,240,255,.92);
+}
+.modal-head{ display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom: 10px; }
+.modal-title{ font-weight: 820; }
+.modal-actions{ margin-top: 12px; display:flex; gap: 10px; justify-content:flex-end; flex-wrap:wrap; }
+
 @media (max-width: 980px){
   .nav-links{ display:none; }
   .nav-toggle{ display:inline-block; }
   .hero-content{ padding: 28px 18px; }
   .field-row{ grid-template-columns: 1fr; }
   .addons{ grid-template-columns: 1fr; }
+  .grid3{ grid-template-columns: 1fr; }
 }
