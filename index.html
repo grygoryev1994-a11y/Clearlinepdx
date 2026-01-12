@@ -18,14 +18,13 @@
     <nav class="nav-links" aria-label="Primary">
       <a class="active" href="index.html">Home</a>
       <a href="reviews.html">Reviews</a>
-      <a href="index.html#services">Services</a>
-      <a href="index.html#contact">Contact</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
     </nav>
 
     <div class="nav-cta">
       <button class="btn btn-secondary" data-call>Call</button>
 
-      <!-- Burger (mobile) -->
       <button class="nav-toggle" type="button"
               aria-label="Open menu"
               aria-controls="mobileNav"
@@ -35,19 +34,19 @@
     </div>
   </div>
 
-  <!-- Mobile drawer -->
+  <!-- Mobile menu overlay -->
   <div class="mobile-nav" id="mobileNav" aria-hidden="true">
-    <div class="mobile-nav-inner">
-      <div class="mobile-nav-head">
+    <div class="mobile-sheet" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="mobile-head">
         <div class="mobile-title">Menu</div>
-        <button class="btn btn-ghost mobile-close" type="button" aria-label="Close menu">Close</button>
+        <button class="btn btn-ghost mobile-close" type="button">Close</button>
       </div>
 
       <div class="mobile-links">
         <a href="index.html">Home</a>
         <a href="reviews.html">Reviews</a>
-        <a href="index.html#services">Services</a>
-        <a href="index.html#contact">Contact</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
       </div>
 
       <div class="mobile-actions">
@@ -83,7 +82,6 @@
 <section class="container section" id="top">
   <div class="stack">
 
-    <!-- Calculator -->
     <div class="card" id="estimate">
       <h2>Smart Price Estimate</h2>
       <p class="desc">Estimate includes whole-home cleaning. Add extras only if you need them.</p>
@@ -195,7 +193,6 @@
       </div>
     </div>
 
-    <!-- Services -->
     <div class="card" id="services">
       <h2>Services</h2>
       <p class="desc">Straightforward options. No weird upsells.</p>
@@ -216,49 +213,6 @@
       </div>
     </div>
 
-    <!-- Why us -->
-    <div class="card">
-      <h2>Why ClearlinePDX</h2>
-      <p class="desc">Simple rules. Consistent results.</p>
-
-      <div class="grid3">
-        <div class="tile">
-          <div class="k">Clear pricing</div>
-          <div class="t">You see the estimate upfront. We confirm scope fast.</div>
-        </div>
-        <div class="tile">
-          <div class="k">Reliable quality</div>
-          <div class="t">Same checklist mindset. No corners cut.</div>
-        </div>
-        <div class="tile">
-          <div class="k">On-time arrivals</div>
-          <div class="t">We show up when we said we would. Respect for your day.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FAQ -->
-    <div class="card">
-      <h2>FAQ</h2>
-      <p class="desc">Quick answers. No fluff.</p>
-
-      <div class="faq">
-        <div class="q">
-          <b>How accurate is the estimate?</b>
-          <p>It’s a planning number. Final quote is confirmed after we review scope and add-ons.</p>
-        </div>
-        <div class="q">
-          <b>Do you bring supplies?</b>
-          <p>Yes — standard supplies included. If you have preferences, tell us in the quote form.</p>
-        </div>
-        <div class="q">
-          <b>What about pets?</b>
-          <p>Totally fine. Just select “Pets: Yes” so we allocate extra time.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Contact / CTA -->
     <div class="card" id="contact">
       <h2>Contact</h2>
       <p class="desc">Fast reply. Clear confirmation.</p>
@@ -277,7 +231,6 @@
   </div>
 </footer>
 
-<!-- Quote Modal -->
 <div class="modal-overlay" id="quoteModal" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-label="Request a quote">
     <div class="modal-head">
@@ -329,4 +282,3 @@
 <script src="assets/js/main.js"></script>
 </body>
 </html>
-
