@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap');
 
 :root{
-  --bg0: #070A0F;
-  --bg1: #0B1018;
-  --ink: #EAF0FF;
+  --bg0:#070A0F;
+  --bg1:#0B1018;
+  --ink:#EAF0FF;
   --ink2:#B8C2D6;
 
   --primary:#6EA8FF;
@@ -21,7 +21,7 @@
 }
 
 *{ box-sizing:border-box; }
-html, body{ height:100%; }
+html,body{ height:100%; }
 
 body{
   margin:0;
@@ -127,120 +127,6 @@ small{ color: rgba(234,240,255,.55); }
   border-radius: 2px;
 }
 
-/* ===== Mobile drawer (FIXED + animated, "неубиваемый") ===== */
-/* ключевой момент: тут display:flex всегда, а "закрыто" = opacity/visibility/pointer-events */
-.mobile-nav{
-  display: flex;               /* ВАЖНО: чтобы inner точно рисовался */
-  justify-content: flex-end;
-  align-items: stretch;
-
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  padding: 16px;
-
-  background: rgba(0,0,0,0);
-  backdrop-filter: blur(0px);
-
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-
-  transition: opacity 220ms ease, background 220ms ease, backdrop-filter 220ms ease, visibility 0ms linear 220ms;
-}
-
-.mobile-nav.open{
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-
-  background: rgba(0,0,0,.82);
-  backdrop-filter: blur(10px);
-
-  transition: opacity 220ms ease, background 220ms ease, backdrop-filter 220ms ease, visibility 0ms;
-}
-
-/* панель фиксируем справа, чтобы никакие стили не "увезли" её */
-.mobile-nav-inner{
-  position: relative;
-  width: min(520px, 100%);
-  height: 100%;
-  overflow: hidden;
-
-  background: rgba(10, 14, 22, .96);
-  border: 1px solid rgba(255,255,255,.14);
-  border-radius: var(--r-md);
-  box-shadow: 0 22px 70px rgba(0,0,0,.75);
-  backdrop-filter: blur(18px);
-
-  padding: 14px;
-  display:flex;
-  flex-direction:column;
-
-  transform: translateX(24px);
-  transition: transform 260ms cubic-bezier(.2,.9,.2,1);
-}
-
-.mobile-nav.open .mobile-nav-inner{
-  transform: translateX(0);
-}
-
-@media (prefers-reduced-motion: reduce){
-  .mobile-nav, .mobile-nav-inner{ transition:none !important; }
-}
-
-.mobile-nav-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-
-  padding: 10px 10px 12px;
-  margin: -4px -4px 10px;
-  border-bottom: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.04);
-}
-.mobile-title{
-  font-weight: 820;
-  letter-spacing: -0.02em;
-  color: rgba(234,240,255,.92);
-}
-
-.mobile-links{
-  padding: 10px;
-  display:grid;
-  gap: 10px;
-
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: var(--r-md);
-}
-.mobile-links a{
-  padding: 14px 12px;
-  border-radius: var(--r-sm);
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.38);
-  font-weight: 760;
-  color: rgba(234,240,255,.92);
-}
-.mobile-links a:hover{
-  background: rgba(255,255,255,.06);
-  border-color: rgba(255,255,255,.18);
-}
-
-.mobile-actions{
-  margin-top:auto;
-  display:grid;
-  gap:10px;
-
-  padding: 12px 10px 10px;
-  margin-top: 12px;
-
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: var(--r-md);
-}
-
 /* ===== Buttons ===== */
 .btn{
   appearance:none;
@@ -284,6 +170,118 @@ small{ color: rgba(234,240,255,.55); }
 }
 .btn-ghost:hover{
   background: rgba(255,255,255,.06);
+}
+
+/* ===== Mobile drawer (FIX) ===== */
+.mobile-nav{
+  display:none;                /* НЕ блокирует сайт в закрытом состоянии */
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  padding: 16px;
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.mobile-nav.open{
+  display:flex;
+}
+
+.mobile-nav::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,.82);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  animation: overlayIn 220ms ease forwards;
+}
+
+.mobile-nav-inner{
+  position: relative;
+  z-index: 2;                  /* ВАЖНО: выше, чем overlay */
+  width: min(520px, 92vw);
+  height: 100%;
+  overflow: hidden;
+  background: rgba(10,14,22,.96);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: var(--r-md);
+  box-shadow: 0 22px 70px rgba(0,0,0,.75);
+  backdrop-filter: blur(18px);
+  padding: 14px;
+  display:flex;
+  flex-direction:column;
+
+  transform: translateX(110%);
+  animation: drawerIn 260ms cubic-bezier(.2,.9,.2,1) forwards;
+}
+
+@keyframes drawerIn{
+  from{ transform: translateX(110%); }
+  to{ transform: translateX(0); }
+}
+@keyframes overlayIn{
+  from{ opacity: 0; }
+  to{ opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .mobile-nav::before,
+  .mobile-nav-inner{
+    animation:none !important;
+    transform:none !important;
+    opacity: 1 !important;
+  }
+}
+
+.mobile-nav-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+
+  padding: 10px 10px 12px;
+  margin: -4px -4px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+}
+.mobile-title{
+  font-weight: 820;
+  letter-spacing: -0.02em;
+  color: rgba(234,240,255,.92);
+}
+
+.mobile-links{
+  padding: 10px;
+  display:grid;
+  gap: 10px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--r-md);
+}
+
+.mobile-links a{
+  padding: 14px 12px;
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.38);
+  font-weight: 760;
+  color: rgba(234,240,255,.92);
+}
+.mobile-links a:hover{
+  background: rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.18);
+}
+
+.mobile-actions{
+  margin-top:auto;
+  display:grid;
+  gap:10px;
+  padding: 12px 10px 10px;
+  margin-top: 12px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--r-md);
 }
 
 /* ===== Hero ===== */
