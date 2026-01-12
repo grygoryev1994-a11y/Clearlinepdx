@@ -5,14 +5,18 @@
   --bg1:#0B1018;
   --ink:#EAF0FF;
   --ink2:#B8C2D6;
+
   --primary:#6EA8FF;
   --primary2:#4C86F2;
+
   --card: rgba(18, 24, 35, .72);
   --card2: rgba(18, 24, 35, .58);
   --shadow: 0 18px 60px rgba(0,0,0,.55);
+
   --r-sm: 6px;
   --r-md: 10px;
   --r-lg: 14px;
+
   --container: 1180px;
 }
 
@@ -43,13 +47,14 @@ small{ color: rgba(234,240,255,.55); }
   margin: 0 auto;
 }
 
+/* ===== NAVBAR ===== */
 .navbar{
   position: sticky;
   top:0;
   z-index:50;
-  background: rgba(7,10,15,.62);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: rgba(7,10,15,.72);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,.10);
 }
 
 .nav-inner{
@@ -104,15 +109,15 @@ small{ color: rgba(234,240,255,.55); }
   width: 44px;
   height: 42px;
   border-radius: var(--r-sm);
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.07);
   cursor:pointer;
   padding: 10px;
 }
 .nav-toggle span{
   display:block;
   height: 2px;
-  background: rgba(234,240,255,.90);
+  background: rgba(234,240,255,.92);
   margin: 6px 0;
   border-radius: 2px;
 }
@@ -137,22 +142,24 @@ small{ color: rgba(234,240,255,.55); }
 .btn-secondary{
   background: rgba(255,255,255,.06);
   color: rgba(234,240,255,.92);
-  border-color: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.14);
 }
 .btn-ghost{
-  background: transparent;
-  color: rgba(234,240,255,.86);
-  border-color: rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: rgba(234,240,255,.92);
+  border: 1px solid rgba(255,255,255,.16);
 }
 
-/* ===== MOBILE MENU (без transform, чтобы iOS не мудрил) ===== */
+/* ===== MOBILE MENU (темный, читабельный) ===== */
 .mobile-nav{
   position: fixed;
   inset: 0;
   z-index: 9999;
   padding: calc(18px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom)) 16px;
-  background: rgba(0,0,0,.78);
-  backdrop-filter: blur(12px);
+
+  /* Было прозрачное — делаем плотнее */
+  background: rgba(0,0,0,.92);
+  backdrop-filter: blur(18px);
 
   opacity: 0;
   visibility: hidden;
@@ -171,11 +178,14 @@ small{ color: rgba(234,240,255,.55); }
 
 .mobile-sheet{
   width: min(560px, 94vw);
-  background: rgba(10,14,22,.96);
-  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(10,12,18,.98);
+  border: 1px solid rgba(255,255,255,.16);
   border-radius: var(--r-md);
-  box-shadow: 0 22px 70px rgba(0,0,0,.75);
+  box-shadow: 0 22px 80px rgba(0,0,0,.85);
   padding: 14px;
+
+  position: relative;
+  z-index: 2;
 }
 
 .mobile-head{
@@ -183,15 +193,28 @@ small{ color: rgba(234,240,255,.55); }
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  padding: 10px 10px 12px;
-  border-bottom: 1px solid rgba(255,255,255,.10);
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,.14);
   margin-bottom: 12px;
-  background: rgba(255,255,255,.04);
+  background: rgba(255,255,255,.06);
   border-radius: var(--r-md);
 }
+
 .mobile-title{
+  font-weight: 860;
+  letter-spacing: -0.02em;
+  color: rgba(234,240,255,.96);
+  font-size: 18px;
+}
+
+/* Фикс: Close всегда видно */
+.mobile-close{
+  padding: 10px 14px;
   font-weight: 820;
-  color: rgba(234,240,255,.95);
+  border-radius: var(--r-sm);
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+  color: rgba(234,240,255,.96);
 }
 
 .mobile-links{
@@ -201,10 +224,10 @@ small{ color: rgba(234,240,255,.55); }
 .mobile-links a{
   padding: 14px 12px;
   border-radius: var(--r-sm);
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.45);
-  font-weight: 760;
-  color: rgba(234,240,255,.92);
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  font-weight: 780;
+  color: rgba(234,240,255,.94);
 }
 
 .mobile-actions{
@@ -212,7 +235,7 @@ small{ color: rgba(234,240,255,.55); }
   display:grid;
   gap:10px;
   padding-top: 12px;
-  border-top: 1px solid rgba(255,255,255,.10);
+  border-top: 1px solid rgba(255,255,255,.12);
 }
 
 /* ===== Hero ===== */
@@ -225,7 +248,7 @@ small{ color: rgba(234,240,255,.55); }
   overflow: hidden;
   position: relative;
   background-image:
-    linear-gradient(180deg, rgba(7,10,15,.72), rgba(7,10,15,.42)),
+    linear-gradient(180deg, rgba(7,10,15,.74), rgba(7,10,15,.46)),
     radial-gradient(900px 520px at 75% 35%, rgba(110,168,255,.18), transparent 58%),
     url("../../hero.jpg");
   background-size: cover;
@@ -243,8 +266,8 @@ small{ color: rgba(234,240,255,.55); }
 .pills{ margin-top: 16px; display:flex; gap:10px; flex-wrap:wrap; }
 .pill{
   padding: 10px 12px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.07);
   border-radius: 999px;
   font-weight: 650;
   font-size: 13px;
@@ -286,7 +309,7 @@ small{ color: rgba(234,240,255,.55); }
 .check input{ margin-top: 3px; width:18px; height:18px; }
 .check-text b{ display:block; font-weight: 760; color: rgba(234,240,255,.92); }
 .check-text span{ display:block; margin-top:2px; font-size:12px; color: rgba(234,240,255,.55); }
-.check-price{ font-weight: 820; color: rgba(234,240,255,.86); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); border-radius: var(--r-sm); padding: 8px 10px; line-height: 1; }
+.check-price{ font-weight: 820; color: rgba(234,240,255,.90); background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); border-radius: var(--r-sm); padding: 8px 10px; line-height: 1; }
 
 .estimate{ margin-top: 12px; padding: 14px; border-radius: var(--r-md); border: 1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.18); display:flex; justify-content:space-between; align-items: baseline; gap: 10px; }
 .estimate strong{ font-size: 22px; letter-spacing:-0.02em; color: rgba(234,240,255,.95); }
@@ -296,11 +319,10 @@ small{ color: rgba(234,240,255,.55); }
 
 .footer{ padding: 32px 0 46px; border-top: 1px solid rgba(255,255,255,.08); background: rgba(0,0,0,.12); }
 
-/* Quote modal */
 .modal-overlay{
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.70);
+  background: rgba(0,0,0,.74);
   display:none;
   align-items:center;
   justify-content:center;
@@ -310,7 +332,7 @@ small{ color: rgba(234,240,255,.55); }
 .modal-overlay.open{ display:flex; }
 .modal{
   width: min(620px, 100%);
-  background: rgba(18,24,35,.92);
+  background: rgba(18,24,35,.94);
   border: 1px solid rgba(255,255,255,.10);
   border-radius: var(--r-md);
   box-shadow: var(--shadow);
