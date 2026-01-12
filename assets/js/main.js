@@ -1,6 +1,6 @@
 (function () {
-  const COMPANY_PHONE = "+15035551234";        // <-- твой номер
-  const COMPANY_EMAIL = "santa.on@gmail.com";  // <-- твой email
+  const COMPANY_PHONE = "+19713472644";        // <-- твой номер
+  const COMPANY_EMAIL = "clearlinepdx@gmail.com";  // <-- твой email
 
   const ADDON_PRICES = {
     fridge: 25,
@@ -42,8 +42,6 @@
     mobileNav.setAttribute("aria-hidden", "false");
     navToggle && navToggle.setAttribute("aria-expanded", "true");
     lockScroll();
-
-    // фокус на Close (чтобы iOS не тупил)
     setTimeout(() => mobileClose && mobileClose.focus(), 0);
   }
 
