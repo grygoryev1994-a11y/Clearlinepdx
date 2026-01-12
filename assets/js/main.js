@@ -13,20 +13,9 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const money = (n) => `$${Math.round(n).toLocaleString("en-US")}`;
 
-  // Footer year
+  // Year
   const yearEl = $("#year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-  // Call buttons
-  $$("[data-call]").forEach((b) => {
-    b.addEventListener("click", () => (window.location.href = `tel:${COMPANY_PHONE}`));
-  });
-
-  // ===== MOBILE MENU (твоя разметка) =====
-  const navToggle = $(".nav-toggle");
-  const mobileNav = $("#mobileNav");
-  const mobileInner = mobileNav ? $(".mobile-nav-inner", mobileNav) : null;
-  const mobileClose = mobileNav ? $(".mobile-close", mobileNav) : null;
 
   function lockScroll() {
     document.body.style.overflow = "hidden";
@@ -35,6 +24,21 @@
   function unlockScroll() {
     document.body.style.overflow = "";
     document.documentElement.style.overflow = "";
+  }
+
+  // Call buttons
+  $$("[data-call]").forEach((b) => {
+    b.addEventListener("click", () => (window.location.href = `tel:${COMPANY_PHONE}`));
+  });
+
+  // ===== MOBILE MENU =====
+  const navToggle = $(".nav-toggle");
+  const mobileNav = $("#mobileNav");
+  const mobileInner = mobileNav ? $(".mobile-nav-inner", mobileNav) : null;
+  const mobileClose = mobileNav ? $(".mobile-close", mobileNav) : null;
+
+  function isMenuOpen() {
+    return !!(mobileNav && mobileNav.classList.contains("open"));
   }
 
   function openMenu() {
@@ -53,10 +57,6 @@
     unlockScroll();
   }
 
-  function isMenuOpen() {
-    return !!(mobileNav && mobileNav.classList.contains("open"));
-  }
-
   if (navToggle && mobileNav) {
     navToggle.addEventListener("click", (e) => {
       e.preventDefault();
@@ -70,7 +70,7 @@
       });
     }
 
-    // click outside the panel closes
+    // Click outside drawer closes
     mobileNav.addEventListener("click", (e) => {
       if (mobileInner && !mobileInner.contains(e.target)) closeMenu();
     });
@@ -80,8 +80,18 @@
       if (e.key === "Escape" && isMenuOpen()) closeMenu();
     });
 
-    // Clicking links closes
-    $$("a", mobileNav).forEach((a) => a.addEventListener("click", closeMenu));
+    // Любой клик по ссылке в меню — закрывает меню (и не оставляет страницу "замороженной")
+    $$("a", mobileNav).forEach((a) => {
+      a.addEventListener("click", () => closeMenu());
+    });
+
+    // И любые кнопки внутри меню (Request Quote / Call) — тоже закрывают, иначе может остаться блокировка
+    $$("button", mobileNav).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        // closeMenu вызываем чуть позже, чтобы клик успел обработаться
+        setTimeout(closeMenu, 0);
+      });
+    });
   }
 
   // ===== QUOTE MODAL =====
@@ -100,6 +110,7 @@
       msg.value = (msg.value.trim() ? msg.value.trim() + "\n\n" : "") + prefill;
     }
   }
+
   function closeQuote() {
     if (!quoteModal) return;
     quoteModal.classList.remove("open");
