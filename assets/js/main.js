@@ -9,23 +9,24 @@
     microwave: 15
   };
 
-  const $  = (s, r = document) => r.querySelector(s);
+  const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const money = (n) => `$${Math.round(n).toLocaleString("en-US")}`;
 
-  const firstMatch = (selectors, root = document) => {
-    for (const s of selectors) {
-      const el = root.querySelector(s);
-      if (el) return el;
-    }
-    return null;
-  };
+  // Footer year
+  const yearEl = $("#year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  const allMatches = (selectors, root = document) => {
-    const out = [];
-    for (const s of selectors) out.push(...root.querySelectorAll(s));
-    return Array.from(new Set(out));
-  };
+  // Call buttons
+  $$("[data-call]").forEach((b) => {
+    b.addEventListener("click", () => (window.location.href = `tel:${COMPANY_PHONE}`));
+  });
+
+  // ===== MOBILE MENU (твоя разметка) =====
+  const navToggle = $(".nav-toggle");
+  const mobileNav = $("#mobileNav");
+  const mobileInner = mobileNav ? $(".mobile-nav-inner", mobileNav) : null;
+  const mobileClose = mobileNav ? $(".mobile-close", mobileNav) : null;
 
   function lockScroll() {
     document.body.style.overflow = "hidden";
@@ -36,151 +37,61 @@
     document.documentElement.style.overflow = "";
   }
 
-  // ========= Call buttons =========
-  allMatches(["[data-call]", ".btn-call", "#callBtn"]).forEach((b) => {
-    b.addEventListener("click", () => (window.location.href = `tel:${COMPANY_PHONE}`));
-  });
-
-  // ========= Mobile menu =========
-  const navToggle = firstMatch([
-    ".nav-toggle",
-    "#navToggle",
-    "#menuBtn",
-    ".menu-toggle",
-    ".burger",
-    "[data-nav-toggle]",
-    "[data-menu-toggle]"
-  ]);
-
-  const mobileNav = firstMatch([
-    "#mobileNav",
-    ".mobile-nav",
-    "#menuOverlay",
-    ".menu-overlay",
-    "[data-mobile-nav]"
-  ]);
-
-  // Панель внутри меню (может называться по-разному)
-  const getPanel = () => mobileNav ? firstMatch([
-    ".mobile-nav-inner",
-    ".drawer",
-    ".menu-panel",
-    ".panel",
-    "[data-mobile-panel]"
-  ], mobileNav) : null;
-
-  const mobileClose = mobileNav
-    ? firstMatch([
-        ".mobile-close",
-        "#mobileClose",
-        ".menu-close",
-        "[data-close-menu]"
-      ], mobileNav)
-    : null;
-
-  let lastFocused = null;
-
-  function setAria(isOpen) {
-    if (mobileNav) mobileNav.setAttribute("aria-hidden", isOpen ? "false" : "true");
-    if (navToggle) navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-  }
-
-  function forceShow(el){
-    if(!el) return;
-    if(el.hasAttribute("hidden")) el.removeAttribute("hidden");
-    el.style.display = ""; // сброс
-    // если кто-то держит display:none инлайном
-    const cs = window.getComputedStyle(el);
-    if(cs.display === "none") el.style.display = "flex";
-    el.style.visibility = "visible";
-    el.style.opacity = "1";
-  }
-
-  function openMobileNav() {
+  function openMenu() {
     if (!mobileNav) return;
-
-    const panel = getPanel();
-
-    lastFocused = document.activeElement;
-
-    // СНИМАЕМ ВСЁ, ЧТО МОЖЕТ ПРЯТАТЬ ЭЛЕМЕНТЫ
-    forceShow(mobileNav);
-    forceShow(panel);
-
     mobileNav.classList.add("open");
-    setAria(true);
+    mobileNav.setAttribute("aria-hidden", "false");
+    if (navToggle) navToggle.setAttribute("aria-expanded", "true");
     lockScroll();
-
-    setTimeout(() => {
-      const first = mobileNav.querySelector("a, button, input, select, textarea");
-      if (first) first.focus();
-      // если панель вдруг не нашлась — хотя бы покажем предупреждение
-      if(!panel) console.warn("[ClearlinePDX] mobile panel not found inside mobileNav");
-    }, 0);
   }
 
-  function closeMobileNav() {
+  function closeMenu() {
     if (!mobileNav) return;
-
     mobileNav.classList.remove("open");
-    setAria(false);
+    mobileNav.setAttribute("aria-hidden", "true");
+    if (navToggle) navToggle.setAttribute("aria-expanded", "false");
     unlockScroll();
-
-    if (lastFocused && typeof lastFocused.focus === "function") lastFocused.focus();
   }
 
-  function isMobileNavOpen() {
+  function isMenuOpen() {
     return !!(mobileNav && mobileNav.classList.contains("open"));
   }
 
   if (navToggle && mobileNav) {
     navToggle.addEventListener("click", (e) => {
       e.preventDefault();
-      isMobileNavOpen() ? closeMobileNav() : openMobileNav();
+      isMenuOpen() ? closeMenu() : openMenu();
     });
 
     if (mobileClose) {
       mobileClose.addEventListener("click", (e) => {
         e.preventDefault();
-        closeMobileNav();
+        closeMenu();
       });
     }
 
-    // Клик по фону закрывает
+    // click outside the panel closes
     mobileNav.addEventListener("click", (e) => {
-      const panel = getPanel();
-      // если кликнули не внутри панели — закрываем
-      if (panel && !panel.contains(e.target)) closeMobileNav();
-      // fallback: если панели нет — закрываем по клику по overlay
-      if (!panel && e.target === mobileNav) closeMobileNav();
+      if (mobileInner && !mobileInner.contains(e.target)) closeMenu();
     });
 
-    // клики по ссылкам закрывают
-    $$("a", mobileNav).forEach((a) => {
-      a.addEventListener("click", () => closeMobileNav());
-    });
-
-    // ESC закрывает
+    // ESC closes
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && isMobileNavOpen()) closeMobileNav();
+      if (e.key === "Escape" && isMenuOpen()) closeMenu();
     });
-  } else {
-    console.warn("[ClearlinePDX] Mobile menu init failed:", {
-      navToggleFound: !!navToggle,
-      mobileNavFound: !!mobileNav
-    });
+
+    // Clicking links closes
+    $$("a", mobileNav).forEach((a) => a.addEventListener("click", closeMenu));
   }
 
-  // ========= Quote Modal =========
-  const overlay = firstMatch(["#quoteModal", ".quote-modal", "[data-quote-modal]"]);
-  const openBtns = allMatches(["[data-open-quote]", ".open-quote", "#openQuote"]);
-  const closeBtns = overlay
-    ? allMatches(["[data-close-quote]", ".close-quote", ".modal-close"], overlay)
-    : [];
+  // ===== QUOTE MODAL =====
+  const quoteModal = $("#quoteModal");
+  const openQuoteBtns = $$("[data-open-quote]");
+  const closeQuoteBtns = $$("[data-close-quote]");
 
-  function openModal() {
-    if (!overlay) return;
-    overlay.classList.add("open");
+  function openQuote() {
+    if (!quoteModal) return;
+    quoteModal.classList.add("open");
     lockScroll();
 
     const msg = $("#qMessage");
@@ -189,31 +100,30 @@
       msg.value = (msg.value.trim() ? msg.value.trim() + "\n\n" : "") + prefill;
     }
   }
-
-  function closeModal() {
-    if (!overlay) return;
-    overlay.classList.remove("open");
+  function closeQuote() {
+    if (!quoteModal) return;
+    quoteModal.classList.remove("open");
     unlockScroll();
   }
 
-  openBtns.forEach((b) =>
+  openQuoteBtns.forEach((b) =>
     b.addEventListener("click", () => {
-      if (isMobileNavOpen()) closeMobileNav();
-      openModal();
+      if (isMenuOpen()) closeMenu();
+      openQuote();
     })
   );
-  closeBtns.forEach((b) => b.addEventListener("click", closeModal));
+  closeQuoteBtns.forEach((b) => b.addEventListener("click", closeQuote));
 
-  if (overlay) {
-    overlay.addEventListener("click", (e) => {
-      if (e.target === overlay) closeModal();
+  if (quoteModal) {
+    quoteModal.addEventListener("click", (e) => {
+      if (e.target === quoteModal) closeQuote();
     });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && overlay.classList.contains("open")) closeModal();
+      if (e.key === "Escape" && quoteModal.classList.contains("open")) closeQuote();
     });
   }
 
-  // ========= Calculator =========
+  // ===== CALCULATOR =====
   const calc = {
     type: $("#cleaningType"),
     freq: $("#frequency"),
@@ -315,24 +225,19 @@
 
   if (calc.sqft && calc.sqftLabel) {
     const paint = () => (calc.sqftLabel.textContent = `${calc.sqft.value} sq ft`);
-    calc.sqft.addEventListener("input", () => {
-      paint();
-      compute();
-    });
+    calc.sqft.addEventListener("input", () => { paint(); compute(); });
     paint();
   }
 
   [
     calc.type, calc.freq, calc.beds, calc.baths, calc.condition, calc.pets,
     calc.addonFridge, calc.addonOven, calc.addonCabinets, calc.addonMicrowave
-  ].forEach((el) => {
-    if (el) el.addEventListener("change", compute);
-  });
+  ].forEach((el) => el && el.addEventListener("change", compute));
 
   compute();
 
-  // ========= Quote form -> mailto =========
-  const form = firstMatch(["#quoteForm", "form[data-quote-form]"]);
+  // ===== Quote form -> mailto =====
+  const form = $("#quoteForm");
   if (form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -358,7 +263,7 @@ ${message}`
       );
 
       window.location.href = `mailto:${COMPANY_EMAIL}?subject=${subject}&body=${body}`;
-      closeModal();
+      closeQuote();
     });
   }
 })();
