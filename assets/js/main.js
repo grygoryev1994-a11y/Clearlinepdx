@@ -1,6 +1,6 @@
 (function(){
-  const COMPANY_PHONE = "+15035551234";        // <- поставь свой
-  const COMPANY_EMAIL = "santa.on@gmail.com";  // <- поставь свой
+  const COMPANY_PHONE = "+15035551234";        // <-- поставь свой номер
+  const COMPANY_EMAIL = "santa.on@gmail.com";  // <-- поставь свой email
 
   const ADDON_PRICES = {
     fridge: 25,
@@ -26,44 +26,71 @@
   const navToggle = $(".nav-toggle");
   const mobileNav = $("#mobileNav");
   const mobileClose = $(".mobile-close");
-  const mobileLinks = mobileNav ? $$("a", mobileNav) : [];
+
+  let lastFocused = null;
+
+  function lockScroll(){
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+  }
+  function unlockScroll(){
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+  }
 
   function openMobileNav(){
     if(!mobileNav || !navToggle) return;
+    lastFocused = document.activeElement;
+
     mobileNav.classList.add("open");
     mobileNav.setAttribute("aria-hidden", "false");
     navToggle.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden";
+
+    lockScroll();
+
+    setTimeout(()=>{
+      const first = mobileNav.querySelector("a, button, input, select, textarea");
+      first && first.focus();
+    }, 0);
   }
 
   function closeMobileNav(){
     if(!mobileNav || !navToggle) return;
+
     mobileNav.classList.remove("open");
     mobileNav.setAttribute("aria-hidden", "true");
     navToggle.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
+
+    unlockScroll();
+
+    if(lastFocused && typeof lastFocused.focus === "function") {
+      lastFocused.focus();
+    }
+  }
+
+  function isMobileNavOpen(){
+    return !!(mobileNav && mobileNav.classList.contains("open"));
   }
 
   if(navToggle && mobileNav){
     navToggle.addEventListener("click", ()=>{
-      const isOpen = mobileNav.classList.contains("open");
-      isOpen ? closeMobileNav() : openMobileNav();
+      isMobileNavOpen() ? closeMobileNav() : openMobileNav();
     });
 
     if(mobileClose) mobileClose.addEventListener("click", closeMobileNav);
 
-    // close on overlay click
     mobileNav.addEventListener("click", (e)=>{
       if(e.target === mobileNav) closeMobileNav();
     });
 
-    // close on link click (and allow anchor navigation)
-    mobileLinks.forEach(a=>{
+    $$("a", mobileNav).forEach(a=>{
       a.addEventListener("click", ()=> closeMobileNav());
     });
 
     document.addEventListener("keydown", (e)=>{
-      if(e.key === "Escape") closeMobileNav();
+      if(e.key === "Escape" && isMobileNavOpen()){
+        closeMobileNav();
+      }
     });
   }
 
@@ -77,31 +104,31 @@
   function openModal(){
     if(!overlay) return;
     overlay.classList.add("open");
-    document.body.style.overflow = "hidden";
+    lockScroll();
 
-    // prefill estimate into message
     const msg = $("#qMessage");
     const prefill = $("#quotePrefill")?.value || "";
     if(msg && prefill && !msg.value.includes("Estimate:")){
       msg.value = (msg.value.trim() ? msg.value.trim() + "\n\n" : "") + prefill;
     }
   }
+
   function closeModal(){
     if(!overlay) return;
     overlay.classList.remove("open");
-    document.body.style.overflow = "";
+    unlockScroll();
   }
 
   openBtns.forEach(b=> b.addEventListener("click", ()=>{
-    // If mobile menu is open, close it before opening modal
-    closeMobileNav();
+    if(isMobileNavOpen()) closeMobileNav();
     openModal();
   }));
+
   closeBtns.forEach(b=> b.addEventListener("click", closeModal));
 
   if(overlay){
     overlay.addEventListener("click", (e)=>{ if(e.target===overlay) closeModal(); });
-    document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeModal(); });
+    document.addEventListener("keydown", (e)=>{ if(e.key==="Escape" && overlay.classList.contains("open")) closeModal(); });
   }
 
   /* =========================
@@ -125,7 +152,6 @@
     addonMicrowave: $("#addonMicrowave"),
   };
 
-  // Paint add-on prices
   $$("[data-addon-price]").forEach(n=>{
     const key = n.getAttribute("data-addon-price");
     if(key && ADDON_PRICES[key] != null) n.textContent = `+$${ADDON_PRICES[key]}`;
@@ -165,28 +191,22 @@
 
     let total = getBaseRate({beds,baths});
 
-    // sqft adjust
     const delta = sqft - 1500;
     const steps = delta / 500;
     total += steps > 0 ? steps * 12 : Math.max(steps * 8, -20);
 
-    // type
     if(cleaningType==="deep") total *= 1.30;
     if(cleaningType==="move") total *= 1.55;
 
-    // frequency discounts
     if(frequency==="weekly") total *= 0.82;
     if(frequency==="biweekly") total *= 0.88;
     if(frequency==="monthly") total *= 0.95;
 
-    // condition
     if(condition==="heavy") total += 35;
     if(condition==="very-heavy") total += 65;
 
-    // pets (only here)
     if(pets==="yes") total += 20;
 
-    // add-ons
     const addons = selectedAddons();
     addons.forEach(([,price])=> total += price);
 
@@ -228,7 +248,9 @@
 
   compute();
 
-  // Quote form -> mailto
+  /* =========================
+     Quote form -> mailto
+  ========================= */
   const form = $("#quoteForm");
   if(form){
     form.addEventListener("submit", (e)=>{
@@ -258,26 +280,4 @@ ${message}`
       closeModal();
     });
   }
-
-  // Smooth scroll for in-page anchors (nice UX)
-  document.addEventListener("click", (e)=>{
-    const a = e.target.closest("a[href^='#'], a[href*='index.html#']");
-    if(!a) return;
-
-    const href = a.getAttribute("href") || "";
-    const hash = href.includes("#") ? href.slice(href.indexOf("#")) : "";
-    if(!hash || hash === "#") return;
-
-    const id = hash.replace("#","");
-    const el = document.getElementById(id);
-    if(!el) return;
-
-    // only for same-page anchors
-    if(href.startsWith("#") || (href.startsWith("index.html#") && location.pathname.endsWith("index.html"))){
-      e.preventDefault();
-      closeMobileNav();
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-      history.replaceState(null, "", hash);
-    }
-  });
 })();
