@@ -13,6 +13,72 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const money = (n) => `$${Math.round(n).toLocaleString("en-US")}`;
 
+  // ===== Time estimate (always for 1 cleaner) =====
+  const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+
+  function estimateTimeOneCleaner({ cleaningType, frequency, beds, baths, sqft, condition, pets, addons }) {
+    beds = clamp(Number(beds) || 0, 0, 15);
+    baths = clamp(Number(baths) || 0, 0, 15);
+    sqft = clamp(Number(sqft) || 0, 200, 20000);
+
+    // Baseline model tuned so 1800sqft / 4bd / 2ba (standard) ~= 4–6h range
+    const basePerSqft = 0.0035; // hours per sqft
+    const perBedroom = 0.25;    // hours per bedroom
+    const perBathroom = 0.80;   // hours per bathroom
+
+    let hours = (sqft * basePerSqft) + (beds * perBedroom) + (baths * perBathroom);
+
+    const typeMultiplier = {
+      standard: 1.00,
+      deep: 1.35,
+      move: 1.50
+    }[cleaningType] || 1.00;
+
+    hours *= typeMultiplier;
+
+    // Condition makes a big difference
+    const conditionMultiplier = {
+      normal: 1.00,
+      heavy: 1.15,
+      "very-heavy": 1.30
+    }[condition] || 1.00;
+
+    hours *= conditionMultiplier;
+
+    // Pets: more hair/detailing
+    if (pets === "yes") hours += 0.5;
+
+    // Add-ons (extra hours)
+    // Map aligns with your add-ons: fridge/oven/cabinets/microwave
+    const addonHours = {
+      fridge: 0.75,
+      oven: 0.75,
+      cabinets: 1.00,
+      microwave: 0.25
+    };
+
+    (addons || []).forEach(([key]) => {
+      if (addonHours[key] != null) hours += addonHours[key];
+    });
+
+    // Frequency (recurring cleans are usually faster after the first visit)
+    const freqMultiplier = {
+      weekly: 0.90,
+      biweekly: 0.95,
+      monthly: 1.00,
+      "one-time": 1.00
+    }[frequency] || 1.00;
+
+    hours *= freqMultiplier;
+
+    // Range ±15% to avoid overpromising
+    const min = hours * 0.85;
+    const max = hours * 1.15;
+
+    const round1 = (n) => Math.round(n * 10) / 10;
+    return { hours: round1(hours), minHours: round1(min), maxHours: round1(max) };
+  }
+
   const yearEl = $("#year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
@@ -134,6 +200,7 @@
     pets: $("#pets"),
     totalEl: $("#estimateTotal"),
     detailsEl: $("#estimateDetails"),
+    timeEl: $("#timeEstimate"),
 
     addonFridge: $("#addonFridge"),
     addonOven: $("#addonOven"),
@@ -199,6 +266,18 @@
     const addons = selectedAddons();
     addons.forEach(([, price]) => (total += price));
 
+    // Time estimate (1 cleaner)
+    const t = estimateTimeOneCleaner({
+      cleaningType,
+      frequency,
+      beds,
+      baths,
+      sqft,
+      condition,
+      pets,
+      addons
+    });
+
     total = Math.max(95, Math.min(total, 1400));
     total = Math.round(total);
 
@@ -213,11 +292,13 @@
     if (addons.length) details.push(`addons: ${addons.map((x) => x[0]).join(", ")}`);
     if (calc.detailsEl) calc.detailsEl.textContent = details.join(" · ");
 
+    if (calc.timeEl) calc.timeEl.textContent = `Estimated time (1 cleaner): ${t.minHours}–${t.maxHours} hours`;
+
     const hidden = $("#quotePrefill");
     if (hidden) {
       hidden.value =
         `Estimate: ${money(total)} | ${beds} bed / ${baths} bath | ${sqft} sq ft | ` +
-        `${cleaningType} | ${frequency} | condition: ${condition} | pets: ${pets}` +
+        `${cleaningType} | ${frequency} | condition: ${condition} | pets: ${pets} | time(1 cleaner): ${t.minHours}–${t.maxHours} hrs` +
         (addons.length ? ` | addons: ${addons.map((x) => `${x[0]}+$${x[1]}`).join(", ")}` : "");
     }
   }
